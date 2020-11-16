@@ -28,8 +28,86 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  void _addEvent() {
+    // TODO: implements
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return TimelinesTheme(
+      data: TimelinesThemeData(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: ListView.builder(
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            if (index == 20) {
+              return TimelinesTheme(
+                data: TimelinesThemeData.horizontal(),
+                child: SizedBox(
+                  height: 100,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return TimelinesTile(
+                        child: Card(
+                          child: Text("BYE"),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              );
+            }
+
+            final child = Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                child: Container(
+                  padding: EdgeInsets.all(20.0),
+                  width: 200.0,
+                  child: Text(
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 4,
+                  ),
+                ),
+              ),
+            );
+            if (index == 3) {
+              return TimelinesTile(
+                child: child,
+                eventPosition: 0.5,
+                eventChild: CircleIndicator(
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.0,
+                      valueColor: AlwaysStoppedAnimation(Colors.white),
+                    ),
+                  ),
+                ),
+              );
+            }
+
+            return TimelinesTile(
+              child: child,
+              eventPosition: 0.5,
+              drawStartLine: index > 0,
+              drawEndLine: index < 19,
+            );
+          },
+          itemCount: 21,
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _addEvent,
+          tooltip: 'Increment',
+          child: Icon(Icons.add),
+        ),
+      ),
+    );
   }
 }
