@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'timelines_theme.dart';
+import 'timeline_theme.dart';
 
-enum TimelinesLineStyle {
+enum ConnectorStyle {
   solid,
   transparent,
 }
 
 // TODO
-class SolidLine extends StatelessWidget {
+class SolidLineConnector extends StatelessWidget {
   final Axis direction;
   final double thickness;
   final Color color;
 
-  const SolidLine({
+  const SolidLineConnector({
     Key key,
     this.direction,
     this.thickness,
@@ -23,7 +23,7 @@ class SolidLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final direction = this.direction ?? TimelinesTheme.of(context).direction;
+    final direction = this.direction ?? TimelineTheme.of(context).direction;
     final thickness = this.thickness ?? 2.0;
     final color = this.color ?? Colors.blue;
     switch (direction) {
@@ -40,5 +40,14 @@ class SolidLine extends StatelessWidget {
     }
 
     throw ArgumentError('invalid direction: $direction');
+  }
+}
+
+class TransparentConnector extends StatelessWidget {
+  const TransparentConnector();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

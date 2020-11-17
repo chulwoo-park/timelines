@@ -1,27 +1,27 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:timelines/src/timelines_event.dart';
+import 'package:timelines/src/timeline_node.dart';
 
-import 'timelines_theme.dart';
+import 'timeline_theme.dart';
 
 /// TODO
 /// style:
 ///   start
 ///   end
 ///   ... (cross/zigzag ?)
-class TimelinesTile extends StatelessWidget {
+class TimelineTile extends StatelessWidget {
   /// TODO
   final Widget child;
 
   /// TODO
-  final Widget eventChild;
+  final Widget indicatorChild;
 
   /// TODO
   final Axis direction;
 
   /// TODO
-  final double eventPosition;
+  final double indicatorPosition;
 
   /// TODO
   final bool drawStartLine;
@@ -29,19 +29,19 @@ class TimelinesTile extends StatelessWidget {
   /// TODO
   final bool drawEndLine;
 
-  const TimelinesTile({
+  const TimelineTile({
     Key key,
     @required this.child,
     this.direction,
-    this.eventChild,
-    this.eventPosition = 0.5,
+    this.indicatorChild,
+    this.indicatorPosition = 0.5,
     this.drawStartLine = true,
     this.drawEndLine = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final direction = this.direction ?? TimelinesTheme.of(context).direction;
+    final direction = this.direction ?? TimelineTheme.of(context).direction;
     switch (direction) {
       case Axis.vertical:
         return IntrinsicHeight(
@@ -49,11 +49,11 @@ class TimelinesTile extends StatelessWidget {
           child: Row(
             children: [
               // TODO order
-              TimelinesEvent.circle(
-                indicatorChild: eventChild,
-                position: eventPosition,
-                drawStartLine: drawStartLine,
-                drawEndLine: drawEndLine,
+              TimelineNode.circle(
+                indicatorChild: indicatorChild,
+                position: indicatorPosition,
+                drawStartConnector: drawStartLine,
+                drawEndConnector: drawEndLine,
               ),
               child,
             ],
@@ -64,11 +64,11 @@ class TimelinesTile extends StatelessWidget {
           child: Column(
             children: [
               // TODO order
-              TimelinesEvent.circle(
-                indicatorChild: eventChild,
-                position: eventPosition,
-                drawStartLine: drawStartLine,
-                drawEndLine: drawEndLine,
+              TimelineNode.circle(
+                indicatorChild: indicatorChild,
+                position: indicatorPosition,
+                drawStartConnector: drawStartLine,
+                drawEndConnector: drawEndLine,
               ),
               child,
             ],

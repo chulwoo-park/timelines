@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:timelines/timelines.dart';
 
-import 'timelines_indicators.dart';
-import 'timelines_line.dart';
+import 'indicators.dart';
+import 'connectors.dart';
 
-class TimelinesEvent extends StatelessWidget {
+class TimelineNode extends StatelessWidget {
   /// TODO
   final Axis direction;
 
@@ -13,47 +13,47 @@ class TimelinesEvent extends StatelessWidget {
   final double position;
 
   /// TODO
-  final TimelinesLineStyle lineStyle;
+  final ConnectorStyle connectorStyle;
 
   /// TODO
-  final bool drawStartLine;
+  final bool drawStartConnector;
 
   /// TODO
-  final bool drawEndLine;
+  final bool drawEndConnector;
 
   /// The widget below this widget in the tree.
   ///
   /// {@macro flutter.widgets.child}
   final Widget child;
 
-  const TimelinesEvent({
+  const TimelineNode({
     Key key,
     this.direction,
     this.position = 0.5,
-    this.lineStyle = TimelinesLineStyle.solid,
-    this.drawStartLine = true,
-    this.drawEndLine = true,
+    this.connectorStyle = ConnectorStyle.solid,
+    this.drawStartConnector = true,
+    this.drawEndConnector = true,
     @required this.child,
   })  : assert(0 <= position && position <= 1),
         super(key: key);
 
-  TimelinesEvent.circle({
+  TimelineNode.circle({
     Key key,
     Axis direction,
     double position = 0.5,
-    TimelinesLineStyle lineStyle,
-    bool drawStartLine = true,
-    bool drawEndLine = true,
+    ConnectorStyle connectorStyle,
+    bool drawStartConnector = true,
+    bool drawEndConnector = true,
     double indicatorSize = 15.0,
     Widget indicatorChild,
   }) : this(
           key: key,
           direction: direction,
           position: position,
-          lineStyle: lineStyle,
-          drawStartLine: drawStartLine,
-          drawEndLine: drawEndLine,
-          child: CircleIndicator(
+          connectorStyle: connectorStyle,
+          drawStartConnector: drawStartConnector,
+          drawEndConnector: drawEndConnector,
+          child: DotIndicator(
             size: indicatorSize,
             child: indicatorChild,
           ),
@@ -61,13 +61,13 @@ class TimelinesEvent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final direction = this.direction ?? TimelinesTheme.of(context).direction;
+    final direction = this.direction ?? TimelineTheme.of(context).direction;
     Widget result = child;
 
-    /// TODO line from style
-    /// if (lineStyle ... )
-    final startLine = SolidLine(direction: direction);
-    final endLine = SolidLine(direction: direction);
+    /// TODO connector from style
+    /// if (connectorStyle ... )
+    final startConnector = SolidLineConnector(direction: direction);
+    final endConnector = SolidLineConnector(direction: direction);
 
     switch (direction) {
       case Axis.vertical:
@@ -76,12 +76,12 @@ class TimelinesEvent extends StatelessWidget {
           children: [
             Flexible(
               flex: (position * 10).toInt(),
-              child: startLine ?? TransparentLine(),
+              child: startConnector ?? TransparentConnector(),
             ),
             child,
             Flexible(
               flex: ((1 - position) * 10).toInt(),
-              child: endLine ?? TransparentLine(),
+              child: endConnector ?? TransparentConnector(),
             ),
           ],
         );
@@ -92,12 +92,12 @@ class TimelinesEvent extends StatelessWidget {
           children: [
             Flexible(
               flex: (position * 10).toInt(),
-              child: startLine ?? TransparentLine(),
+              child: startConnector ?? TransparentConnector(),
             ),
             child,
             Flexible(
               flex: ((1 - position) * 10).toInt(),
-              child: endLine ?? TransparentLine(),
+              child: endConnector ?? TransparentConnector(),
             ),
           ],
         );
@@ -105,14 +105,5 @@ class TimelinesEvent extends StatelessWidget {
     }
 
     return result;
-  }
-}
-
-class TransparentLine extends StatelessWidget {
-  const TransparentLine();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }
