@@ -34,8 +34,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return TimelinesTheme(
-      data: TimelinesThemeData(),
+    return TimelineTheme(
+      data: TimelineThemeData(),
       child: Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
@@ -44,15 +44,15 @@ class _MyHomePageState extends State<MyHomePage> {
           shrinkWrap: true,
           itemBuilder: (context, index) {
             if (index == 20) {
-              return TimelinesTheme(
-                data: TimelinesThemeData.horizontal(),
+              return TimelineTheme(
+                data: TimelineThemeData.horizontal(),
                 child: SizedBox(
                   height: 100,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      return TimelinesTile(
+                      return TimelineTile(
                         child: Card(
                           child: Text("BYE"),
                         ),
@@ -78,10 +78,10 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             );
             if (index == 3) {
-              return TimelinesTile(
+              return TimelineTile(
                 child: child,
-                eventPosition: 0.5,
-                eventChild: CircleIndicator(
+                indicatorPosition: 0.5,
+                indicatorChild: DotIndicator(
                   child: Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: CircularProgressIndicator(
@@ -93,9 +93,9 @@ class _MyHomePageState extends State<MyHomePage> {
               );
             }
 
-            return TimelinesTile(
+            return TimelineTile(
               child: child,
-              eventPosition: 0.5,
+              indicatorPosition: 0.5,
               drawStartLine: index > 0,
               drawEndLine: index < 19,
             );

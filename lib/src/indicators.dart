@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:timelines/src/timelines_indicator_theme.dart';
+import 'package:timelines/timelines.dart';
 
-class CircleIndicator extends StatelessWidget {
+class DotIndicator extends StatelessWidget {
   final double size;
 
   final Color color;
 
   final Widget child;
 
-  const CircleIndicator({
+  const DotIndicator({
     Key key,
     this.size = 15.0,
     this.color,
@@ -17,7 +17,7 @@ class CircleIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = this.color ?? TimelinesIndicatorTheme.of(context).color;
+    final color = this.color ?? IndicatorTheme.of(context).color;
     return Container(
       width: size,
       height: size,

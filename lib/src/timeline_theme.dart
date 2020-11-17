@@ -2,26 +2,27 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'timelines_indicator_theme.dart';
+import 'timeline_node.dart';
+import 'indicator_theme.dart';
 
-class TimelinesTheme extends StatelessWidget {
-  const TimelinesTheme({
+class TimelineTheme extends StatelessWidget {
+  const TimelineTheme({
     Key key,
     @required this.data,
     @required this.child,
   }) : super(key: key);
 
   /// Specifies the direction for descendant widgets.
-  final TimelinesThemeData data;
+  final TimelineThemeData data;
 
   /// The widget below this widget in the tree.
   ///
   /// {@macro flutter.widgets.child}
   final Widget child;
 
-  static final TimelinesThemeData _kFallbackTheme = TimelinesThemeData.fallback();
+  static final TimelineThemeData _kFallbackTheme = TimelineThemeData.fallback();
 
-  static TimelinesThemeData of(BuildContext context) {
+  static TimelineThemeData of(BuildContext context) {
     final _InheritedTheme inheritedTheme = context.dependOnInheritedWidgetOfExactType<_InheritedTheme>();
     return inheritedTheme?.theme?.data ?? _kFallbackTheme;
   }
@@ -30,7 +31,7 @@ class TimelinesTheme extends StatelessWidget {
   Widget build(BuildContext context) {
     return _InheritedTheme(
       theme: this,
-      child: TimelinesIndicatorTheme(
+      child: IndicatorTheme(
         data: data.indicatorTheme,
         child: child,
       ),
@@ -40,7 +41,7 @@ class TimelinesTheme extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<TimelinesThemeData>('data', data, showName: false));
+    properties.add(DiagnosticsProperty<TimelineThemeData>('data', data, showName: false));
   }
 }
 
@@ -52,12 +53,12 @@ class _InheritedTheme extends InheritedTheme {
   })  : assert(theme != null),
         super(key: key, child: child);
 
-  final TimelinesTheme theme;
+  final TimelineTheme theme;
 
   @override
   Widget wrap(BuildContext context, Widget child) {
     final _InheritedTheme ancestorTheme = context.findAncestorWidgetOfExactType<_InheritedTheme>();
-    return identical(this, ancestorTheme) ? child : TimelinesTheme(data: theme.data, child: child);
+    return identical(this, ancestorTheme) ? child : TimelineTheme(data: theme.data, child: child);
   }
 
   @override
@@ -65,64 +66,63 @@ class _InheritedTheme extends InheritedTheme {
 }
 
 @immutable
-class TimelinesThemeData with Diagnosticable {
-  /// Create a [TimelinesThemeData] that's used to configure a [TimelinesTheme].
+class TimelineThemeData with Diagnosticable {
+  /// Create a [TimelineThemeData] that's used to configure a [TimelineTheme].
   ///
   /// See also:
   ///
-  ///  * [TimelinesThemeData.vertical], which creates a vertical direction TimelinesThemeData.
-  ///  * [TimelinesThemeData.horizontal], which creates a horizontal direction TimelinesThemeData.
-  factory TimelinesThemeData({
+  ///  * [TimelineThemeData.vertical], which creates a vertical direction TimelineThemeData.
+  ///  * [TimelineThemeData.horizontal], which creates a horizontal direction TimelineThemeData.
+  factory TimelineThemeData({
     Axis direction,
-    TimelinesIndicatorThemeData indicatorTheme,
+    IndicatorThemeData indicatorTheme,
   }) {
     direction ??= Axis.vertical;
-    indicatorTheme ??= const TimelinesIndicatorThemeData();
-    return TimelinesThemeData.raw(
+    indicatorTheme ??= const IndicatorThemeData();
+    return TimelineThemeData.raw(
       direction: direction,
       indicatorTheme: indicatorTheme,
     );
   }
 
-  /// The default direction theme. Same as [new TimelinesThemeData.vertical].
+  /// The default direction theme. Same as [new TimelineThemeData.vertical].
   ///
-  /// This is used by [TimelinesTheme.of] when no theme has been specified.
-  factory TimelinesThemeData.fallback() => TimelinesThemeData.vertical();
+  /// This is used by [TimelineTheme.of] when no theme has been specified.
+  factory TimelineThemeData.fallback() => TimelineThemeData.vertical();
 
-  /// Create a [TimelinesThemeData] given a set of exact values. All the values must be
+  /// Create a [TimelineThemeData] given a set of exact values. All the values must be
   /// specified. They all must also be non-null.
   ///
   /// This will rarely be used directly. It is used by [lerp] to
   /// create intermediate themes based on two themes created with the
-  /// [new TimelinesThemeData] constructor.
-  const TimelinesThemeData.raw({
+  /// [new TimelineThemeData] constructor.
+  const TimelineThemeData.raw({
     @required this.direction,
     @required this.indicatorTheme,
   })  : assert(direction != null),
         assert(indicatorTheme != null);
 
   /// A default vertical theme.
-  factory TimelinesThemeData.vertical() => TimelinesThemeData(
+  factory TimelineThemeData.vertical() => TimelineThemeData(
         direction: Axis.vertical,
       );
 
   /// A default horizontal theme.
-  factory TimelinesThemeData.horizontal() => TimelinesThemeData(
+  factory TimelineThemeData.horizontal() => TimelineThemeData(
         direction: Axis.horizontal,
       );
 
   final Axis direction;
 
-  /// A theme for customizing the appearance and layout of [TimelinesIndicator]
-  /// widgets.
-  final TimelinesIndicatorThemeData indicatorTheme;
+  /// A theme for customizing the appearance and layout of [TimelineNode] widgets.
+  final IndicatorThemeData indicatorTheme;
 
   /// Creates a copy of this theme but with the given fields replaced with the new values.
-  TimelinesThemeData copyWith({
+  TimelineThemeData copyWith({
     Axis direction,
-    TimelinesIndicatorThemeData indicatorTheme,
+    IndicatorThemeData indicatorTheme,
   }) {
-    return TimelinesThemeData.raw(
+    return TimelineThemeData.raw(
       direction: direction ?? this.direction,
       indicatorTheme: indicatorTheme ?? this.indicatorTheme,
     );
@@ -133,16 +133,16 @@ class TimelinesThemeData with Diagnosticable {
   /// The arguments must not be null.
   ///
   /// {@macro dart.ui.shadow.lerp}
-  static TimelinesThemeData lerp(TimelinesThemeData a, TimelinesThemeData b, double t) {
+  static TimelineThemeData lerp(TimelineThemeData a, TimelineThemeData b, double t) {
     assert(a != null);
     assert(b != null);
     assert(t != null);
     // Warning: make sure these properties are in the exact same order as in
     // hashValues() and in the raw constructor and in the order of fields in
     // the class and in the lerp() method.
-    return TimelinesThemeData.raw(
+    return TimelineThemeData.raw(
       direction: t < 0.5 ? a.direction : b.direction,
-      indicatorTheme: TimelinesIndicatorThemeData.lerp(a.indicatorTheme, b.indicatorTheme, t),
+      indicatorTheme: IndicatorThemeData.lerp(a.indicatorTheme, b.indicatorTheme, t),
     );
   }
 
@@ -152,7 +152,7 @@ class TimelinesThemeData with Diagnosticable {
     // Warning: make sure these properties are in the exact same order as in
     // hashValues() and in the raw constructor and in the order of fields in
     // the class and in the lerp() method.
-    return other is TimelinesThemeData && other.direction == direction && other.indicatorTheme == indicatorTheme;
+    return other is TimelineThemeData && other.direction == direction && other.indicatorTheme == indicatorTheme;
   }
 
   @override
@@ -170,10 +170,10 @@ class TimelinesThemeData with Diagnosticable {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    final TimelinesThemeData defaultData = TimelinesThemeData.fallback();
+    final TimelineThemeData defaultData = TimelineThemeData.fallback();
     properties.add(DiagnosticsProperty<Axis>('direction', direction,
         defaultValue: defaultData.direction, level: DiagnosticLevel.debug));
-    properties.add(DiagnosticsProperty<TimelinesIndicatorThemeData>(
+    properties.add(DiagnosticsProperty<IndicatorThemeData>(
       'indicatorTheme',
       indicatorTheme,
       defaultValue: defaultData.indicatorTheme,
