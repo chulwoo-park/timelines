@@ -1,7 +1,8 @@
 library timelines;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'package:timelines/src/timelines_event.dart';
+export 'package:timelines/src/timelines_indicator_theme.dart';
+export 'package:timelines/src/timelines_indicators.dart';
+export 'package:timelines/src/timelines_line.dart';
+export 'package:timelines/src/timelines_theme.dart';
+export 'package:timelines/src/timelines_tile.dart';
