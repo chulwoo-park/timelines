@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:timelines/src/timeline_node.dart';
 import 'package:timelines/src/indicators.dart';
+import 'package:timelines/src/timeline_node.dart';
 import 'package:timelines/src/timeline_theme.dart';
 
 /// Controls the default color and size of indicators in a widget subtree.
@@ -138,5 +138,21 @@ class IndicatorThemeData with Diagnosticable {
     super.debugFillProperties(properties);
     properties.add(ColorProperty('color', color, defaultValue: null, level: DiagnosticLevel.debug));
     properties.add(DoubleProperty('size', size, defaultValue: null, level: DiagnosticLevel.debug));
+  }
+}
+
+/// A mixin that simplifies the use of effective color and size.
+/// The [ThemedIndicatorComponent]'s each value is used first, and if null, the value is retrieved from [IndicatorTheme].
+mixin ThemedIndicatorComponent on Widget {
+  Color get color;
+
+  Color getEffectiveColor(BuildContext context) {
+    return this.color ?? IndicatorTheme.of(context).color;
+  }
+
+  double get size;
+
+  double getEffectiveSize(BuildContext context) {
+    return this.size ?? IndicatorTheme.of(context).size;
   }
 }

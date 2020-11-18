@@ -114,7 +114,7 @@ class TimelineThemeData with Diagnosticable {
 
   final Axis direction;
 
-  /// A theme for customizing the appearance and layout of [TimelineNode] widgets.
+  /// A theme for customizing the appearance and layout of [ThemedIndicatorComponent] widgets.
   final IndicatorThemeData indicatorTheme;
 
   /// Creates a copy of this theme but with the given fields replaced with the new values.
