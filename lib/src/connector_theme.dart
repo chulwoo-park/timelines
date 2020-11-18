@@ -3,8 +3,9 @@ import 'dart:ui' show lerpDouble;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:timelines/src/connectors.dart';
 
+import 'connectors.dart';
+import 'timeline_node.dart';
 import 'timeline_theme.dart';
 
 /// Defines the visual properties of [SolidLineConnector], connectors
@@ -74,7 +75,8 @@ class ConnectorThemeData with Diagnosticable {
   /// The argument `t` must not be null.
   ///
   /// {@macro dart.ui.shadow.lerp}
-  static ConnectorThemeData lerp(ConnectorThemeData a, ConnectorThemeData b, double t) {
+  static ConnectorThemeData lerp(
+      ConnectorThemeData a, ConnectorThemeData b, double t) {
     assert(t != null);
     return ConnectorThemeData(
       color: Color.lerp(a?.color, b?.color, t),
@@ -111,11 +113,12 @@ class ConnectorThemeData with Diagnosticable {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(ColorProperty('color', color, defaultValue: null));
-    properties.add(DoubleProperty('space', space, defaultValue: null));
-    properties.add(DoubleProperty('thickness', thickness, defaultValue: null));
-    properties.add(DoubleProperty('indent', indent, defaultValue: null));
-    properties.add(DoubleProperty('endIndent', endIndent, defaultValue: null));
+    properties
+      ..add(ColorProperty('color', color, defaultValue: null))
+      ..add(DoubleProperty('space', space, defaultValue: null))
+      ..add(DoubleProperty('thickness', thickness, defaultValue: null))
+      ..add(DoubleProperty('indent', indent, defaultValue: null))
+      ..add(DoubleProperty('endIndent', endIndent, defaultValue: null));
   }
 }
 
@@ -144,14 +147,18 @@ class ConnectorTheme extends InheritedTheme {
   /// ConnectorThemeData theme = ConnectorTheme.of(context);
   /// ```
   static ConnectorThemeData of(BuildContext context) {
-    final ConnectorTheme connectorTheme = context.dependOnInheritedWidgetOfExactType<ConnectorTheme>();
+    final connectorTheme =
+        context.dependOnInheritedWidgetOfExactType<ConnectorTheme>();
     return connectorTheme?.data ?? TimelineTheme.of(context).connectorTheme;
   }
 
   @override
   Widget wrap(BuildContext context, Widget child) {
-    final ConnectorTheme ancestorTheme = context.findAncestorWidgetOfExactType<ConnectorTheme>();
-    return identical(this, ancestorTheme) ? child : ConnectorTheme(data: data, child: child);
+    final ancestorTheme =
+        context.findAncestorWidgetOfExactType<ConnectorTheme>();
+    return identical(this, ancestorTheme)
+        ? child
+        : ConnectorTheme(data: data, child: child);
   }
 
   @override
@@ -167,31 +174,33 @@ class ConnectorTheme extends InheritedTheme {
 mixin ThemedConnectorComponent on Widget {
   Axis get direction;
   Axis getEffectiveDirection(BuildContext context) {
-    return this.direction ?? TimelineTheme.of(context).direction;
+    return direction ?? TimelineTheme.of(context).direction;
   }
 
   double get thickness;
   double getEffectiveThickness(BuildContext context) {
-    return this.thickness ?? ConnectorTheme.of(context).thickness ?? 2.0;
+    return thickness ?? ConnectorTheme.of(context).thickness ?? 2.0;
   }
 
   double get space;
   double getEffectiveSpace(BuildContext context) {
-    return this.space ?? ConnectorTheme.of(context).space;
+    return space ?? ConnectorTheme.of(context).space;
   }
 
   double get indent;
   double getEffectiveIndent(BuildContext context) {
-    return this.indent ?? ConnectorTheme.of(context).indent ?? 0.0;
+    return indent ?? ConnectorTheme.of(context).indent ?? 0.0;
   }
 
   double get endIndent;
   double getEffectiveEndIndent(BuildContext context) {
-    return this.endIndent ?? ConnectorTheme.of(context).endIndent ?? 0.0;
+    return endIndent ?? ConnectorTheme.of(context).endIndent ?? 0.0;
   }
 
   Color get color;
   Color getEffectiveColor(BuildContext context) {
-    return this.color ?? ConnectorTheme.of(context).color ?? TimelineTheme.of(context).color;
+    return color ??
+        ConnectorTheme.of(context).color ??
+        TimelineTheme.of(context).color;
   }
 }

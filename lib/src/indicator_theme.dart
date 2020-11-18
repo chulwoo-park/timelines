@@ -3,9 +3,9 @@ import 'dart:ui' show lerpDouble;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:timelines/src/indicators.dart';
-import 'package:timelines/src/timeline_node.dart';
 
+import 'indicators.dart';
+import 'timeline_node.dart';
 import 'timeline_theme.dart';
 
 /// Defines the visual properties of [DotIndicator], indicators inside [TimelineNode]s.
@@ -55,7 +55,8 @@ class IndicatorThemeData with Diagnosticable {
   /// The argument `t` must not be null.
   ///
   /// {@macro dart.ui.shadow.lerp}
-  static IndicatorThemeData lerp(IndicatorThemeData a, IndicatorThemeData b, double t) {
+  static IndicatorThemeData lerp(
+      IndicatorThemeData a, IndicatorThemeData b, double t) {
     assert(t != null);
     return IndicatorThemeData(
       color: Color.lerp(a?.color, b?.color, t),
@@ -70,14 +71,17 @@ class IndicatorThemeData with Diagnosticable {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other.runtimeType != runtimeType) return false;
-    return other is IndicatorThemeData && other.color == color && other.size == size;
+    return other is IndicatorThemeData &&
+        other.color == color &&
+        other.size == size;
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(ColorProperty('color', color, defaultValue: null));
-    properties.add(DoubleProperty('size', size, defaultValue: null));
+    properties
+      ..add(ColorProperty('color', color, defaultValue: null))
+      ..add(DoubleProperty('size', size, defaultValue: null));
   }
 }
 
@@ -106,14 +110,18 @@ class IndicatorTheme extends InheritedTheme {
   ///  IndicatorThemeData theme = IndicatorTheme.of(context);
   /// ```
   static IndicatorThemeData of(BuildContext context) {
-    final IndicatorTheme indicatorTheme = context.dependOnInheritedWidgetOfExactType<IndicatorTheme>();
+    final indicatorTheme =
+        context.dependOnInheritedWidgetOfExactType<IndicatorTheme>();
     return indicatorTheme?.data ?? TimelineTheme.of(context).indicatorTheme;
   }
 
   @override
   Widget wrap(BuildContext context, Widget child) {
-    final IndicatorTheme ancestorTheme = context.findAncestorWidgetOfExactType<IndicatorTheme>();
-    return identical(this, ancestorTheme) ? child : IndicatorTheme(data: data, child: child);
+    final ancestorTheme =
+        context.findAncestorWidgetOfExactType<IndicatorTheme>();
+    return identical(this, ancestorTheme)
+        ? child
+        : IndicatorTheme(data: data, child: child);
   }
 
   @override
@@ -129,11 +137,13 @@ class IndicatorTheme extends InheritedTheme {
 mixin ThemedIndicatorComponent on Widget {
   Color get color;
   Color getEffectiveColor(BuildContext context) {
-    return this.color ?? IndicatorTheme.of(context).color ?? TimelineTheme.of(context).color;
+    return color ??
+        IndicatorTheme.of(context).color ??
+        TimelineTheme.of(context).color;
   }
 
   double get size;
   double getEffectiveSize(BuildContext context) {
-    return this.size ?? IndicatorTheme.of(context).size ?? 15.0;
+    return size ?? IndicatorTheme.of(context).size ?? 15.0;
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:timelines/src/timeline_node.dart';
 
+import 'timeline_node.dart';
 import 'timeline_theme.dart';
 
 /// TODO
@@ -11,6 +11,16 @@ import 'timeline_theme.dart';
 ///   end
 ///   ... (cross/zigzag ?)
 class TimelineTile extends StatelessWidget {
+  const TimelineTile({
+    Key key,
+    @required this.child,
+    this.direction,
+    this.indicatorChild,
+    this.indicatorPosition = 0.5,
+    this.drawStartLine = true,
+    this.drawEndLine = true,
+  }) : super(key: key);
+
   /// TODO
   final Widget child;
 
@@ -28,16 +38,6 @@ class TimelineTile extends StatelessWidget {
 
   /// TODO
   final bool drawEndLine;
-
-  const TimelineTile({
-    Key key,
-    @required this.child,
-    this.direction,
-    this.indicatorChild,
-    this.indicatorPosition = 0.5,
-    this.drawStartLine = true,
-    this.drawEndLine = true,
-  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
