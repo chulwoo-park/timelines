@@ -7,9 +7,8 @@ class DotIndicator extends StatelessWidget with ThemedIndicatorComponent {
   ///
   /// Dots occupy a square with width and height equal to size.
   ///
-  /// Defaults to the current [IndicatorTheme] size, if any. If there is no
-  /// [IndicatorTheme], or it does not specify an explicit size, then it defaults to
-  /// 15.0.
+  /// Defaults to the current [IndicatorTheme] size, if any. If there is no [IndicatorTheme], or it does not specify an
+  /// explicit size, then it defaults to 15.0.
   final double size;
 
   /// The color to use when drawing the dot.
