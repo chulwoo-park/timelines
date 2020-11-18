@@ -8,6 +8,9 @@ mixin Indicator on Widget {
   /// If this is null, then the [IndicatorThemeData.position] is used. If that is also null, then this defaults to 0.5.
   /// {@endtemplate}
   double get position;
+  double getEffectivePosition(BuildContext context) {
+    return position ?? IndicatorTheme.of(context).position ?? 0.5;
+  }
 }
 
 /// A widget that displays an dot.

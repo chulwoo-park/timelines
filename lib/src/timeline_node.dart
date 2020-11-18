@@ -84,8 +84,7 @@ class TimelineNode extends StatelessWidget {
 
   double _getEffectiveIndicatorPosition(BuildContext context) {
     var indicatorPosition = this.indicatorPosition;
-    indicatorPosition ??=
-        (indicator is Indicator) ? (indicator as Indicator).position : IndicatorTheme.of(context).position ?? 0.5;
+    indicatorPosition ??= (indicator is Indicator) ? (indicator as Indicator).getEffectivePosition(context) : 0.5;
     return indicatorPosition;
   }
 
