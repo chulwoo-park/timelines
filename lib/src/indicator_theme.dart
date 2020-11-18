@@ -142,9 +142,6 @@ mixin ThemedIndicatorComponent on Indicator {
   ///
   /// If no [IndicatorTheme] and no [TimelineTheme] is specified, indicators will default to blue.
   /// {@endtemplate}
-  ///
-  /// See also:
-  ///  * [getEffectiveColor], which describes the overall theme information for the timeline.
   Color get color;
   Color getEffectiveColor(BuildContext context) {
     return color ?? IndicatorTheme.of(context).color ?? TimelineTheme.of(context).color;
