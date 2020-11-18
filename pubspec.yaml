@@ -1,7 +1,9 @@
 name: timelines
-description: A simple timeline widget.
 version: 0.0.1
+description: Widgets that make it easy to implement the timeline UI component.
 homepage: https://chulwoo.dev
+repository: https://github.com/chulwoo-park/timelines/
+issue_tracker: https://github.com/chulwoo-park/timelines/issues
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
