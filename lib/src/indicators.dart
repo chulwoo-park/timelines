@@ -2,8 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../timelines.dart';
 
+/// [TimelineNode]'s indicator
+mixin Indicator on Widget {
+  /// {@template timelines.indicator.position}
+  /// If this is null, then the [IndicatorThemeData.position] is used. If that is also null, then this defaults to 0.5.
+  /// {@endtemplate}
+  double get position;
+}
+
 /// A widget that displays an dot.
-class DotIndicator extends StatelessWidget with ThemedIndicatorComponent {
+class DotIndicator extends StatelessWidget with Indicator, ThemedIndicatorComponent {
   /// Creates a dot indicator.
   ///
   /// The [size] must be null or non-negative.
@@ -11,26 +19,29 @@ class DotIndicator extends StatelessWidget with ThemedIndicatorComponent {
     Key key,
     this.size,
     this.color,
+    this.position,
     this.child,
   })  : assert(size == null || size >= 0),
+        assert(position == null || 0 <= position && position <= 1),
         super(key: key);
 
   /// The size of the dot in logical pixels.
   ///
-  /// Dots occupy a square with width and height equal to size.
-  ///
-  /// Defaults to the current [IndicatorTheme] size, if any. If there is no [IndicatorTheme], or it does not specify an
-  /// explicit size, then it defaults to 15.0.
+  /// {@macro timelines.indicator.size}
   @override
   final double size;
 
   /// The color to use when drawing the dot.
   ///
-  /// Defaults to the current [IndicatorTheme] color, if any.
-  ///
-  /// If no [IndicatorTheme] and no [TimelineTheme] is specified, dots will default to blue.
+  /// {@macro timelines.indicator.color}
   @override
   final Color color;
+
+  /// The position of a indicator between the two connectors.
+  ///
+  /// {@macro timelines.indicator.position}
+  @override
+  final double position;
 
   /// The widget below this widget in the tree.
   ///
