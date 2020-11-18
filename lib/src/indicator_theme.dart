@@ -55,8 +55,7 @@ class IndicatorThemeData with Diagnosticable {
   /// The argument `t` must not be null.
   ///
   /// {@macro dart.ui.shadow.lerp}
-  static IndicatorThemeData lerp(
-      IndicatorThemeData a, IndicatorThemeData b, double t) {
+  static IndicatorThemeData lerp(IndicatorThemeData a, IndicatorThemeData b, double t) {
     assert(t != null);
     return IndicatorThemeData(
       color: Color.lerp(a?.color, b?.color, t),
@@ -71,9 +70,7 @@ class IndicatorThemeData with Diagnosticable {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other.runtimeType != runtimeType) return false;
-    return other is IndicatorThemeData &&
-        other.color == color &&
-        other.size == size;
+    return other is IndicatorThemeData && other.color == color && other.size == size;
   }
 
   @override
@@ -110,18 +107,14 @@ class IndicatorTheme extends InheritedTheme {
   ///  IndicatorThemeData theme = IndicatorTheme.of(context);
   /// ```
   static IndicatorThemeData of(BuildContext context) {
-    final indicatorTheme =
-        context.dependOnInheritedWidgetOfExactType<IndicatorTheme>();
+    final indicatorTheme = context.dependOnInheritedWidgetOfExactType<IndicatorTheme>();
     return indicatorTheme?.data ?? TimelineTheme.of(context).indicatorTheme;
   }
 
   @override
   Widget wrap(BuildContext context, Widget child) {
-    final ancestorTheme =
-        context.findAncestorWidgetOfExactType<IndicatorTheme>();
-    return identical(this, ancestorTheme)
-        ? child
-        : IndicatorTheme(data: data, child: child);
+    final ancestorTheme = context.findAncestorWidgetOfExactType<IndicatorTheme>();
+    return identical(this, ancestorTheme) ? child : IndicatorTheme(data: data, child: child);
   }
 
   @override
@@ -137,9 +130,7 @@ class IndicatorTheme extends InheritedTheme {
 mixin ThemedIndicatorComponent on Widget {
   Color get color;
   Color getEffectiveColor(BuildContext context) {
-    return color ??
-        IndicatorTheme.of(context).color ??
-        TimelineTheme.of(context).color;
+    return color ?? IndicatorTheme.of(context).color ?? TimelineTheme.of(context).color;
   }
 
   double get size;
