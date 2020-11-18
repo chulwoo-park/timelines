@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -159,16 +161,22 @@ class TimelineThemeData with Diagnosticable {
   factory TimelineThemeData({
     Axis direction,
     Color color,
+    double nodePosition,
+    double indicatorPosition,
     IndicatorThemeData indicatorTheme,
     ConnectorThemeData connectorTheme,
   }) {
     direction ??= Axis.vertical;
     color ??= Colors.blue;
+    nodePosition ??= 0.5;
+    indicatorPosition ??= 0.5;
     indicatorTheme ??= IndicatorThemeData();
     connectorTheme ??= ConnectorThemeData();
     return TimelineThemeData.raw(
       direction: direction,
       color: color,
+      nodePosition: nodePosition,
+      indicatorPosition: indicatorPosition,
       indicatorTheme: indicatorTheme,
       connectorTheme: connectorTheme,
     );
@@ -187,10 +195,14 @@ class TimelineThemeData with Diagnosticable {
   const TimelineThemeData.raw({
     @required this.direction,
     @required this.color,
+    @required this.nodePosition,
+    @required this.indicatorPosition,
     @required this.indicatorTheme,
     @required this.connectorTheme,
   })  : assert(direction != null),
         assert(color != null),
+        assert(nodePosition != null),
+        assert(indicatorPosition != null),
         assert(indicatorTheme != null),
         assert(connectorTheme != null);
 
@@ -212,6 +224,16 @@ class TimelineThemeData with Diagnosticable {
   /// The color for major parts of the timeline (indicator, connector, etc)
   final Color color;
 
+  /// The position for [TimelineNode] in [TimelineTile].
+  ///
+  /// Defaults to 0.5.
+  final double nodePosition;
+
+  /// The position for indicator in [TimelineNode].
+  ///
+  /// Defaults to 0.5.
+  final double indicatorPosition;
+
   /// A theme for customizing the appearance and layout of [ThemedIndicatorComponent] widgets.
   final IndicatorThemeData indicatorTheme;
 
@@ -222,12 +244,16 @@ class TimelineThemeData with Diagnosticable {
   TimelineThemeData copyWith({
     Axis direction,
     Color color,
+    double nodePosition,
+    double indicatorPosition,
     IndicatorThemeData indicatorTheme,
     ConnectorThemeData connectorTheme,
   }) {
     return TimelineThemeData.raw(
       direction: direction ?? this.direction,
       color: color ?? this.color,
+      nodePosition: nodePosition ?? this.nodePosition,
+      indicatorPosition: indicatorPosition ?? this.indicatorPosition,
       indicatorTheme: indicatorTheme ?? this.indicatorTheme,
       connectorTheme: connectorTheme ?? this.connectorTheme,
     );
@@ -247,6 +273,8 @@ class TimelineThemeData with Diagnosticable {
     return TimelineThemeData.raw(
       direction: t < 0.5 ? a.direction : b.direction,
       color: Color.lerp(a.color, b.color, t),
+      nodePosition: lerpDouble(a.nodePosition, b.nodePosition, t),
+      indicatorPosition: lerpDouble(a.indicatorPosition, b.indicatorPosition, t),
       indicatorTheme: IndicatorThemeData.lerp(a.indicatorTheme, b.indicatorTheme, t),
       connectorTheme: ConnectorThemeData.lerp(a.connectorTheme, b.connectorTheme, t),
     );
@@ -260,6 +288,8 @@ class TimelineThemeData with Diagnosticable {
     return other is TimelineThemeData &&
         other.direction == direction &&
         other.color == color &&
+        other.nodePosition == nodePosition &&
+        other.indicatorPosition == indicatorPosition &&
         other.indicatorTheme == indicatorTheme &&
         other.connectorTheme == connectorTheme;
   }
@@ -271,6 +301,8 @@ class TimelineThemeData with Diagnosticable {
     final values = <Object>[
       direction,
       color,
+      nodePosition,
+      indicatorPosition,
       indicatorTheme,
       connectorTheme,
     ];
@@ -285,6 +317,10 @@ class TimelineThemeData with Diagnosticable {
       ..add(DiagnosticsProperty<Axis>('direction', direction,
           defaultValue: defaultData.direction, level: DiagnosticLevel.debug))
       ..add(ColorProperty('color', color, defaultValue: defaultData.color, level: DiagnosticLevel.debug))
+      ..add(DoubleProperty('nodePosition', nodePosition,
+          defaultValue: defaultData.nodePosition, level: DiagnosticLevel.debug))
+      ..add(DoubleProperty('indicatorPosition', indicatorPosition,
+          defaultValue: defaultData.indicatorPosition, level: DiagnosticLevel.debug))
       ..add(DiagnosticsProperty<IndicatorThemeData>(
         'indicatorTheme',
         indicatorTheme,
