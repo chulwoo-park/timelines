@@ -1,31 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:timelines/timelines.dart';
 
-import 'indicators.dart';
 import 'connectors.dart';
+import 'indicators.dart';
+import 'timeline_theme.dart';
 
 class TimelineNode extends StatelessWidget {
-  /// TODO
-  final Axis direction;
-
-  /// TODO rename ? childPosition, point, childPoint, ....
-  /// 0-1
-  final double position;
-
-  /// TODO
-  final ConnectorStyle connectorStyle;
-
-  /// TODO
-  final bool drawStartConnector;
-
-  /// TODO
-  final bool drawEndConnector;
-
-  /// The widget below this widget in the tree.
-  ///
-  /// {@macro flutter.widgets.child}
-  final Widget child;
-
   const TimelineNode({
     Key key,
     this.direction,
@@ -59,10 +38,31 @@ class TimelineNode extends StatelessWidget {
           ),
         );
 
+  /// TODO
+  final Axis direction;
+
+  /// TODO rename ? childPosition, point, childPoint, ....
+  /// 0-1
+  final double position;
+
+  /// TODO
+  final ConnectorStyle connectorStyle;
+
+  /// TODO
+  final bool drawStartConnector;
+
+  /// TODO
+  final bool drawEndConnector;
+
+  /// The widget below this widget in the tree.
+  ///
+  /// {@macro flutter.widgets.child}
+  final Widget child;
+
   @override
   Widget build(BuildContext context) {
     final direction = this.direction ?? TimelineTheme.of(context).direction;
-    Widget result = child;
+    var result = child;
 
     /// TODO connector from style
     /// if (connectorStyle ... )

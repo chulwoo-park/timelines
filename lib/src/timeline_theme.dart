@@ -66,7 +66,8 @@ class TimelineTheme extends StatelessWidget {
   /// }
   /// ```
   static TimelineThemeData of(BuildContext context) {
-    final _InheritedTheme inheritedTheme = context.dependOnInheritedWidgetOfExactType<_InheritedTheme>();
+    final inheritedTheme =
+        context.dependOnInheritedWidgetOfExactType<_InheritedTheme>();
     return inheritedTheme?.theme?.data ?? _kFallbackTheme;
   }
 
@@ -84,7 +85,8 @@ class TimelineTheme extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<TimelineThemeData>('data', data, showName: false));
+    properties.add(
+        DiagnosticsProperty<TimelineThemeData>('data', data, showName: false));
   }
 }
 
@@ -100,8 +102,11 @@ class _InheritedTheme extends InheritedTheme {
 
   @override
   Widget wrap(BuildContext context, Widget child) {
-    final _InheritedTheme ancestorTheme = context.findAncestorWidgetOfExactType<_InheritedTheme>();
-    return identical(this, ancestorTheme) ? child : TimelineTheme(data: theme.data, child: child);
+    final ancestorTheme =
+        context.findAncestorWidgetOfExactType<_InheritedTheme>();
+    return identical(this, ancestorTheme)
+        ? child
+        : TimelineTheme(data: theme.data, child: child);
   }
 
   @override
@@ -164,8 +169,8 @@ class TimelineThemeData with Diagnosticable {
   }) {
     direction ??= Axis.vertical;
     color ??= Colors.blue;
-    indicatorTheme ??= const IndicatorThemeData();
-    connectorTheme ??= const ConnectorThemeData();
+    indicatorTheme ??= IndicatorThemeData();
+    connectorTheme ??= ConnectorThemeData();
     return TimelineThemeData.raw(
       direction: direction,
       color: color,
@@ -238,7 +243,8 @@ class TimelineThemeData with Diagnosticable {
   /// The arguments must not be null.
   ///
   /// {@macro dart.ui.shadow.lerp}
-  static TimelineThemeData lerp(TimelineThemeData a, TimelineThemeData b, double t) {
+  static TimelineThemeData lerp(
+      TimelineThemeData a, TimelineThemeData b, double t) {
     assert(a != null);
     assert(b != null);
     assert(t != null);
@@ -247,8 +253,10 @@ class TimelineThemeData with Diagnosticable {
     return TimelineThemeData.raw(
       direction: t < 0.5 ? a.direction : b.direction,
       color: Color.lerp(a.color, b.color, t),
-      indicatorTheme: IndicatorThemeData.lerp(a.indicatorTheme, b.indicatorTheme, t),
-      connectorTheme: ConnectorThemeData.lerp(a.connectorTheme, b.connectorTheme, t),
+      indicatorTheme:
+          IndicatorThemeData.lerp(a.indicatorTheme, b.indicatorTheme, t),
+      connectorTheme:
+          ConnectorThemeData.lerp(a.connectorTheme, b.connectorTheme, t),
     );
   }
 
@@ -268,7 +276,7 @@ class TimelineThemeData with Diagnosticable {
   int get hashCode {
     // Warning: For the sanity of the reader, please make sure these properties are in the exact same order as in
     // operator == and in the raw constructor and in the order of fields in the class and in the lerp() method.
-    final List<Object> values = <Object>[
+    final values = <Object>[
       direction,
       color,
       indicatorTheme,
@@ -280,21 +288,23 @@ class TimelineThemeData with Diagnosticable {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    final TimelineThemeData defaultData = TimelineThemeData.fallback();
-    properties.add(DiagnosticsProperty<Axis>('direction', direction,
-        defaultValue: defaultData.direction, level: DiagnosticLevel.debug));
-    properties.add(ColorProperty('color', color, defaultValue: defaultData.color, level: DiagnosticLevel.debug));
-    properties.add(DiagnosticsProperty<IndicatorThemeData>(
-      'indicatorTheme',
-      indicatorTheme,
-      defaultValue: defaultData.indicatorTheme,
-      level: DiagnosticLevel.debug,
-    ));
-    properties.add(DiagnosticsProperty<ConnectorThemeData>(
-      'connectorTheme',
-      connectorTheme,
-      defaultValue: defaultData.connectorTheme,
-      level: DiagnosticLevel.debug,
-    ));
+    final defaultData = TimelineThemeData.fallback();
+    properties
+      ..add(DiagnosticsProperty<Axis>('direction', direction,
+          defaultValue: defaultData.direction, level: DiagnosticLevel.debug))
+      ..add(ColorProperty('color', color,
+          defaultValue: defaultData.color, level: DiagnosticLevel.debug))
+      ..add(DiagnosticsProperty<IndicatorThemeData>(
+        'indicatorTheme',
+        indicatorTheme,
+        defaultValue: defaultData.indicatorTheme,
+        level: DiagnosticLevel.debug,
+      ))
+      ..add(DiagnosticsProperty<ConnectorThemeData>(
+        'connectorTheme',
+        connectorTheme,
+        defaultValue: defaultData.connectorTheme,
+        level: DiagnosticLevel.debug,
+      ));
   }
 }
