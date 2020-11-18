@@ -75,8 +75,7 @@ class ConnectorThemeData with Diagnosticable {
   /// The argument `t` must not be null.
   ///
   /// {@macro dart.ui.shadow.lerp}
-  static ConnectorThemeData lerp(
-      ConnectorThemeData a, ConnectorThemeData b, double t) {
+  static ConnectorThemeData lerp(ConnectorThemeData a, ConnectorThemeData b, double t) {
     assert(t != null);
     return ConnectorThemeData(
       color: Color.lerp(a?.color, b?.color, t),
@@ -147,18 +146,14 @@ class ConnectorTheme extends InheritedTheme {
   /// ConnectorThemeData theme = ConnectorTheme.of(context);
   /// ```
   static ConnectorThemeData of(BuildContext context) {
-    final connectorTheme =
-        context.dependOnInheritedWidgetOfExactType<ConnectorTheme>();
+    final connectorTheme = context.dependOnInheritedWidgetOfExactType<ConnectorTheme>();
     return connectorTheme?.data ?? TimelineTheme.of(context).connectorTheme;
   }
 
   @override
   Widget wrap(BuildContext context, Widget child) {
-    final ancestorTheme =
-        context.findAncestorWidgetOfExactType<ConnectorTheme>();
-    return identical(this, ancestorTheme)
-        ? child
-        : ConnectorTheme(data: data, child: child);
+    final ancestorTheme = context.findAncestorWidgetOfExactType<ConnectorTheme>();
+    return identical(this, ancestorTheme) ? child : ConnectorTheme(data: data, child: child);
   }
 
   @override
@@ -199,8 +194,6 @@ mixin ThemedConnectorComponent on Widget {
 
   Color get color;
   Color getEffectiveColor(BuildContext context) {
-    return color ??
-        ConnectorTheme.of(context).color ??
-        TimelineTheme.of(context).color;
+    return color ?? ConnectorTheme.of(context).color ?? TimelineTheme.of(context).color;
   }
 }
