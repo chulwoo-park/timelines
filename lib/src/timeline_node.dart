@@ -1,105 +1,121 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import 'connectors.dart';
+import 'indicator_theme.dart';
 import 'indicators.dart';
 import 'timeline_theme.dart';
 
+/// A widget that displays indicator and two connectors.
+///
+/// The [indicator] displayed between the [startConnector] and [endConnector]
 class TimelineNode extends StatelessWidget {
+  /// Creates a timeline node.
+  ///
+  /// The [indicatorPosition] must be null or a value between 0 and 1.
   const TimelineNode({
     Key key,
     this.direction,
-    this.position = 0.5,
-    this.connectorStyle = ConnectorStyle.solid,
-    this.drawStartConnector = true,
-    this.drawEndConnector = true,
-    @required this.child,
-  })  : assert(0 <= position && position <= 1),
+    this.startConnector,
+    this.endConnector,
+    @required this.indicator,
+    this.indicatorPosition,
+  })  : assert(indicator != null),
+        assert(indicatorPosition == null || 0 <= indicatorPosition && indicatorPosition <= 1),
         super(key: key);
 
-  TimelineNode.circle({
+  /// Creates a timeline node that connects the dot indicator in a solid line.
+  TimelineNode.simple({
     Key key,
     Axis direction,
-    double position = 0.5,
-    ConnectorStyle connectorStyle,
-    bool drawStartConnector = true,
-    bool drawEndConnector = true,
+    Color color,
+    double lineThickness,
+    double indicatorPosition,
     double indicatorSize = 15.0,
     Widget indicatorChild,
+    bool drawStartConnector = true,
+    bool drawEndConnector = true,
   }) : this(
           key: key,
           direction: direction,
-          position: position,
-          connectorStyle: connectorStyle,
-          drawStartConnector: drawStartConnector,
-          drawEndConnector: drawEndConnector,
-          child: DotIndicator(
-            size: indicatorSize,
+          startConnector: drawStartConnector
+              ? SolidLineConnector(
+                  direction: direction,
+                  color: color,
+                  thickness: lineThickness,
+                )
+              : null,
+          endConnector: drawEndConnector
+              ? SolidLineConnector(
+                  direction: direction,
+                  color: color,
+                  thickness: lineThickness,
+                )
+              : null,
+          indicator: DotIndicator(
             child: indicatorChild,
+            position: indicatorPosition,
+            size: indicatorSize,
+            color: color,
           ),
         );
 
-  /// TODO
+  /// The axis along which the scroll view scrolls.
+  ///
+  /// Defaults to [Axis.vertical].
   final Axis direction;
 
-  /// TODO rename ? childPosition, point, childPoint, ....
-  /// 0-1
-  final double position;
+  /// The connector of the start edge of this node
+  final Widget startConnector;
 
-  /// TODO
-  final ConnectorStyle connectorStyle;
+  /// The connector of the end edge of this node
+  final Widget endConnector;
 
-  /// TODO
-  final bool drawStartConnector;
+  /// The indicator of the node
+  final Widget indicator;
 
-  /// TODO
-  final bool drawEndConnector;
-
-  /// The widget below this widget in the tree.
+  /// A position of indicator inside both two connectors.
   ///
-  /// {@macro flutter.widgets.child}
-  final Widget child;
+  /// If this is null, then the [Indicator.position] is used. If that is also null, then this defaults to
+  /// [IndicatorThemeData.position]
+  ///
+  /// If no [Indicator.position] and no [IndicatorThemeData] is specified, position will default to 0.5.
+  final double indicatorPosition;
+
+  double _getEffectiveIndicatorPosition(BuildContext context) {
+    var indicatorPosition = this.indicatorPosition;
+    indicatorPosition ??=
+        (indicator is Indicator) ? (indicator as Indicator).position : IndicatorTheme.of(context).position ?? 0.5;
+    return indicatorPosition;
+  }
 
   @override
   Widget build(BuildContext context) {
     final direction = this.direction ?? TimelineTheme.of(context).direction;
-    var result = child;
-
-    /// TODO connector from style
-    /// if (connectorStyle ... )
-    final startConnector = SolidLineConnector(direction: direction);
-    final endConnector = SolidLineConnector(direction: direction);
-
+    final indicatorPosition = _getEffectiveIndicatorPosition(context);
+    Widget result = indicator;
+    final nodeItems = [
+      Flexible(
+        flex: (indicatorPosition * 1000).toInt(),
+        child: startConnector ?? TransparentConnector(),
+      ),
+      indicator,
+      Flexible(
+        flex: ((1 - indicatorPosition) * 1000).toInt(),
+        child: endConnector ?? TransparentConnector(),
+      ),
+    ];
     switch (direction) {
       case Axis.vertical:
         result = Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              flex: (position * 10).toInt(),
-              child: startConnector ?? TransparentConnector(),
-            ),
-            child,
-            Flexible(
-              flex: ((1 - position) * 10).toInt(),
-              child: endConnector ?? TransparentConnector(),
-            ),
-          ],
+          children: nodeItems,
         );
         break;
       case Axis.horizontal:
         result = Row(
           mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              flex: (position * 10).toInt(),
-              child: startConnector ?? TransparentConnector(),
-            ),
-            child,
-            Flexible(
-              flex: ((1 - position) * 10).toInt(),
-              child: endConnector ?? TransparentConnector(),
-            ),
-          ],
+          children: nodeItems,
         );
         break;
     }

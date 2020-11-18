@@ -16,7 +16,7 @@ class TimelineTile extends StatelessWidget {
     @required this.child,
     this.direction,
     this.indicatorChild,
-    this.indicatorPosition = 0.5,
+    this.indicatorPosition,
     this.drawStartLine = true,
     this.drawEndLine = true,
   }) : super(key: key);
@@ -49,12 +49,7 @@ class TimelineTile extends StatelessWidget {
           child: Row(
             children: [
               // TODO order
-              TimelineNode.circle(
-                indicatorChild: indicatorChild,
-                position: indicatorPosition,
-                drawStartConnector: drawStartLine,
-                drawEndConnector: drawEndLine,
-              ),
+              TimelineNode.simple(indicatorPosition: indicatorPosition),
               child,
             ],
           ),
@@ -64,12 +59,7 @@ class TimelineTile extends StatelessWidget {
           child: Column(
             children: [
               // TODO order
-              TimelineNode.circle(
-                indicatorChild: indicatorChild,
-                position: indicatorPosition,
-                drawStartConnector: drawStartLine,
-                drawEndConnector: drawEndLine,
-              ),
+              TimelineNode.simple(indicatorPosition: indicatorPosition),
               child,
             ],
           ),
