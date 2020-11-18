@@ -151,10 +151,10 @@ mixin ThemedIndicatorComponent on Indicator {
   /// Indicators occupy a square with width and height equal to size.
   ///
   /// Defaults to the current [IndicatorTheme] size, if any. If there is no [IndicatorTheme], or it does not specify an
-  /// explicit size, then it defaults to 15.0.
+  /// explicit size, then it defaults to own child size(0.0).
   /// {@endtemplate}
   double get size;
   double getEffectiveSize(BuildContext context) {
-    return size ?? IndicatorTheme.of(context).size ?? 15.0;
+    return size ?? IndicatorTheme.of(context).size ?? 0.0;
   }
 }
