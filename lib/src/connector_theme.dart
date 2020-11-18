@@ -145,7 +145,7 @@ class ConnectorTheme extends InheritedTheme {
   /// ```
   static ConnectorThemeData of(BuildContext context) {
     final ConnectorTheme connectorTheme = context.dependOnInheritedWidgetOfExactType<ConnectorTheme>();
-    return connectorTheme?.data; // TODO ?? TimelineTheme.of(context).connectorTheme;
+    return connectorTheme?.data ?? TimelineTheme.of(context).connectorTheme;
   }
 
   @override
@@ -192,6 +192,6 @@ mixin ThemedConnectorComponent on Widget {
 
   Color get color;
   Color getEffectiveColor(BuildContext context) {
-    return this.color ?? ConnectorTheme.of(context).color; // TODO ?? TimelineTheme.of(context).color;
+    return this.color ?? ConnectorTheme.of(context).color ?? TimelineTheme.of(context).color;
   }
 }
