@@ -34,9 +34,11 @@ class SolidLineConnector extends StatelessWidget with ThemedConnectorComponent {
         assert(endIndent == null || endIndent >= 0.0),
         super(key: key);
 
+  /// {@template timelines.direction}
   /// The axis along which the timeline scrolls.
   ///
   /// If this is null, then the [TimelineThemeData.direction] is used.
+  /// {@endtemplate}
   @override
   final Axis direction;
 

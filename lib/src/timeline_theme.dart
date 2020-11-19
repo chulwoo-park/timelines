@@ -216,9 +216,7 @@ class TimelineThemeData with Diagnosticable {
         direction: Axis.horizontal,
       );
 
-  /// The axis along which the scroll view scrolls.
-  ///
-  /// Defaults to [Axis.vertical].
+  /// {@macro timelines.direction}
   final Axis direction;
 
   /// The color for major parts of the timeline (indicator, connector, etc)

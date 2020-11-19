@@ -60,9 +60,7 @@ class TimelineNode extends StatelessWidget {
           ),
         );
 
-  /// The axis along which the scroll view scrolls.
-  ///
-  /// Defaults to [Axis.vertical].
+  /// {@macro timelines.direction}
   final Axis direction;
 
   /// The connector of the start edge of this node
