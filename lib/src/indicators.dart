@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../timelines.dart';
+import 'indicator_theme.dart';
+import 'timeline_theme.dart';
 
 /// [TimelineNode]'s indicator
 mixin Indicator on Widget {
   /// {@template timelines.indicator.position}
-  /// If this is null, then the [IndicatorThemeData.position] is used. If that is also null, then this defaults to 0.5.
+  /// If this is null, then the [IndicatorThemeData.position] is used. If that is also null, then this defaults to
+  /// [TimelineThemeData.indicatorPosition].
   /// {@endtemplate}
   double get position;
   double getEffectivePosition(BuildContext context) {
-    return position ?? IndicatorTheme.of(context).position ?? 0.5;
+    return position ?? IndicatorTheme.of(context).position ?? TimelineTheme.of(context).indicatorPosition;
   }
 }
 
@@ -20,7 +22,7 @@ class DotIndicator extends StatelessWidget with Indicator, ThemedIndicatorCompon
   /// The [size] must be null or non-negative.
   const DotIndicator({
     Key key,
-    this.size,
+    this.size = 15.0,
     this.color,
     this.position,
     this.child,
@@ -55,13 +57,15 @@ class DotIndicator extends StatelessWidget with Indicator, ThemedIndicatorCompon
   Widget build(BuildContext context) {
     final effectiveSize = getEffectiveSize(context);
     final effectiveColor = getEffectiveColor(context);
-    return Container(
+    return SizedBox(
       width: effectiveSize,
       height: effectiveSize,
-      child: child,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: effectiveColor,
+      child: DecoratedBox(
+        child: child,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: effectiveColor,
+        ),
       ),
     );
   }
