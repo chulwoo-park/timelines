@@ -1,8 +1,4 @@
-analyzer:
-  exclude:
-    - example/**
-
-include: package:pedantic/analysis_options.yaml
+iinclude: package:pedantic/analysis_options.yaml
 
 linter:
   rules:
