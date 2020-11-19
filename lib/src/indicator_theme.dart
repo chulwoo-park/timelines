@@ -155,6 +155,6 @@ mixin ThemedIndicatorComponent on Indicator {
   /// {@endtemplate}
   double get size;
   double getEffectiveSize(BuildContext context) {
-    return size ?? IndicatorTheme.of(context).size ?? 0.0;
+    return size ?? IndicatorTheme.of(context).size;
   }
 }

@@ -22,7 +22,7 @@ class DotIndicator extends StatelessWidget with Indicator, ThemedIndicatorCompon
   /// The [size] must be null or non-negative.
   const DotIndicator({
     Key key,
-    this.size = 15.0,
+    this.size,
     this.color,
     this.border,
     this.position,
@@ -63,8 +63,8 @@ class DotIndicator extends StatelessWidget with Indicator, ThemedIndicatorCompon
     final effectiveColor = getEffectiveColor(context);
     return Center(
       child: SizedBox(
-        width: effectiveSize,
-        height: effectiveSize,
+        width: effectiveSize ?? 15.0,
+        height: effectiveSize ?? 15.0,
         child: DecoratedBox(
           child: child,
           decoration: BoxDecoration(
@@ -85,7 +85,7 @@ class OutlinedDotIndicator extends StatelessWidget with Indicator, ThemedIndicat
   /// The [size] must be null or non-negative.
   const OutlinedDotIndicator({
     Key key,
-    this.size = 15.0,
+    this.size,
     this.color,
     this.backgroundColor,
     this.borderWidth = 1.0,
