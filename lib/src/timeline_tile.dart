@@ -183,8 +183,19 @@ class TimelineTile extends StatelessWidget {
         throw ArgumentError.value(direction, '$direction is invalid.');
     }
 
-    return Align(
+    result = Align(
       child: result,
     );
+
+    if (TimelineTheme.of(context).direction != direction) {
+      result = TimelineTheme(
+        data: TimelineTheme.of(context).copyWith(
+          direction: direction,
+        ),
+        child: result,
+      );
+    }
+
+    return result;
   }
 }

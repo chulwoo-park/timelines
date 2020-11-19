@@ -135,6 +135,15 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
         break;
     }
 
+    if (TimelineTheme.of(context).direction != direction) {
+      result = TimelineTheme(
+        data: TimelineTheme.of(context).copyWith(
+          direction: direction,
+        ),
+        child: result,
+      );
+    }
+
     return result;
   }
 }
