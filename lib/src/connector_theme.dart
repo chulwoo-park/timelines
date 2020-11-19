@@ -30,7 +30,6 @@ class ConnectorThemeData with Diagnosticable {
     this.space,
     this.thickness,
     this.indent,
-    this.endIndent,
   });
 
   /// The color of [SolidLineConnector]s and connectors inside [TimelineNode]s, and so forth.
@@ -42,11 +41,8 @@ class ConnectorThemeData with Diagnosticable {
   /// The thickness of the line drawn within the connector.
   final double thickness;
 
-  /// The amount of empty space at the start edge of [SolidLineConnector].
+  /// The amount of empty space at the edge of [SolidLineConnector].
   final double indent;
-
-  /// The amount of empty space at the end edge of [SolidLineConnector].
-  final double endIndent;
 
   /// Creates a copy of this object with the given fields replaced with the new values.
   ConnectorThemeData copyWith({
@@ -54,14 +50,12 @@ class ConnectorThemeData with Diagnosticable {
     double space,
     double thickness,
     double indent,
-    double endIndent,
   }) {
     return ConnectorThemeData(
       color: color ?? this.color,
       space: space ?? this.space,
       thickness: thickness ?? this.thickness,
       indent: indent ?? this.indent,
-      endIndent: endIndent ?? this.endIndent,
     );
   }
 
@@ -77,7 +71,6 @@ class ConnectorThemeData with Diagnosticable {
       space: lerpDouble(a?.space, b?.space, t),
       thickness: lerpDouble(a?.thickness, b?.thickness, t),
       indent: lerpDouble(a?.indent, b?.indent, t),
-      endIndent: lerpDouble(a?.endIndent, b?.endIndent, t),
     );
   }
 
@@ -88,7 +81,6 @@ class ConnectorThemeData with Diagnosticable {
       space,
       thickness,
       indent,
-      endIndent,
     );
   }
 
@@ -100,8 +92,7 @@ class ConnectorThemeData with Diagnosticable {
         other.color == color &&
         other.space == space &&
         other.thickness == thickness &&
-        other.indent == indent &&
-        other.endIndent == endIndent;
+        other.indent == indent;
   }
 
   @override
@@ -111,8 +102,7 @@ class ConnectorThemeData with Diagnosticable {
       ..add(ColorProperty('color', color, defaultValue: null))
       ..add(DoubleProperty('space', space, defaultValue: null))
       ..add(DoubleProperty('thickness', thickness, defaultValue: null))
-      ..add(DoubleProperty('indent', indent, defaultValue: null))
-      ..add(DoubleProperty('endIndent', endIndent, defaultValue: null));
+      ..add(DoubleProperty('indent', indent, defaultValue: null));
   }
 }
 
@@ -184,7 +174,7 @@ mixin ThemedConnectorComponent on Widget {
 
   double get endIndent;
   double getEffectiveEndIndent(BuildContext context) {
-    return endIndent ?? ConnectorTheme.of(context).endIndent ?? 0.0;
+    return endIndent ?? ConnectorTheme.of(context).indent ?? 0.0;
   }
 
   Color get color;
