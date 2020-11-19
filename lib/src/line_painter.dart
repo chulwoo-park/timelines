@@ -55,22 +55,14 @@ class DashedLinePainter extends CustomPainter {
       ..strokeCap = strokeCap
       ..style = PaintingStyle.stroke;
 
-    var lineSize;
-
-    if (direction == Axis.vertical) {
-      lineSize = size.height;
-    } else if (direction == Axis.horizontal) {
-      lineSize = size.width;
-    }
-
     var offset = _DashOffset(
-      lineSize: lineSize,
+      containerSize: size,
       dashSize: dashSize,
       gapSize: gapSize,
       axis: direction,
     );
 
-    while (offset.offset < lineSize) {
+    while (offset.hasNext) {
       // draw dash
       paint.color = color;
       canvas.drawLine(
@@ -107,16 +99,15 @@ class DashedLinePainter extends CustomPainter {
 
 class _DashOffset extends Offset {
   factory _DashOffset({
-    double offset = 0.0,
-    @required double lineSize,
+    @required Size containerSize,
     @required double dashSize,
     @required double gapSize,
     @required Axis axis,
   }) {
     return _DashOffset._(
-      dx: axis == Axis.vertical ? 0 : offset,
-      dy: axis == Axis.vertical ? offset : 0,
-      lineSize: lineSize,
+      dx: axis == Axis.vertical ? containerSize.width / 2 : 0,
+      dy: axis == Axis.vertical ? 0 : containerSize.height / 2,
+      containerSize: containerSize,
       dashSize: dashSize,
       gapSize: gapSize,
       axis: axis,
@@ -124,15 +115,15 @@ class _DashOffset extends Offset {
   }
 
   const _DashOffset._({
-    double dx = 0,
-    double dy = 0,
-    @required this.lineSize,
+    @required double dx,
+    @required double dy,
+    @required this.containerSize,
     @required this.dashSize,
     @required this.gapSize,
     @required this.axis,
   }) : super(dx, dy);
 
-  final double lineSize;
+  final Size containerSize;
   final double dashSize;
   final double gapSize;
   final Axis axis;
@@ -142,6 +133,14 @@ class _DashOffset extends Offset {
       return dy;
     } else {
       return dx;
+    }
+  }
+
+  bool get hasNext {
+    if (axis == Axis.vertical) {
+      return offset < containerSize.height;
+    } else {
+      return offset < containerSize.width;
     }
   }
 
@@ -165,19 +164,33 @@ class _DashOffset extends Offset {
   Offset translate(double translateX, double translateY) {
     double dx, dy;
     if (axis == Axis.vertical) {
-      dx = 0;
+      dx = this.dx;
       dy = this.dy + translateY;
     } else {
       dx = this.dx + translateX;
-      dy = 0;
+      dy = this.dy;
     }
+    return copyWith(
+      dx: min(dx, containerSize.width),
+      dy: min(dy, containerSize.height),
+    );
+  }
+
+  _DashOffset copyWith({
+    double dx,
+    double dy,
+    Size containerSize,
+    double dashSize,
+    double gapSize,
+    Axis axis,
+  }) {
     return _DashOffset._(
-      dx: min(dx, lineSize),
-      dy: min(dy, lineSize),
-      lineSize: lineSize,
-      dashSize: dashSize,
-      gapSize: gapSize,
-      axis: axis,
+      dx: dx ?? this.dx,
+      dy: dy ?? this.dy,
+      containerSize: containerSize ?? this.containerSize,
+      dashSize: dashSize ?? this.dashSize,
+      gapSize: gapSize ?? this.gapSize,
+      axis: axis ?? this.axis,
     );
   }
 }
