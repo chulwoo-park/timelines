@@ -34,9 +34,11 @@ class SolidLineConnector extends StatelessWidget with ThemedConnectorComponent {
         assert(endIndent == null || endIndent >= 0.0),
         super(key: key);
 
+  /// {@template timelines.direction}
   /// The axis along which the timeline scrolls.
   ///
   /// If this is null, then the [TimelineThemeData.direction] is used.
+  /// {@endtemplate}
   @override
   final Axis direction;
 
@@ -57,8 +59,8 @@ class SolidLineConnector extends StatelessWidget with ThemedConnectorComponent {
 
   /// The color to use when painting the line.
   ///
-  /// If this is null, then the [ConnectorThemeData.color] is used. If that is also null, then [ThemeData.color] is
-  /// used.
+  /// If this is null, then the [ConnectorThemeData.color] is used. If that is also null, then [TimelineThemeData.color]
+  /// is used.
   @override
   final Color color;
 
@@ -82,14 +84,18 @@ class SolidLineConnector extends StatelessWidget with ThemedConnectorComponent {
     final color = getEffectiveColor(context);
     switch (direction) {
       case Axis.vertical:
-        return Container(
-          width: thickness,
-          color: color,
+        return Center(
+          child: Container(
+            width: thickness,
+            color: color,
+          ),
         );
       case Axis.horizontal:
-        return Container(
-          height: thickness,
-          color: color,
+        return Center(
+          child: Container(
+            height: thickness,
+            color: color,
+          ),
         );
     }
 

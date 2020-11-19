@@ -8,27 +8,23 @@ import 'connectors.dart';
 import 'timeline_node.dart';
 import 'timeline_theme.dart';
 
-/// Defines the visual properties of [SolidLineConnector], connectors
-/// inside [TimelineNode].
+/// Defines the visual properties of [SolidLineConnector], connectors inside [TimelineNode].
 ///
-/// Descendant widgets obtain the current [ConnectorThemeData] object using
-/// `ConnectorTheme.of(context)`. Instances of [ConnectorThemeData]
+/// Descendant widgets obtain the current [ConnectorThemeData] object using `ConnectorTheme.of(context)`. Instances of
+/// [ConnectorThemeData]
 /// can be customized with [ConnectorThemeData.copyWith].
 ///
-/// Typically a [ConnectorThemeData] is specified as part of the overall
-/// [TimelineTheme] with [TimelineThemeData.connectorTheme].
+/// Typically a [ConnectorThemeData] is specified as part of the overall [TimelineTheme] with
+/// [TimelineThemeData.connectorTheme].
 ///
-/// All [ConnectorThemeData] properties are `null` by default. When null,
-/// the widgets will provide their own defaults.
+/// All [ConnectorThemeData] properties are `null` by default. When null, the widgets will provide their own defaults.
 ///
 /// See also:
 ///
-///  * [TimelineThemeData], which describes the overall theme information for the
-///    timeline.
+///  * [TimelineThemeData], which describes the overall theme information for the timeline.
 @immutable
 class ConnectorThemeData with Diagnosticable {
-  /// Creates a theme that can be used for [ConnectorTheme] or
-  /// [TimelineThemeData.connectorTheme].
+  /// Creates a theme that can be used for [ConnectorTheme] or [TimelineThemeData.connectorTheme].
   const ConnectorThemeData({
     this.color,
     this.space,
@@ -52,8 +48,7 @@ class ConnectorThemeData with Diagnosticable {
   /// The amount of empty space at the end edge of [SolidLineConnector].
   final double endIndent;
 
-  /// Creates a copy of this object with the given fields replaced with the
-  /// new values.
+  /// Creates a copy of this object with the given fields replaced with the new values.
   ConnectorThemeData copyWith({
     Color color,
     double space,

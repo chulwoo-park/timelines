@@ -28,6 +28,7 @@ class IndicatorThemeData with Diagnosticable {
   const IndicatorThemeData({
     this.color,
     this.size,
+    this.position,
   });
 
   /// The color of [DotIndicator]s and indicators inside [TimelineNode]s, and so forth.
@@ -38,15 +39,20 @@ class IndicatorThemeData with Diagnosticable {
   /// Indicators occupy a square with width and height equal to size.
   final double size;
 
+  /// A position of indicator inside both two connectors.
+  final double position;
+
   /// Creates a copy of this object with the given fields replaced with the
   /// new values.
   IndicatorThemeData copyWith({
     Color color,
     double size,
+    double position,
   }) {
     return IndicatorThemeData(
       color: color ?? this.color,
       size: size ?? this.size,
+      position: position ?? this.position,
     );
   }
 
@@ -60,17 +66,18 @@ class IndicatorThemeData with Diagnosticable {
     return IndicatorThemeData(
       color: Color.lerp(a?.color, b?.color, t),
       size: lerpDouble(a?.size, b?.size, t),
+      position: lerpDouble(a?.position, b?.position, t),
     );
   }
 
   @override
-  int get hashCode => hashValues(color, size);
+  int get hashCode => hashValues(color, size, position);
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other.runtimeType != runtimeType) return false;
-    return other is IndicatorThemeData && other.color == color && other.size == size;
+    return other is IndicatorThemeData && other.color == color && other.size == size && other.position == position;
   }
 
   @override
@@ -78,13 +85,14 @@ class IndicatorThemeData with Diagnosticable {
     super.debugFillProperties(properties);
     properties
       ..add(ColorProperty('color', color, defaultValue: null))
-      ..add(DoubleProperty('size', size, defaultValue: null));
+      ..add(DoubleProperty('size', size, defaultValue: null))
+      ..add(DoubleProperty('position', size, defaultValue: null));
   }
 }
 
 /// Controls the default color and size of indicators in a widget subtree.
 ///
-/// The indicator theme is honored by [TimelineNode], [DotIndicator] and [TO DO] widgets.
+/// The indicator theme is honored by [TimelineNode], [DotIndicator] and [OutlinedDotIndicator] widgets.
 class IndicatorTheme extends InheritedTheme {
   /// Creates an indicator theme that controls the color and size for [DotIndicator]s, indicators inside [TimelineNode]s.
   const IndicatorTheme({
@@ -127,14 +135,26 @@ class IndicatorTheme extends InheritedTheme {
   }
 }
 
-mixin ThemedIndicatorComponent on Widget {
+/// Indicator component configured through [IndicatorTheme]
+mixin ThemedIndicatorComponent on Indicator {
+  /// {@template timelines.indicator.color}
+  /// Defaults to the current [IndicatorTheme] color, if any.
+  ///
+  /// If no [IndicatorTheme] and no [TimelineTheme] is specified, indicators will default to blue.
+  /// {@endtemplate}
   Color get color;
   Color getEffectiveColor(BuildContext context) {
     return color ?? IndicatorTheme.of(context).color ?? TimelineTheme.of(context).color;
   }
 
+  /// {@template timelines.indicator.size}
+  /// Indicators occupy a square with width and height equal to size.
+  ///
+  /// Defaults to the current [IndicatorTheme] size, if any. If there is no [IndicatorTheme], or it does not specify an
+  /// explicit size, then it defaults to own child size(0.0).
+  /// {@endtemplate}
   double get size;
   double getEffectiveSize(BuildContext context) {
-    return size ?? IndicatorTheme.of(context).size ?? 15.0;
+    return size ?? IndicatorTheme.of(context).size ?? 0.0;
   }
 }

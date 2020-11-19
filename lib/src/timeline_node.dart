@@ -1,105 +1,136 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import 'connectors.dart';
 import 'indicators.dart';
 import 'timeline_theme.dart';
+import 'util.dart';
 
-class TimelineNode extends StatelessWidget {
+/// [TimelineTile]'s timeline node
+mixin TimelineTileNode on Widget {
+  /// {@template timelines.node.position}
+  /// If this is null, then the [TimelineThemeData.nodePosition] is used.
+  /// {@endtemplate}
+  double get position;
+  double getEffectivePosition(BuildContext context) {
+    return position ?? TimelineTheme.of(context).nodePosition;
+  }
+}
+
+/// A widget that displays indicator and two connectors.
+///
+/// The [indicator] displayed between the [startConnector] and [endConnector]
+class TimelineNode extends StatelessWidget with TimelineTileNode {
+  /// Creates a timeline node.
+  ///
+  /// The [indicatorPosition] must be null or a value between 0 and 1.
   const TimelineNode({
     Key key,
     this.direction,
-    this.position = 0.5,
-    this.connectorStyle = ConnectorStyle.solid,
-    this.drawStartConnector = true,
-    this.drawEndConnector = true,
-    @required this.child,
-  })  : assert(0 <= position && position <= 1),
+    this.startConnector,
+    this.endConnector,
+    @required this.indicator,
+    this.indicatorPosition,
+    this.position,
+  })  : assert(indicator != null),
+        assert(indicatorPosition == null || 0 <= indicatorPosition && indicatorPosition <= 1),
         super(key: key);
 
-  TimelineNode.circle({
+  /// Creates a timeline node that connects the dot indicator in a solid line.
+  TimelineNode.simple({
     Key key,
     Axis direction,
-    double position = 0.5,
-    ConnectorStyle connectorStyle,
-    bool drawStartConnector = true,
-    bool drawEndConnector = true,
+    Color color,
+    double lineThickness,
+    double indicatorPosition,
     double indicatorSize = 15.0,
     Widget indicatorChild,
+    bool drawStartConnector = true,
+    bool drawEndConnector = true,
   }) : this(
           key: key,
           direction: direction,
-          position: position,
-          connectorStyle: connectorStyle,
-          drawStartConnector: drawStartConnector,
-          drawEndConnector: drawEndConnector,
-          child: DotIndicator(
-            size: indicatorSize,
+          startConnector: drawStartConnector
+              ? SolidLineConnector(
+                  direction: direction,
+                  color: color,
+                  thickness: lineThickness,
+                )
+              : null,
+          endConnector: drawEndConnector
+              ? SolidLineConnector(
+                  direction: direction,
+                  color: color,
+                  thickness: lineThickness,
+                )
+              : null,
+          indicator: DotIndicator(
             child: indicatorChild,
+            position: indicatorPosition,
+            size: indicatorSize,
+            color: color,
           ),
         );
 
-  /// TODO
+  /// {@macro timelines.direction}
   final Axis direction;
 
-  /// TODO rename ? childPosition, point, childPoint, ....
-  /// 0-1
+  /// The connector of the start edge of this node
+  final Widget startConnector;
+
+  /// The connector of the end edge of this node
+  final Widget endConnector;
+
+  /// The indicator of the node
+  final Widget indicator;
+
+  /// The position of a indicator between the two connectors.
+  ///
+  /// {@macro timelines.indicator.position}
+  final double indicatorPosition;
+
+  /// A position of timeline node between both two contents.
+  ///
+  /// {@macro timelines.node.position}
+  @override
   final double position;
 
-  /// TODO
-  final ConnectorStyle connectorStyle;
-
-  /// TODO
-  final bool drawStartConnector;
-
-  /// TODO
-  final bool drawEndConnector;
-
-  /// The widget below this widget in the tree.
-  ///
-  /// {@macro flutter.widgets.child}
-  final Widget child;
+  double _getEffectiveIndicatorPosition(BuildContext context) {
+    var indicatorPosition = this.indicatorPosition;
+    indicatorPosition ??= (indicator is Indicator)
+        ? (indicator as Indicator).getEffectivePosition(context)
+        : TimelineTheme.of(context).indicatorPosition;
+    return indicatorPosition;
+  }
 
   @override
   Widget build(BuildContext context) {
     final direction = this.direction ?? TimelineTheme.of(context).direction;
-    var result = child;
-
-    /// TODO connector from style
-    /// if (connectorStyle ... )
-    final startConnector = SolidLineConnector(direction: direction);
-    final endConnector = SolidLineConnector(direction: direction);
-
+    // TODO: support both flex and logical pixel
+    final indicatorFlex = _getEffectiveIndicatorPosition(context) * kFlexMultiplier;
+    Widget result = indicator;
+    final nodeItems = [
+      Flexible(
+        flex: indicatorFlex.toInt(),
+        child: startConnector ?? TransparentConnector(),
+      ),
+      indicator,
+      Flexible(
+        flex: (kFlexMultiplier - indicatorFlex).toInt(),
+        child: endConnector ?? TransparentConnector(),
+      ),
+    ];
     switch (direction) {
       case Axis.vertical:
         result = Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              flex: (position * 10).toInt(),
-              child: startConnector ?? TransparentConnector(),
-            ),
-            child,
-            Flexible(
-              flex: ((1 - position) * 10).toInt(),
-              child: endConnector ?? TransparentConnector(),
-            ),
-          ],
+          children: nodeItems,
         );
         break;
       case Axis.horizontal:
         result = Row(
           mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              flex: (position * 10).toInt(),
-              child: startConnector ?? TransparentConnector(),
-            ),
-            child,
-            Flexible(
-              flex: ((1 - position) * 10).toInt(),
-              child: endConnector ?? TransparentConnector(),
-            ),
-          ],
+          children: nodeItems,
         );
         break;
     }
