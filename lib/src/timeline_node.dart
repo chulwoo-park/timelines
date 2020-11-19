@@ -106,7 +106,7 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
   @override
   Widget build(BuildContext context) {
     final direction = this.direction ?? TimelineTheme.of(context).direction;
-    final indicatorFlex = _getEffectiveIndicatorPosition(context) * kFlexMultiplier; // multiplication for flex
+    final indicatorFlex = _getEffectiveIndicatorPosition(context) * kFlexMultiplier;
     Widget result = indicator;
     final nodeItems = [
       Flexible(
