@@ -24,6 +24,7 @@ class DotIndicator extends StatelessWidget with Indicator, ThemedIndicatorCompon
     Key key,
     this.size = 15.0,
     this.color,
+    this.border,
     this.position,
     this.child,
   })  : assert(size == null || size >= 0),
@@ -48,6 +49,9 @@ class DotIndicator extends StatelessWidget with Indicator, ThemedIndicatorCompon
   @override
   final double position;
 
+  /// The border to use when drawing the dot's outline.
+  final BoxBorder border;
+
   /// The widget below this widget in the tree.
   ///
   /// {@macro flutter.widgets.child}
@@ -66,6 +70,7 @@ class DotIndicator extends StatelessWidget with Indicator, ThemedIndicatorCompon
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: effectiveColor,
+            border: border,
           ),
         ),
       ),
@@ -82,6 +87,7 @@ class OutlinedDotIndicator extends StatelessWidget with Indicator, ThemedIndicat
     Key key,
     this.size = 15.0,
     this.color,
+    this.backgroundColor,
     this.borderWidth = 1.0,
     this.position,
     this.child,
@@ -95,11 +101,16 @@ class OutlinedDotIndicator extends StatelessWidget with Indicator, ThemedIndicat
   @override
   final double size;
 
-  /// The color to use when drawing the outlined dot.
+  /// The color to use when drawing the outline of dot.
   ///
   /// {@macro timelines.indicator.color}
   @override
   final Color color;
+
+  /// The color to use when drawing the dot in outline.
+  ///
+  /// {@macro timelines.indicator.color}
+  final Color backgroundColor;
 
   /// The width of this outline, in logical pixels.
   final double borderWidth;
@@ -117,23 +128,15 @@ class OutlinedDotIndicator extends StatelessWidget with Indicator, ThemedIndicat
 
   @override
   Widget build(BuildContext context) {
-    final effectiveSize = getEffectiveSize(context);
-    final effectiveColor = getEffectiveColor(context);
-    return Center(
-      child: SizedBox(
-        width: effectiveSize,
-        height: effectiveSize,
-        child: DecoratedBox(
-          child: child,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: effectiveColor,
-              width: borderWidth,
-            ),
-          ),
-        ),
+    return DotIndicator(
+      size: size,
+      color: backgroundColor ?? Colors.transparent,
+      position: position,
+      border: Border.all(
+        color: color ?? getEffectiveColor(context),
+        width: borderWidth,
       ),
+      child: child,
     );
   }
 }
