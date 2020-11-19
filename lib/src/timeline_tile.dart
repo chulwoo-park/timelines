@@ -2,70 +2,155 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import 'indicator_theme.dart';
 import 'timeline_node.dart';
 import 'timeline_theme.dart';
+import 'util.dart';
 
-/// TODO
-/// style:
-///   start
-///   end
-///   ... (cross/zigzag ?)
+/// Align the timeline node within the timeline tile.
+enum TimelineNodeAlign {
+  /// Align [TimelineTile.node] to start side.
+  start,
+
+  /// Align [TimelineTile.node] to end side.
+  end,
+
+  /// Align according to the [TimelineTile.nodePosition].
+  basic,
+}
+
+/// A widget that displays timeline node and two contents.
+///
+/// The [contents] are displayed on the end side, and the [oppositeContents] are displayed on the start side.
+/// The [node] is displayed between the two.
+///
+/// [nodePosition]
 class TimelineTile extends StatelessWidget {
   const TimelineTile({
     Key key,
-    @required this.child,
     this.direction,
-    this.indicatorChild,
-    this.indicatorPosition,
-    this.drawStartLine = true,
-    this.drawEndLine = true,
-  }) : super(key: key);
+    @required this.node,
+    this.nodeAlign = TimelineNodeAlign.basic,
+    this.nodePosition,
+    this.contents,
+    this.oppositeContents,
+    this.extent,
+  })  : assert(node != null),
+        assert(nodeAlign != null),
+        assert(
+          nodeAlign != TimelineNodeAlign.basic || nodePosition == null,
+          'Cannot provide both a nodeAlign and a nodePosition',
+        ),
+        assert(nodePosition == null || nodePosition >= 0),
+        super(key: key);
 
-  /// TODO
-  final Widget child;
-
-  /// TODO
-  final Widget indicatorChild;
-
-  /// TODO
+  /// {@macro timelines.direction}
   final Axis direction;
 
-  /// TODO
-  final double indicatorPosition;
+  /// A widget that displays indicator and two connectors.
+  final Widget node;
 
-  /// TODO
-  final bool drawStartLine;
+  /// Align the [node] within the timeline tile.
+  ///
+  /// If try to use indicators with different sizes in each timeline tile, the timeline node may be broken.
+  /// This can be prevented by set [IndicatorThemeData.size] to an appropriate size.
+  ///
+  /// If [nodeAlign] is not [TimelineNodeAlign.basic], then [nodePosition] is ignored.
+  final TimelineNodeAlign nodeAlign;
 
-  /// TODO
-  final bool drawEndLine;
+  /// A position of [node] inside both two contents.
+  ///
+  /// {@macro timelines.node.position}
+  final double nodePosition;
+
+  /// The contents to display inside the timeline tile.
+  final Widget contents;
+
+  /// The contents to display on the opposite side of the [contents].
+  final Widget oppositeContents;
+
+  /// If non-null, forces the tile to have the given extent in the scroll direction.
+  ///
+  /// Specifying an [extent] is more efficient than letting the tile determine their own extent because the because it
+  /// don't use the Intrinsic widget([IntrinsicHeight]/[IntrinsicWidth]) when building.
+  ///
+  /// See also:
+  ///
+  ///  * [TimelineData], which describes the overall theme information for the timeline.
+  final double extent;
+
+  double _getEffectiveNodePosition(BuildContext context) {
+    if (nodeAlign == TimelineNodeAlign.start) return 0.0;
+    if (nodeAlign == TimelineNodeAlign.end) return 1.0;
+    var nodePosition = this.nodePosition;
+    nodePosition ??= (node is TimelineTileNode)
+        ? (node as TimelineTileNode).getEffectivePosition(context)
+        : TimelineTheme.of(context).nodePosition;
+    return nodePosition;
+  }
 
   @override
   Widget build(BuildContext context) {
     final direction = this.direction ?? TimelineTheme.of(context).direction;
+    final nodeFlex = _getEffectiveNodePosition(context) * kFlexMultiplier;
+
+    var minNodeExtent = TimelineTheme.of(context).indicatorTheme.size ?? 0.0;
+    var items = [
+      if (nodeFlex > 0)
+        Expanded(
+          flex: nodeFlex.toInt(),
+          child: oppositeContents ?? SizedBox.shrink(),
+        ),
+      ConstrainedBox(
+        constraints: BoxConstraints(
+          minWidth: direction == Axis.vertical ? minNodeExtent : 0.0,
+          minHeight: direction == Axis.vertical ? 0.0 : minNodeExtent,
+        ),
+        child: node,
+      ),
+      if (nodeFlex < kFlexMultiplier)
+        Expanded(
+          flex: (kFlexMultiplier - nodeFlex).toInt(),
+          child: contents ?? SizedBox.shrink(),
+        ),
+    ];
+
+    var result;
     switch (direction) {
       case Axis.vertical:
-        return IntrinsicHeight(
-          // TODO
-          child: Row(
-            children: [
-              // TODO order
-              TimelineNode.simple(indicatorPosition: indicatorPosition),
-              child,
-            ],
-          ),
+        result = Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: items,
         );
+
+        if (extent != null) {
+          result = SizedBox(
+            height: extent,
+            child: result,
+          );
+        } else {
+          result = IntrinsicHeight(
+            child: result,
+          );
+        }
+        break;
       case Axis.horizontal:
-        return IntrinsicWidth(
-          child: Column(
-            children: [
-              // TODO order
-              TimelineNode.simple(indicatorPosition: indicatorPosition),
-              child,
-            ],
-          ),
-        );
+        result = Column(children: items);
+        if (extent != null) {
+          result = SizedBox(
+            width: extent,
+            child: result,
+          );
+        } else {
+          result = IntrinsicWidth(
+            child: result,
+          );
+        }
+        break;
+      default:
+        throw ArgumentError.value(direction, '$direction is invalid.');
     }
 
-    throw ArgumentError('TODO');
+    return Container(child: result, color: Colors.red.withOpacity(0.5));
   }
 }
