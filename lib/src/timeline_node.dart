@@ -2,14 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import 'connectors.dart';
-import 'indicator_theme.dart';
 import 'indicators.dart';
 import 'timeline_theme.dart';
+import 'util.dart';
+
+/// [TimelineTile]'s timeline node
+mixin TimelineTileNode on Widget {
+  /// {@template timelines.node.position}
+  /// If this is null, then the [TimelineThemeData.nodePosition] is used.
+  /// {@endtemplate}
+  double get position;
+  double getEffectivePosition(BuildContext context) {
+    return position ?? TimelineTheme.of(context).nodePosition;
+  }
+}
 
 /// A widget that displays indicator and two connectors.
 ///
 /// The [indicator] displayed between the [startConnector] and [endConnector]
-class TimelineNode extends StatelessWidget {
+class TimelineNode extends StatelessWidget with TimelineTileNode {
   /// Creates a timeline node.
   ///
   /// The [indicatorPosition] must be null or a value between 0 and 1.
@@ -20,6 +31,7 @@ class TimelineNode extends StatelessWidget {
     this.endConnector,
     @required this.indicator,
     this.indicatorPosition,
+    this.position,
   })  : assert(indicator != null),
         assert(indicatorPosition == null || 0 <= indicatorPosition && indicatorPosition <= 1),
         super(key: key);
@@ -72,33 +84,38 @@ class TimelineNode extends StatelessWidget {
   /// The indicator of the node
   final Widget indicator;
 
-  /// A position of indicator inside both two connectors.
+  /// The position of a indicator between the two connectors.
   ///
-  /// If this is null, then the [Indicator.position] is used. If that is also null, then this defaults to
-  /// [IndicatorThemeData.position]
-  ///
-  /// If no [Indicator.position] and no [IndicatorThemeData] is specified, position will default to 0.5.
+  /// {@macro timelines.indicator.position}
   final double indicatorPosition;
+
+  /// A position of timeline node between both two contents.
+  ///
+  /// {@macro timelines.node.position}
+  @override
+  final double position;
 
   double _getEffectiveIndicatorPosition(BuildContext context) {
     var indicatorPosition = this.indicatorPosition;
-    indicatorPosition ??= (indicator is Indicator) ? (indicator as Indicator).getEffectivePosition(context) : 0.5;
+    indicatorPosition ??= (indicator is Indicator)
+        ? (indicator as Indicator).getEffectivePosition(context)
+        : TimelineTheme.of(context).indicatorPosition;
     return indicatorPosition;
   }
 
   @override
   Widget build(BuildContext context) {
     final direction = this.direction ?? TimelineTheme.of(context).direction;
-    final indicatorPosition = _getEffectiveIndicatorPosition(context);
+    final indicatorFlex = _getEffectiveIndicatorPosition(context) * kFlexMultiplier; // multiplication for flex
     Widget result = indicator;
     final nodeItems = [
       Flexible(
-        flex: (indicatorPosition * 1000).toInt(),
+        flex: indicatorFlex.toInt(),
         child: startConnector ?? TransparentConnector(),
       ),
       indicator,
       Flexible(
-        flex: ((1 - indicatorPosition) * 1000).toInt(),
+        flex: (kFlexMultiplier - indicatorFlex).toInt(),
         child: endConnector ?? TransparentConnector(),
       ),
     ];
