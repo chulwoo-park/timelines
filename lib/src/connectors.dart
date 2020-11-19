@@ -84,14 +84,18 @@ class SolidLineConnector extends StatelessWidget with ThemedConnectorComponent {
     final color = getEffectiveColor(context);
     switch (direction) {
       case Axis.vertical:
-        return Container(
-          width: thickness,
-          color: color,
+        return Center(
+          child: Container(
+            width: thickness,
+            color: color,
+          ),
         );
       case Axis.horizontal:
-        return Container(
-          height: thickness,
-          color: color,
+        return Center(
+          child: Container(
+            height: thickness,
+            color: color,
+          ),
         );
     }
 

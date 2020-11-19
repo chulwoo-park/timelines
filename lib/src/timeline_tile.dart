@@ -34,7 +34,8 @@ class TimelineTile extends StatelessWidget {
     this.nodePosition,
     this.contents,
     this.oppositeContents,
-    this.extent,
+    this.mainAxisExtent,
+    this.crossAxisExtent,
   })  : assert(node != null),
         assert(nodeAlign != null),
         assert(
@@ -69,15 +70,21 @@ class TimelineTile extends StatelessWidget {
   /// The contents to display on the opposite side of the [contents].
   final Widget oppositeContents;
 
+  /// The extent of the child in the scrolling axis.
+  /// If the scroll axis is vertical, this extent is the child's height. If the scroll axis is horizontal, this extent
+  /// is the child's width.
+  ///
   /// If non-null, forces the tile to have the given extent in the scroll direction.
   ///
-  /// Specifying an [extent] is more efficient than letting the tile determine their own extent because the because it
-  /// don't use the Intrinsic widget([IntrinsicHeight]/[IntrinsicWidth]) when building.
+  /// Specifying an [mainAxisExtent] is more efficient than letting the tile determine their own extent because the
+  /// because it don't use the Intrinsic widget([IntrinsicHeight]/[IntrinsicWidth]) when building.
+  final double mainAxisExtent;
+
+  /// The extent of the child in the non-scrolling axis.
   ///
-  /// See also:
-  ///
-  ///  * [TimelineData], which describes the overall theme information for the timeline.
-  final double extent;
+  /// If the scroll axis is vertical, this extent is the child's width. If the scroll axis is horizontal, this extent is
+  /// the child's height.
+  final double crossAxisExtent;
 
   double _getEffectiveNodePosition(BuildContext context) {
     if (nodeAlign == TimelineNodeAlign.start) return 0.0;
@@ -99,7 +106,10 @@ class TimelineTile extends StatelessWidget {
       if (nodeFlex > 0)
         Expanded(
           flex: nodeFlex.toInt(),
-          child: oppositeContents ?? SizedBox.shrink(),
+          child: Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: oppositeContents ?? SizedBox.shrink(),
+          ),
         ),
       ConstrainedBox(
         constraints: BoxConstraints(
@@ -111,7 +121,10 @@ class TimelineTile extends StatelessWidget {
       if (nodeFlex < kFlexMultiplier)
         Expanded(
           flex: (kFlexMultiplier - nodeFlex).toInt(),
-          child: contents ?? SizedBox.shrink(),
+          child: Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: contents ?? SizedBox.shrink(),
+          ),
         ),
     ];
 
@@ -123,34 +136,55 @@ class TimelineTile extends StatelessWidget {
           children: items,
         );
 
-        if (extent != null) {
+        if (mainAxisExtent != null) {
           result = SizedBox(
-            height: extent,
+            width: crossAxisExtent,
+            height: mainAxisExtent,
             child: result,
           );
         } else {
           result = IntrinsicHeight(
             child: result,
           );
+
+          if (crossAxisExtent != null) {
+            result = SizedBox(
+              width: crossAxisExtent,
+              child: result,
+            );
+          }
         }
         break;
       case Axis.horizontal:
-        result = Column(children: items);
-        if (extent != null) {
+        result = Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: items,
+        );
+        if (mainAxisExtent != null) {
           result = SizedBox(
-            width: extent,
+            width: mainAxisExtent,
+            height: crossAxisExtent,
             child: result,
           );
         } else {
           result = IntrinsicWidth(
             child: result,
           );
+
+          if (crossAxisExtent != null) {
+            result = SizedBox(
+              height: crossAxisExtent,
+              child: result,
+            );
+          }
         }
         break;
       default:
         throw ArgumentError.value(direction, '$direction is invalid.');
     }
 
-    return Container(child: result, color: Colors.red.withOpacity(0.5));
+    return Align(
+      child: result,
+    );
   }
 }
