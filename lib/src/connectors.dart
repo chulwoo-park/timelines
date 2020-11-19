@@ -59,8 +59,8 @@ class SolidLineConnector extends StatelessWidget with ThemedConnectorComponent {
 
   /// The color to use when painting the line.
   ///
-  /// If this is null, then the [ConnectorThemeData.color] is used. If that is also null, then [ThemeData.color] is
-  /// used.
+  /// If this is null, then the [ConnectorThemeData.color] is used. If that is also null, then [TimelineThemeData.color]
+  /// is used.
   @override
   final Color color;
 

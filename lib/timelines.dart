@@ -1,3 +1,4 @@
+/// Widgets that make it easy to implement the timeline UI component.
 library timelines;
 
 export 'package:timelines/src/connector_theme.dart';

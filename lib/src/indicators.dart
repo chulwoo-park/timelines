@@ -102,8 +102,6 @@ class OutlinedDotIndicator extends StatelessWidget with Indicator, ThemedIndicat
   final Color color;
 
   /// The width of this outline, in logical pixels.
-  ///
-  /// To omit the border entirely, set the [style] to [BorderStyle.none].
   final double borderWidth;
 
   /// The position of a indicator between the two connectors.
