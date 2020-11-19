@@ -92,7 +92,7 @@ class IndicatorThemeData with Diagnosticable {
 
 /// Controls the default color and size of indicators in a widget subtree.
 ///
-/// The indicator theme is honored by [TimelineNode], [DotIndicator] and [TO DO] widgets.
+/// The indicator theme is honored by [TimelineNode], [DotIndicator] and [OutlinedDotIndicator] widgets.
 class IndicatorTheme extends InheritedTheme {
   /// Creates an indicator theme that controls the color and size for [DotIndicator]s, indicators inside [TimelineNode]s.
   const IndicatorTheme({
