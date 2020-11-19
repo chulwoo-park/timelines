@@ -79,20 +79,31 @@ class SolidLineConnector extends StatelessWidget with ThemedConnectorComponent {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: apply other properties
     final direction = getEffectiveDirection(context);
     final thickness = getEffectiveThickness(context);
     final color = getEffectiveColor(context);
+    final space = getEffectiveSpace(context);
+    final indent = getEffectiveIndent(context);
+    final endIndent = getEffectiveEndIndent(context);
+
     switch (direction) {
       case Axis.vertical:
-        return Center(
+        return _ConnectorIndent(
+          direction: direction,
+          indent: indent,
+          endIndent: endIndent,
+          space: space,
           child: Container(
             width: thickness,
             color: color,
           ),
         );
       case Axis.horizontal:
-        return Center(
+        return _ConnectorIndent(
+          direction: direction,
+          indent: indent,
+          endIndent: endIndent,
+          space: space,
           child: Container(
             height: thickness,
             color: color,
@@ -185,15 +196,22 @@ class DashedLineConnector extends StatelessWidget with ThemedConnectorComponent 
 
   @override
   Widget build(BuildContext context) {
-    // TODO: apply other properties
-    return CustomPaint(
-      painter: DashedLinePainter(
-        direction: getEffectiveDirection(context),
-        color: getEffectiveColor(context),
-        strokeWidth: getEffectiveThickness(context),
-        dashSize: dash ?? 2.0,
-        gapSize: gap ?? 3.0,
-        gapColor: gapColor ?? Colors.transparent,
+    final direction = getEffectiveDirection(context);
+    return _ConnectorIndent(
+      direction: direction,
+      indent: getEffectiveIndent(context),
+      endIndent: getEffectiveEndIndent(context),
+      space: getEffectiveSpace(context),
+      child: CustomPaint(
+        painter: DashedLinePainter(
+          direction: direction,
+          color: getEffectiveColor(context),
+          strokeWidth: getEffectiveThickness(context),
+          dashSize: dash ?? 2.0,
+          gapSize: gap ?? 3.0,
+          gapColor: gapColor ?? Colors.transparent,
+        ),
+        child: Container(),
       ),
     );
   }
@@ -207,4 +225,65 @@ class TransparentConnector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container();
+}
+
+/// Apply indent to [child].
+class _ConnectorIndent extends StatelessWidget {
+  /// Creates a indent.
+  ///
+  /// The [direction]and [child] must be null. And [space], [indent] and [endIndent] must be null or non-negative.
+  const _ConnectorIndent({
+    Key key,
+    @required this.direction,
+    @required this.space,
+    @required this.indent,
+    @required this.endIndent,
+    @required this.child,
+  })  : assert(direction != null),
+        assert(space == null || space >= 0),
+        assert(indent == null || indent >= 0),
+        assert(endIndent == null || endIndent >= 0),
+        assert(child != null),
+        super(key: key);
+
+  /// {@macro timelines.direction}
+  final Axis direction;
+
+  /// The connector's cross axis size extent.
+  ///
+  /// The connector itself is always drawn as a line that is centered within the size specified by this value.
+  final double space;
+
+  /// The amount of empty space to the leading edge of the connector.
+  final double indent;
+
+  /// The amount of empty space to the trailing edge of the connector.
+  final double endIndent;
+
+  /// The widget below this widget in the tree.
+  ///
+  /// {@macro flutter.widgets.child}
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: direction == Axis.vertical ? space : double.infinity,
+      height: direction == Axis.vertical ? double.infinity : space,
+      child: Center(
+        child: Padding(
+          padding: direction == Axis.vertical
+              ? EdgeInsetsDirectional.only(
+                  top: indent,
+                  bottom: endIndent,
+                )
+              : EdgeInsetsDirectional.only(
+                  start: indent,
+                  end: endIndent,
+                ),
+          child: child,
+        ),
+      ),
+    );
+  }
 }
