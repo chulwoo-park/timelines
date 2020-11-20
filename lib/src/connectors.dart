@@ -7,12 +7,6 @@ import 'timeline.dart';
 import 'timeline_node.dart';
 import 'timeline_theme.dart';
 
-enum ConnectorStyle {
-  solid,
-  dashed,
-  transparent,
-}
-
 /// Abstract class for predefined connector widgets.
 ///
 /// See also:

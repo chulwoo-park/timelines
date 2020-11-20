@@ -3,13 +3,6 @@ import 'package:flutter/material.dart';
 import 'indicator_theme.dart';
 import 'timeline_theme.dart';
 
-enum IndicatorStyle {
-  dot,
-  outlined,
-  container,
-  transparent,
-}
-
 /// [TimelineNode]'s indicator.
 mixin PositionedIndicator on Widget {
   /// {@template timelines.indicator.position}
