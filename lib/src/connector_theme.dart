@@ -151,17 +151,28 @@ class ConnectorTheme extends InheritedTheme {
   }
 }
 
+/// Connector component configured through [ConnectorTheme]
 mixin ThemedConnectorComponent on Widget {
+  /// {@template timelines.connector.direction}
+  /// If this is null, then the [TimelineThemeData.direction] is used.
+  /// {@endtemplate}
   Axis get direction;
   Axis getEffectiveDirection(BuildContext context) {
     return direction ?? TimelineTheme.of(context).direction;
   }
 
+  /// {@template timelines.connector.thickness}
+  /// If this is null, then the [ConnectorThemeData.thickness] is used which defaults to 2.0.
+  /// {@endtemplate}
   double get thickness;
   double getEffectiveThickness(BuildContext context) {
     return thickness ?? ConnectorTheme.of(context).thickness ?? 2.0;
   }
 
+  /// {@template timelines.connector.space}
+  /// If this is null, then the [DividerThemeData.space] is used. If that is also null, then this defaults to
+  /// double.infinity.
+  /// {@endtemplate}
   double get space;
   double getEffectiveSpace(BuildContext context) {
     return space ?? ConnectorTheme.of(context).space;

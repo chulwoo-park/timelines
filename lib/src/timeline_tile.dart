@@ -45,7 +45,9 @@ class TimelineTile extends StatelessWidget {
         assert(nodePosition == null || nodePosition >= 0),
         super(key: key);
 
-  /// {@macro timelines.direction}
+  /// {@template timelines.direction}
+  /// The axis along which the timeline scrolls.
+  /// {@endtemplate}
   final Axis direction;
 
   /// A widget that displays indicator and two connectors.

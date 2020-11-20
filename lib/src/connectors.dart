@@ -107,26 +107,22 @@ abstract class Connector extends StatelessWidget with ThemedConnectorComponent {
     );
   }
 
-  /// {@template timelines.direction}
-  /// The axis along which the timeline scrolls.
+  /// {@macro timelines.direction}
   ///
-  /// If this is null, then the [TimelineThemeData.direction] is used.
-  /// {@endtemplate}
+  /// {@macro timelines.connector.direction}
   @override
   final Axis direction;
 
   /// The connector's cross axis size extent.
   ///
   /// The connector itself is always drawn as a line that is centered within the size specified by this value.
-  ///
-  /// If this is null, then the [DividerThemeData.space] is used. If that is also null, then this defaults to
-  /// double.infinity.
+  /// {@macro timelines.connector.space}
   @override
   final double space;
 
   /// The thickness of the line drawn within the connector.
   ///
-  /// If this is null, then the [ConnectorThemeData.thickness] is used which defaults to 2.0.
+  /// {@macro timelines.connector.thickness}
   @override
   final double thickness;
 
