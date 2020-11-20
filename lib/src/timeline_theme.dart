@@ -162,6 +162,7 @@ class TimelineThemeData with Diagnosticable {
     Axis direction,
     Color color,
     double nodePosition,
+    bool nodeItemOverlap,
     double indicatorPosition,
     IndicatorThemeData indicatorTheme,
     ConnectorThemeData connectorTheme,
@@ -169,6 +170,7 @@ class TimelineThemeData with Diagnosticable {
     direction ??= Axis.vertical;
     color ??= Colors.blue;
     nodePosition ??= 0.5;
+    nodeItemOverlap ??= false;
     indicatorPosition ??= 0.5;
     indicatorTheme ??= IndicatorThemeData();
     connectorTheme ??= ConnectorThemeData();
@@ -176,6 +178,7 @@ class TimelineThemeData with Diagnosticable {
       direction: direction,
       color: color,
       nodePosition: nodePosition,
+      nodeItemOverlap: nodeItemOverlap,
       indicatorPosition: indicatorPosition,
       indicatorTheme: indicatorTheme,
       connectorTheme: connectorTheme,
@@ -196,6 +199,7 @@ class TimelineThemeData with Diagnosticable {
     @required this.direction,
     @required this.color,
     @required this.nodePosition,
+    @required this.nodeItemOverlap,
     @required this.indicatorPosition,
     @required this.indicatorTheme,
     @required this.connectorTheme,
@@ -227,6 +231,11 @@ class TimelineThemeData with Diagnosticable {
   /// Defaults to 0.5.
   final double nodePosition;
 
+  /// Determine whether each connectors and indicator will overlap in [TimelineNode].
+  ///
+  /// When each connectors overlap, they are drawn from the center offset of the indicator.
+  final bool nodeItemOverlap;
+
   /// The position for indicator in [TimelineNode].
   ///
   /// Defaults to 0.5.
@@ -243,6 +252,7 @@ class TimelineThemeData with Diagnosticable {
     Axis direction,
     Color color,
     double nodePosition,
+    bool nodeItemOverlap,
     double indicatorPosition,
     IndicatorThemeData indicatorTheme,
     ConnectorThemeData connectorTheme,
@@ -251,6 +261,7 @@ class TimelineThemeData with Diagnosticable {
       direction: direction ?? this.direction,
       color: color ?? this.color,
       nodePosition: nodePosition ?? this.nodePosition,
+      nodeItemOverlap: nodeItemOverlap ?? this.nodeItemOverlap,
       indicatorPosition: indicatorPosition ?? this.indicatorPosition,
       indicatorTheme: indicatorTheme ?? this.indicatorTheme,
       connectorTheme: connectorTheme ?? this.connectorTheme,
@@ -272,6 +283,7 @@ class TimelineThemeData with Diagnosticable {
       direction: t < 0.5 ? a.direction : b.direction,
       color: Color.lerp(a.color, b.color, t),
       nodePosition: lerpDouble(a.nodePosition, b.nodePosition, t),
+      nodeItemOverlap: t < 0.5 ? a.nodeItemOverlap : b.nodeItemOverlap,
       indicatorPosition: lerpDouble(a.indicatorPosition, b.indicatorPosition, t),
       indicatorTheme: IndicatorThemeData.lerp(a.indicatorTheme, b.indicatorTheme, t),
       connectorTheme: ConnectorThemeData.lerp(a.connectorTheme, b.connectorTheme, t),
@@ -287,6 +299,7 @@ class TimelineThemeData with Diagnosticable {
         other.direction == direction &&
         other.color == color &&
         other.nodePosition == nodePosition &&
+        other.nodeItemOverlap == nodeItemOverlap &&
         other.indicatorPosition == indicatorPosition &&
         other.indicatorTheme == indicatorTheme &&
         other.connectorTheme == connectorTheme;
@@ -300,6 +313,7 @@ class TimelineThemeData with Diagnosticable {
       direction,
       color,
       nodePosition,
+      nodeItemOverlap,
       indicatorPosition,
       indicatorTheme,
       connectorTheme,
@@ -317,6 +331,7 @@ class TimelineThemeData with Diagnosticable {
       ..add(ColorProperty('color', color, defaultValue: defaultData.color, level: DiagnosticLevel.debug))
       ..add(DoubleProperty('nodePosition', nodePosition,
           defaultValue: defaultData.nodePosition, level: DiagnosticLevel.debug))
+      ..add(FlagProperty('nodeItemOverlap', value: nodeItemOverlap, ifTrue: 'overlap connector and indicator'))
       ..add(DoubleProperty('indicatorPosition', indicatorPosition,
           defaultValue: defaultData.indicatorPosition, level: DiagnosticLevel.debug))
       ..add(DiagnosticsProperty<IndicatorThemeData>(

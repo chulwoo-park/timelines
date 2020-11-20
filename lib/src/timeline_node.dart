@@ -29,9 +29,10 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
     this.direction,
     this.startConnector,
     this.endConnector,
-    @required this.indicator,
+    this.indicator = const ContainerIndicator(),
     this.indicatorPosition,
     this.position,
+    this.overlap,
   })  : assert(indicator != null),
         assert(indicatorPosition == null || 0 <= indicatorPosition && indicatorPosition <= 1),
         super(key: key);
@@ -42,11 +43,15 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
     Axis direction,
     Color color,
     double lineThickness,
+    double nodePosition,
     double indicatorPosition,
     double indicatorSize,
     Widget indicatorChild,
+    double indent,
+    double endIndent,
     bool drawStartConnector = true,
     bool drawEndConnector = true,
+    bool overlap,
   }) : this(
           key: key,
           direction: direction,
@@ -55,6 +60,8 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
                   direction: direction,
                   color: color,
                   thickness: lineThickness,
+                  indent: indent,
+                  endIndent: endIndent,
                 )
               : null,
           endConnector: drawEndConnector
@@ -62,6 +69,8 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
                   direction: direction,
                   color: color,
                   thickness: lineThickness,
+                  indent: indent,
+                  endIndent: endIndent,
                 )
               : null,
           indicator: DotIndicator(
@@ -70,6 +79,9 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
             size: indicatorSize,
             color: color,
           ),
+          indicatorPosition: indicatorPosition,
+          position: nodePosition,
+          overlap: overlap,
         );
 
   /// {@macro timelines.direction}
@@ -95,46 +107,100 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
   @override
   final double position;
 
+  /// Determine whether each connectors and indicator will overlap.
+  ///
+  /// When each connectors overlap, they are drawn from the center offset of the indicator.
+  final bool overlap;
+
   double _getEffectiveIndicatorPosition(BuildContext context) {
     var indicatorPosition = this.indicatorPosition;
-    indicatorPosition ??= (indicator is Indicator)
-        ? (indicator as Indicator).getEffectivePosition(context)
+    indicatorPosition ??= (indicator is PositionedIndicator)
+        ? (indicator as PositionedIndicator).getEffectivePosition(context)
         : TimelineTheme.of(context).indicatorPosition;
     return indicatorPosition;
+  }
+
+  bool _getEffectiveOverlap(BuildContext context) {
+    var overlap = this.overlap ?? TimelineTheme.of(context).nodeItemOverlap;
+    return overlap;
   }
 
   @override
   Widget build(BuildContext context) {
     final direction = this.direction ?? TimelineTheme.of(context).direction;
+    final overlap = _getEffectiveOverlap(context);
     // TODO: support both flex and logical pixel
     final indicatorFlex = _getEffectiveIndicatorPosition(context);
-    Widget result = indicator;
-    final nodeItems = [
+    Widget line = indicator;
+    final lineItems = [
       if (indicatorFlex > 0)
         Flexible(
           flex: (indicatorFlex * kFlexMultiplier).toInt(),
           child: startConnector ?? TransparentConnector(),
         ),
-      indicator,
+      if (!overlap) indicator,
       if (indicatorFlex < 1)
         Flexible(
           flex: ((1 - indicatorFlex) * kFlexMultiplier).toInt(),
           child: endConnector ?? TransparentConnector(),
         ),
     ];
+
     switch (direction) {
       case Axis.vertical:
-        result = Column(
+        line = Column(
           mainAxisSize: MainAxisSize.min,
-          children: nodeItems,
+          children: lineItems,
         );
         break;
       case Axis.horizontal:
-        result = Row(
+        line = Row(
           mainAxisSize: MainAxisSize.min,
-          children: nodeItems,
+          children: lineItems,
         );
         break;
+    }
+
+    Widget result;
+    if (overlap) {
+      Widget positionedIndicator = indicator;
+      final positionedIndicatorItems = [
+        if (indicatorFlex > 0)
+          Flexible(
+            flex: (indicatorFlex * kFlexMultiplier).toInt(),
+            child: TransparentConnector(),
+          ),
+        indicator,
+        Flexible(
+          flex: ((1 - indicatorFlex) * kFlexMultiplier).toInt(),
+          child: TransparentConnector(),
+        ),
+      ];
+
+      switch (direction) {
+        case Axis.vertical:
+          positionedIndicator = Column(
+            mainAxisSize: MainAxisSize.min,
+            children: positionedIndicatorItems,
+          );
+          break;
+        case Axis.horizontal:
+          positionedIndicator = Row(
+            mainAxisSize: MainAxisSize.min,
+            children: positionedIndicatorItems,
+          );
+          break;
+      }
+
+      result = Stack(
+        alignment: Alignment.center,
+        children: [
+          line,
+          positionedIndicator,
+        ],
+      );
+    } else {
+      result = line;
     }
 
     if (TimelineTheme.of(context).direction != direction) {

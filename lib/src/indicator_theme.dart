@@ -136,7 +136,7 @@ class IndicatorTheme extends InheritedTheme {
 }
 
 /// Indicator component configured through [IndicatorTheme]
-mixin ThemedIndicatorComponent on Indicator {
+mixin ThemedIndicatorComponent on PositionedIndicator {
   /// {@template timelines.indicator.color}
   /// Defaults to the current [IndicatorTheme] color, if any.
   ///
