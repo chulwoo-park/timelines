@@ -1,4 +1,5 @@
 import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'connectors.dart';
@@ -96,20 +97,21 @@ enum ConnectorStyle {
 ///
 ///  * [IndexedSemantics], for an example of manually annotating child nodes with semantic indexes.
 class TimelineTileBuilder extends SliverChildBuilderDelegate {
-  /// Creates tiles from style. Each tile
-  ///
-  /// [BoxFit]
+  /// Creates tiles from style.
   ///
   /// See also:
-  ///  * [IndicatorStyle],
-  ///  * [ConnectorStyle],
-  ///  * [ContentsAlign],
+  ///
+  ///  * [IndicatorStyle]
+  ///  * [ConnectorStyle]
+  ///  * [ContentsAlign]
   factory TimelineTileBuilder.fromStyle({
+    int itemCount,
     IndexedWidgetBuilder contentsBuilder,
     IndexedWidgetBuilder oppositeContentsBuilder,
     ContentsAlign contentsAlign = ContentsAlign.basic,
     IndicatorStyle indicatorStyle = IndicatorStyle.dot,
     ConnectorStyle connectorStyle = ConnectorStyle.solidLine,
+    ConnectorStyle endConnectorStyle = ConnectorStyle.solidLine,
     double itemExtent,
     double nodePosition,
     double indicatorPosition,
@@ -121,30 +123,30 @@ class TimelineTileBuilder extends SliverChildBuilderDelegate {
       switch (contentsAlign) {
         case ContentsAlign.alternating:
           if (index.isOdd) {
-            return oppositeContentsBuilder(context, index);
+            return oppositeContentsBuilder?.call(context, index);
           }
 
           return contentsBuilder(context, index);
         case ContentsAlign.reverse:
-          return oppositeContentsBuilder(context, index);
+          return oppositeContentsBuilder?.call(context, index);
         case ContentsAlign.basic:
         default:
-          return contentsBuilder(context, index);
+          return contentsBuilder?.call(context, index);
       }
     };
     final effectiveOppositeContentsBuilder = (context, index) {
       switch (contentsAlign) {
         case ContentsAlign.alternating:
           if (index.isOdd) {
-            return contentsBuilder(context, index);
+            return contentsBuilder?.call(context, index);
           }
 
           return oppositeContentsBuilder(context, index);
         case ContentsAlign.reverse:
-          return contentsBuilder(context, index);
+          return contentsBuilder?.call(context, index);
         case ContentsAlign.basic:
         default:
-          return oppositeContentsBuilder(context, index);
+          return oppositeContentsBuilder?.call(context, index);
       }
     };
     final effectiveIndicatorBuilder = (_, __) {
@@ -163,38 +165,71 @@ class TimelineTileBuilder extends SliverChildBuilderDelegate {
     final startConnectorBuilder = (_, __) {
       switch (connectorStyle) {
         case ConnectorStyle.solidLine:
-          return SolidLineConnector();
+          return Connector.solidLine();
         case ConnectorStyle.dashedLine:
-          return DashedLineConnector();
+          return Connector.dashedLine();
         case ConnectorStyle.transparent:
         default:
-          return TransparentConnector();
+          return Connector.transparent();
       }
     };
     final endConnectorBuilder = (_, __) {
-      switch (connectorStyle) {
+      switch (endConnectorStyle) {
         case ConnectorStyle.solidLine:
-          return SolidLineConnector();
+          return Connector.solidLine();
         case ConnectorStyle.dashedLine:
-          return DashedLineConnector();
+          return Connector.dashedLine();
         case ConnectorStyle.transparent:
         default:
-          return TransparentConnector();
+          return Connector.transparent();
       }
     };
+
+    return TimelineTileBuilder(
+      itemCount: itemCount,
+      itemExtent: itemExtent,
+      contentsBuilder: effectiveContentsBuilder,
+      oppositeContentsBuilder: effectiveOppositeContentsBuilder,
+      indicatorBuilder: effectiveIndicatorBuilder,
+      startConnectorBuilder: startConnectorBuilder,
+      endConnectorBuilder: endConnectorBuilder,
+      nodePosition: nodePosition,
+      indicatorPosition: indicatorPosition,
+      addAutomaticKeepAlives: addAutomaticKeepAlives,
+      addRepaintBoundaries: addRepaintBoundaries,
+      addSemanticIndexes: addSemanticIndexes,
+    );
+  }
+
+  /// Creates tiles from each component builders.
+  factory TimelineTileBuilder({
+    int itemCount,
+    IndexedWidgetBuilder contentsBuilder,
+    IndexedWidgetBuilder oppositeContentsBuilder,
+    IndexedWidgetBuilder indicatorBuilder,
+    IndexedWidgetBuilder startConnectorBuilder,
+    IndexedWidgetBuilder endConnectorBuilder,
+    double itemExtent,
+    double nodePosition,
+    double indicatorPosition,
+    bool addAutomaticKeepAlives = true,
+    bool addRepaintBoundaries = true,
+    bool addSemanticIndexes = true,
+  }) {
     return TimelineTileBuilder._(
       (context, index) => TimelineTile(
         mainAxisExtent: itemExtent,
         node: TimelineNode(
-          indicator: effectiveIndicatorBuilder?.call(context, index) ?? ContainerIndicator(),
+          indicator: indicatorBuilder?.call(context, index) ?? Indicator.transparent(),
           startConnector: startConnectorBuilder?.call(context, index),
           endConnector: endConnectorBuilder?.call(context, index),
           position: nodePosition,
           indicatorPosition: indicatorPosition,
         ),
-        contents: effectiveContentsBuilder?.call(context, index),
-        oppositeContents: effectiveOppositeContentsBuilder?.call(context, index),
+        contents: contentsBuilder?.call(context, index),
+        oppositeContents: oppositeContentsBuilder?.call(context, index),
       ),
+      itemCount: itemCount,
       addAutomaticKeepAlives: addAutomaticKeepAlives,
       addRepaintBoundaries: addRepaintBoundaries,
       addSemanticIndexes: addSemanticIndexes,
@@ -203,6 +238,7 @@ class TimelineTileBuilder extends SliverChildBuilderDelegate {
 
   const TimelineTileBuilder._(
     IndexedWidgetBuilder builder, {
+    int itemCount,
     bool addAutomaticKeepAlives = true,
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,
@@ -211,6 +247,7 @@ class TimelineTileBuilder extends SliverChildBuilderDelegate {
           addAutomaticKeepAlives: addAutomaticKeepAlives,
           addRepaintBoundaries: addRepaintBoundaries,
           addSemanticIndexes: addSemanticIndexes,
+          childCount: itemCount,
         );
 }
 
@@ -241,7 +278,7 @@ class Timeline extends BoxScrollView {
   /// later time, consider using [Timeline] or [Timeline.custom].
   factory Timeline.timelineTile({
     Key key,
-    Axis scrollDirection = Axis.vertical,
+    Axis scrollDirection,
     bool reverse = false,
     ScrollController controller,
     bool primary,
@@ -250,7 +287,6 @@ class Timeline extends BoxScrollView {
     EdgeInsetsGeometry padding,
     @required TimelineTileBuilder itemBuilder,
     double itemExtent,
-    int itemCount,
     double cacheExtent,
     int semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
@@ -259,9 +295,12 @@ class Timeline extends BoxScrollView {
     Clip clipBehavior = Clip.hardEdge,
     double nodePosition,
     double indicatorPosition,
+    TimelineThemeData theme,
   }) {
-    assert(itemCount == null || itemCount >= 0);
-    assert(semanticChildCount == null || semanticChildCount <= itemCount);
+    assert(itemBuilder.childCount == null || itemBuilder.childCount >= 0);
+    assert(semanticChildCount == null || semanticChildCount <= itemBuilder.childCount);
+    assert(scrollDirection == null || theme == null, 'Cannot provide both a scrollDirection and a theme.');
+    assert(scrollDirection != null || theme != null, 'Must be provide either scrollDirection or theme.');
     return Timeline.custom(
       key: key,
       childrenDelegate: itemBuilder,
@@ -274,11 +313,12 @@ class Timeline extends BoxScrollView {
       padding: padding,
       itemExtent: itemExtent,
       cacheExtent: cacheExtent,
-      semanticChildCount: semanticChildCount ?? itemCount,
+      semanticChildCount: semanticChildCount ?? itemBuilder.childCount,
       dragStartBehavior: dragStartBehavior,
       keyboardDismissBehavior: keyboardDismissBehavior,
       restorationId: restorationId,
       clipBehavior: clipBehavior,
+      theme: theme,
     );
   }
 
@@ -315,15 +355,18 @@ class Timeline extends BoxScrollView {
     ScrollViewKeyboardDismissBehavior keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
     String restorationId,
     Clip clipBehavior = Clip.hardEdge,
+    TimelineThemeData theme,
   })  : childrenDelegate = SliverChildListDelegate(
           children,
           addAutomaticKeepAlives: addAutomaticKeepAlives,
           addRepaintBoundaries: addRepaintBoundaries,
           addSemanticIndexes: addSemanticIndexes,
         ),
+        assert(scrollDirection == null || theme == null, 'Cannot provide both a scrollDirection and a theme.'),
+        this.theme = theme,
         super(
           key: key,
-          scrollDirection: scrollDirection,
+          scrollDirection: scrollDirection ?? theme?.direction,
           reverse: reverse,
           controller: controller,
           primary: primary,
@@ -382,8 +425,10 @@ class Timeline extends BoxScrollView {
     ScrollViewKeyboardDismissBehavior keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
     String restorationId,
     Clip clipBehavior = Clip.hardEdge,
+    TimelineThemeData theme,
   })  : assert(itemCount == null || itemCount >= 0),
         assert(semanticChildCount == null || semanticChildCount <= itemCount),
+        assert(scrollDirection == null || theme == null, 'Cannot provide both a scrollDirection and a theme.'),
         childrenDelegate = SliverChildBuilderDelegate(
           itemBuilder,
           childCount: itemCount,
@@ -391,9 +436,10 @@ class Timeline extends BoxScrollView {
           addRepaintBoundaries: addRepaintBoundaries,
           addSemanticIndexes: addSemanticIndexes,
         ),
+        this.theme = theme,
         super(
           key: key,
-          scrollDirection: scrollDirection,
+          scrollDirection: scrollDirection ?? theme?.direction,
           reverse: reverse,
           controller: controller,
           primary: primary,
@@ -416,7 +462,7 @@ class Timeline extends BoxScrollView {
   /// See also:
   ///
   ///  * This works similarly to [ListView.custom].
-  const Timeline.custom({
+  Timeline.custom({
     Key key,
     Axis scrollDirection = Axis.vertical,
     bool reverse = false,
@@ -433,10 +479,13 @@ class Timeline extends BoxScrollView {
     ScrollViewKeyboardDismissBehavior keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
     String restorationId,
     Clip clipBehavior = Clip.hardEdge,
+    TimelineThemeData theme,
   })  : assert(childrenDelegate != null),
+        assert(scrollDirection == null || theme == null, 'Cannot provide both a scrollDirection and a theme.'),
+        this.theme = theme,
         super(
           key: key,
-          scrollDirection: scrollDirection,
+          scrollDirection: scrollDirection ?? theme?.direction,
           reverse: reverse,
           controller: controller,
           primary: primary,
@@ -464,6 +513,11 @@ class Timeline extends BoxScrollView {
   /// constructors create a [childrenDelegate] that wraps the given [List] and [IndexedWidgetBuilder], respectively.
   final SliverChildDelegate childrenDelegate;
 
+  /// Default visual properties, like colors, size and spaces, for this timeline's component widgets.
+  ///
+  /// The default value of this property is the value of [TimelineThemeData.vertical()].
+  final TimelineThemeData theme;
+
   @override
   Widget buildChildLayout(BuildContext context) {
     Widget result;
@@ -477,9 +531,10 @@ class Timeline extends BoxScrollView {
     }
 
     return TimelineTheme(
-      data: TimelineThemeData(
-        direction: scrollDirection,
-      ),
+      data: theme ??
+          TimelineThemeData(
+            direction: scrollDirection,
+          ),
       child: result,
     );
   }

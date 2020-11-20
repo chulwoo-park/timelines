@@ -107,26 +107,22 @@ abstract class Connector extends StatelessWidget with ThemedConnectorComponent {
     );
   }
 
-  /// {@template timelines.direction}
-  /// The axis along which the timeline scrolls.
+  /// {@macro timelines.direction}
   ///
-  /// If this is null, then the [TimelineThemeData.direction] is used.
-  /// {@endtemplate}
+  /// {@macro timelines.connector.direction}
   @override
   final Axis direction;
 
   /// The connector's cross axis size extent.
   ///
   /// The connector itself is always drawn as a line that is centered within the size specified by this value.
-  ///
-  /// If this is null, then the [DividerThemeData.space] is used. If that is also null, then this defaults to
-  /// double.infinity.
+  /// {@macro timelines.connector.space}
   @override
   final double space;
 
   /// The thickness of the line drawn within the connector.
   ///
-  /// If this is null, then the [ConnectorThemeData.thickness] is used which defaults to 2.0.
+  /// {@macro timelines.connector.thickness}
   @override
   final double thickness;
 
@@ -206,6 +202,76 @@ class SolidLineConnector extends Connector {
           child: Container(
             height: thickness,
             color: color,
+          ),
+        );
+    }
+
+    throw ArgumentError('invalid direction: $direction');
+  }
+}
+
+/// A decorated thin line, with padding on either side.
+///
+/// The box's total cross axis size(width or height, depend on [direction]) is controlled by [space].
+///
+/// The appropriate padding is automatically computed from the cross axis size.
+class DecoratedLineConnector extends Connector {
+  /// Creates a decorated line connector.
+  ///
+  /// The [thickness], [space], [indent], and [endIndent] must be null or non-negative.
+  const DecoratedLineConnector({
+    Key key,
+    Axis direction,
+    double thickness,
+    double space,
+    double indent,
+    double endIndent,
+    this.decoration,
+  }) : super(
+          key: key,
+          thickness: thickness,
+          space: space,
+          indent: indent,
+          endIndent: endIndent,
+        );
+
+  /// The decoration to paint line.
+  ///
+  /// Use the [SolidLineConnector] class to specify a simple solid color line.
+  final Decoration decoration;
+
+  @override
+  Widget build(BuildContext context) {
+    final direction = getEffectiveDirection(context);
+    final thickness = getEffectiveThickness(context);
+    final space = getEffectiveSpace(context);
+    final indent = getEffectiveIndent(context);
+    final endIndent = getEffectiveEndIndent(context);
+    final color = decoration == null ? getEffectiveColor(context) : null;
+
+    switch (direction) {
+      case Axis.vertical:
+        return _ConnectorIndent(
+          direction: direction,
+          indent: indent,
+          endIndent: endIndent,
+          space: space,
+          child: Container(
+            width: thickness,
+            color: color,
+            decoration: decoration,
+          ),
+        );
+      case Axis.horizontal:
+        return _ConnectorIndent(
+          direction: direction,
+          indent: indent,
+          endIndent: endIndent,
+          space: space,
+          child: Container(
+            height: thickness,
+            color: color,
+            decoration: decoration,
           ),
         );
     }
