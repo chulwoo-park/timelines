@@ -1,9 +1,11 @@
-import 'theme_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:timelines/timelines.dart';
 
 import 'component_page.dart';
+import 'showcase_page.dart';
+import 'theme_page.dart';
+import 'widget.dart';
 
 void main() {
   runApp(MyApp());
@@ -37,11 +39,15 @@ class ExamplePage extends StatelessWidget {
           children: [
             _NavigationCard(
               name: 'Components',
-              navigationBuilder: (_) => ComponentPage(),
+              navigationBuilder: () => ComponentPage(),
             ),
             _NavigationCard(
               name: 'Theme',
-              navigationBuilder: (_) => ThemePage(),
+              navigationBuilder: () => ThemePage(),
+            ),
+            _NavigationCard(
+              name: 'Showcase',
+              navigationBuilder: () => ShowcasePage(),
             ),
           ],
         ),
@@ -58,64 +64,30 @@ class _NavigationCard extends StatelessWidget {
   }) : super(key: key);
 
   final String name;
-  final WidgetBuilder navigationBuilder;
-
-  Future<T> _navigate<T>(BuildContext context) {
-    return Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => navigationBuilder(context),
-      ),
-    );
-  }
+  final NavigateWidgetBuilder navigationBuilder;
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Card(
+      child: NavigationCard(
         margin: EdgeInsets.symmetric(
           horizontal: 20.0,
           vertical: 10.0,
         ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(8),
-          onTap: () => _navigate(context),
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(name),
-                ),
-                Icon(Icons.chevron_right),
-              ],
-            ),
+        borderRadius: BorderRadius.circular(8),
+        navigationBuilder: navigationBuilder,
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(name),
+              ),
+              Icon(Icons.chevron_right),
+            ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class TitleAppBar extends StatelessWidget with PreferredSizeWidget {
-  TitleAppBar(
-    this.title, {
-    Key key,
-  })  : preferredSize = Size.fromHeight(kToolbarHeight),
-        super(key: key);
-
-  @override
-  final Size preferredSize;
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      title: Text(title),
     );
   }
 }
