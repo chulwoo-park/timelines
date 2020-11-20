@@ -62,16 +62,14 @@ class DotIndicator extends StatelessWidget with Indicator, ThemedIndicatorCompon
     final effectiveSize = getEffectiveSize(context);
     final effectiveColor = getEffectiveColor(context);
     return Center(
-      child: SizedBox(
-        width: effectiveSize ?? 15.0,
-        height: effectiveSize ?? 15.0,
-        child: DecoratedBox(
-          child: child,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: effectiveColor,
-            border: border,
-          ),
+      child: Container(
+        width: effectiveSize ?? ((child == null) ? 15.0 : null),
+        height: effectiveSize ?? ((child == null) ? 15.0 : null),
+        child: child,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: effectiveColor,
+          border: border,
         ),
       ),
     );

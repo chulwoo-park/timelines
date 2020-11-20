@@ -39,7 +39,7 @@ class TimelineTile extends StatelessWidget {
   })  : assert(node != null),
         assert(nodeAlign != null),
         assert(
-          nodeAlign != TimelineNodeAlign.basic || nodePosition == null,
+          nodeAlign == TimelineNodeAlign.basic || (nodeAlign != TimelineNodeAlign.basic && nodePosition == null),
           'Cannot provide both a nodeAlign and a nodePosition',
         ),
         assert(nodePosition == null || nodePosition >= 0),
