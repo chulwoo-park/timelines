@@ -10,8 +10,11 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # TODO use pub.dev version
   timelines:
-    path: ../
+    git:
+      url: https://github.com/chulwoo-park/timelines.git
+      ref: develop
 
   font_awesome_flutter: ^8.10.0
   url_launcher: ^5.7.10
