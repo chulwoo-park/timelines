@@ -39,7 +39,7 @@ class TimelineTile extends StatelessWidget {
   })  : assert(node != null),
         assert(nodeAlign != null),
         assert(
-          nodeAlign != TimelineNodeAlign.basic || nodePosition == null,
+          nodeAlign == TimelineNodeAlign.basic || (nodeAlign != TimelineNodeAlign.basic && nodePosition == null),
           'Cannot provide both a nodeAlign and a nodePosition',
         ),
         assert(nodePosition == null || nodePosition >= 0),
@@ -98,6 +98,7 @@ class TimelineTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: reduce direction check
     final direction = this.direction ?? TimelineTheme.of(context).direction;
     final nodeFlex = _getEffectiveNodePosition(context) * kFlexMultiplier;
 
@@ -107,7 +108,7 @@ class TimelineTile extends StatelessWidget {
         Expanded(
           flex: nodeFlex.toInt(),
           child: Align(
-            alignment: AlignmentDirectional.centerEnd,
+            alignment: direction == Axis.vertical ? AlignmentDirectional.centerEnd : Alignment.bottomCenter,
             child: oppositeContents ?? SizedBox.shrink(),
           ),
         ),
@@ -122,7 +123,7 @@ class TimelineTile extends StatelessWidget {
         Expanded(
           flex: (kFlexMultiplier - nodeFlex).toInt(),
           child: Align(
-            alignment: AlignmentDirectional.centerStart,
+            alignment: direction == Axis.vertical ? AlignmentDirectional.centerStart : Alignment.topCenter,
             child: contents ?? SizedBox.shrink(),
           ),
         ),
