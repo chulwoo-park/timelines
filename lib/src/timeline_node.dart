@@ -29,7 +29,7 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
     this.direction,
     this.startConnector,
     this.endConnector,
-    @required this.indicator,
+    this.indicator = const ContainerIndicator(),
     this.indicatorPosition,
     this.position,
     this.overlap,
@@ -114,8 +114,8 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
 
   double _getEffectiveIndicatorPosition(BuildContext context) {
     var indicatorPosition = this.indicatorPosition;
-    indicatorPosition ??= (indicator is Indicator)
-        ? (indicator as Indicator).getEffectivePosition(context)
+    indicatorPosition ??= (indicator is PositionedIndicator)
+        ? (indicator as PositionedIndicator).getEffectivePosition(context)
         : TimelineTheme.of(context).indicatorPosition;
     return indicatorPosition;
   }
