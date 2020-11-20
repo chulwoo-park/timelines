@@ -214,6 +214,76 @@ class SolidLineConnector extends Connector {
   }
 }
 
+/// A decorated thin line, with padding on either side.
+///
+/// The box's total cross axis size(width or height, depend on [direction]) is controlled by [space].
+///
+/// The appropriate padding is automatically computed from the cross axis size.
+class DecoratedLineConnector extends Connector {
+  /// Creates a decorated line connector.
+  ///
+  /// The [thickness], [space], [indent], and [endIndent] must be null or non-negative.
+  const DecoratedLineConnector({
+    Key key,
+    Axis direction,
+    double thickness,
+    double space,
+    double indent,
+    double endIndent,
+    this.decoration,
+  }) : super(
+          key: key,
+          thickness: thickness,
+          space: space,
+          indent: indent,
+          endIndent: endIndent,
+        );
+
+  /// The decoration to paint line.
+  ///
+  /// Use the [SolidLineConnector] class to specify a simple solid color line.
+  final Decoration decoration;
+
+  @override
+  Widget build(BuildContext context) {
+    final direction = getEffectiveDirection(context);
+    final thickness = getEffectiveThickness(context);
+    final space = getEffectiveSpace(context);
+    final indent = getEffectiveIndent(context);
+    final endIndent = getEffectiveEndIndent(context);
+    final color = decoration == null ? getEffectiveColor(context) : null;
+
+    switch (direction) {
+      case Axis.vertical:
+        return _ConnectorIndent(
+          direction: direction,
+          indent: indent,
+          endIndent: endIndent,
+          space: space,
+          child: Container(
+            width: thickness,
+            color: color,
+            decoration: decoration,
+          ),
+        );
+      case Axis.horizontal:
+        return _ConnectorIndent(
+          direction: direction,
+          indent: indent,
+          endIndent: endIndent,
+          space: space,
+          child: Container(
+            height: thickness,
+            color: color,
+            decoration: decoration,
+          ),
+        );
+    }
+
+    throw ArgumentError('invalid direction: $direction');
+  }
+}
+
 /// A thin dashed line, with padding on either side.
 ///
 /// The box's total cross axis size(width or height, depend on [direction]) is controlled by [space].
