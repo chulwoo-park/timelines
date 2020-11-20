@@ -300,7 +300,6 @@ class Timeline extends BoxScrollView {
     assert(itemBuilder.childCount == null || itemBuilder.childCount >= 0);
     assert(semanticChildCount == null || semanticChildCount <= itemBuilder.childCount);
     assert(scrollDirection == null || theme == null, 'Cannot provide both a scrollDirection and a theme.');
-    assert(scrollDirection != null || theme != null, 'Must be provide either scrollDirection or theme.');
     return Timeline.custom(
       key: key,
       childrenDelegate: itemBuilder,
@@ -337,7 +336,7 @@ class Timeline extends BoxScrollView {
   /// property. None may be null.
   Timeline({
     Key key,
-    Axis scrollDirection = Axis.vertical,
+    Axis scrollDirection,
     bool reverse = false,
     ScrollController controller,
     bool primary,
@@ -366,7 +365,7 @@ class Timeline extends BoxScrollView {
         this.theme = theme,
         super(
           key: key,
-          scrollDirection: scrollDirection ?? theme?.direction,
+          scrollDirection: scrollDirection ?? theme?.direction ?? Axis.vertical,
           reverse: reverse,
           controller: controller,
           primary: primary,
@@ -406,7 +405,7 @@ class Timeline extends BoxScrollView {
   /// later time, consider using [Timeline] or [Timeline.custom].
   Timeline.builder({
     Key key,
-    Axis scrollDirection = Axis.vertical,
+    Axis scrollDirection,
     bool reverse = false,
     ScrollController controller,
     bool primary,
@@ -439,7 +438,7 @@ class Timeline extends BoxScrollView {
         this.theme = theme,
         super(
           key: key,
-          scrollDirection: scrollDirection ?? theme?.direction,
+          scrollDirection: scrollDirection ?? theme?.direction ?? Axis.vertical,
           reverse: reverse,
           controller: controller,
           primary: primary,
@@ -464,7 +463,7 @@ class Timeline extends BoxScrollView {
   ///  * This works similarly to [ListView.custom].
   Timeline.custom({
     Key key,
-    Axis scrollDirection = Axis.vertical,
+    Axis scrollDirection,
     bool reverse = false,
     ScrollController controller,
     bool primary,
@@ -485,7 +484,7 @@ class Timeline extends BoxScrollView {
         this.theme = theme,
         super(
           key: key,
-          scrollDirection: scrollDirection ?? theme?.direction,
+          scrollDirection: scrollDirection ?? theme?.direction ?? Axis.vertical,
           reverse: reverse,
           controller: controller,
           primary: primary,
