@@ -42,8 +42,11 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
     Axis direction,
     Color color,
     double lineThickness,
+    double nodePosition,
     double indicatorPosition,
     double indicatorSize,
+    double indicatorIndent,
+    double indicatorEndIndent,
     Widget indicatorChild,
     bool drawStartConnector = true,
     bool drawEndConnector = true,
@@ -55,6 +58,8 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
                   direction: direction,
                   color: color,
                   thickness: lineThickness,
+                  indent: indicatorIndent,
+                  endIndent: indicatorEndIndent,
                 )
               : null,
           endConnector: drawEndConnector
@@ -62,6 +67,8 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
                   direction: direction,
                   color: color,
                   thickness: lineThickness,
+                  indent: indicatorIndent,
+                  endIndent: indicatorEndIndent,
                 )
               : null,
           indicator: DotIndicator(
@@ -70,6 +77,8 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
             size: indicatorSize,
             color: color,
           ),
+          indicatorPosition: indicatorPosition,
+          position: nodePosition,
         );
 
   /// {@macro timelines.direction}
@@ -108,34 +117,58 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
     final direction = this.direction ?? TimelineTheme.of(context).direction;
     // TODO: support both flex and logical pixel
     final indicatorFlex = _getEffectiveIndicatorPosition(context);
-    Widget result = indicator;
-    final nodeItems = [
+    Widget positionedIndicator = indicator;
+    Widget line = indicator;
+    final lineItems = [
       if (indicatorFlex > 0)
         Flexible(
           flex: (indicatorFlex * kFlexMultiplier).toInt(),
           child: startConnector ?? TransparentConnector(),
         ),
-      indicator,
       if (indicatorFlex < 1)
         Flexible(
           flex: ((1 - indicatorFlex) * kFlexMultiplier).toInt(),
           child: endConnector ?? TransparentConnector(),
         ),
     ];
+    final positionedIndicatorItems = [
+      if (indicatorFlex > 0)
+        Flexible(
+          flex: (indicatorFlex * kFlexMultiplier).toInt(),
+          child: TransparentConnector(),
+        ),
+      indicator,
+      Flexible(
+        flex: ((1 - indicatorFlex) * kFlexMultiplier).toInt(),
+        child: TransparentConnector(),
+      ),
+    ];
     switch (direction) {
       case Axis.vertical:
-        result = Column(
+        line = Column(
           mainAxisSize: MainAxisSize.min,
-          children: nodeItems,
+          children: lineItems,
+        );
+        positionedIndicator = Column(
+          mainAxisSize: MainAxisSize.min,
+          children: positionedIndicatorItems,
         );
         break;
       case Axis.horizontal:
-        result = Row(
+        positionedIndicator = Row(
           mainAxisSize: MainAxisSize.min,
-          children: nodeItems,
+          children: positionedIndicatorItems,
         );
         break;
     }
+
+    Widget result = Stack(
+      alignment: Alignment.center,
+      children: [
+        line,
+        positionedIndicator,
+      ],
+    );
 
     if (TimelineTheme.of(context).direction != direction) {
       result = TimelineTheme(
