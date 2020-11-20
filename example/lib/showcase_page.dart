@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'showcase/package_delevery_tracking.dart';
+import 'showcase/process_timeline.dart';
 import 'showcase/timeline_status.dart';
 import 'widget.dart';
 
@@ -29,6 +30,13 @@ class ShowcasePage extends StatelessWidget {
               url:
                   'https://dribbble.com/shots/1899993-Package-Delivery-Tracking/attachments/1899993-Package-Delivery-Tracking?mode=media',
               navigationBuilder: () => PackageDeliveryTrackingPage(),
+            ),
+            _ShowcaseCard(
+              image: 'assets/images/process_timeline.png',
+              title: 'Process Timeline',
+              designer: 'Eddie Lobanovskiy',
+              url: 'https://dribbble.com/shots/5260798-Process',
+              navigationBuilder: () => ProcessTimelinePage(),
             ),
           ];
 
