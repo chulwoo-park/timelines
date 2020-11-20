@@ -9,6 +9,7 @@ import 'timeline_theme.dart';
 
 enum ConnectorStyle {
   solid,
+  dashed,
   transparent,
 }
 
