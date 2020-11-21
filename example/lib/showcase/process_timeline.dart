@@ -102,12 +102,6 @@ class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
             if (index <= _processIndex) {
               return Stack(
                 children: [
-                  // if (index < _processIndex)
-                  DotIndicator(
-                    size: 30.0,
-                    color: color,
-                    child: child,
-                  ),
                   CustomPaint(
                     size: Size(30.0, 30.0),
                     painter: _BezierPainter(
@@ -116,22 +110,26 @@ class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
                       drawEnd: index < _processIndex,
                     ),
                   ),
+                  DotIndicator(
+                    size: 30.0,
+                    color: color,
+                    child: child,
+                  ),
                 ],
               );
             } else {
               return Stack(
                 children: [
-                  // if (index < _processIndex)
-                  OutlinedDotIndicator(
-                    borderWidth: 4.0,
-                    color: color,
-                  ),
                   CustomPaint(
                     size: Size(15.0, 15.0),
                     painter: _BezierPainter(
                       color: color,
                       drawEnd: index < processes.length - 1,
                     ),
+                  ),
+                  OutlinedDotIndicator(
+                    borderWidth: 4.0,
+                    color: color,
                   ),
                 ],
               );
@@ -218,8 +216,8 @@ class _BezierPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.fill;
+      ..style = PaintingStyle.fill
+      ..color = color;
 
     final radius = size.width / 2;
 
@@ -229,6 +227,18 @@ class _BezierPainter extends CustomPainter {
 
     var path;
 
+    if (drawStart) {
+      angle = 3 * pi / 4;
+      offset1 = _offset(radius, angle);
+      offset2 = _offset(radius, -angle);
+      path = Path()
+        ..moveTo(offset1.dx, offset1.dy)
+        ..quadraticBezierTo(0.0, size.height / 2, -radius, radius) // TODO connector start & gradient
+        ..quadraticBezierTo(0.0, size.height / 2, offset2.dx, offset2.dy)
+        ..close();
+
+      canvas.drawPath(path, paint);
+    }
     if (drawEnd) {
       angle = -pi / 4;
       offset1 = _offset(radius, angle);
@@ -236,21 +246,8 @@ class _BezierPainter extends CustomPainter {
 
       path = Path()
         ..moveTo(offset1.dx, offset1.dy)
-        ..quadraticBezierTo(size.width, size.height / 2, radius + size.width, radius)
+        ..quadraticBezierTo(size.width, size.height / 2, size.width + radius, radius) // TODO connector end & gradient
         ..quadraticBezierTo(size.width, size.height / 2, offset2.dx, offset2.dy)
-        ..close();
-
-      canvas.drawPath(path, paint);
-    }
-
-    if (drawStart) {
-      angle = 3 * pi / 4;
-      offset1 = _offset(radius, angle);
-      offset2 = _offset(radius, -angle);
-      path = Path()
-        ..moveTo(offset1.dx, offset1.dy)
-        ..quadraticBezierTo(0.0, size.height / 2, -size.width, radius)
-        ..quadraticBezierTo(0.0, size.height / 2, offset2.dx, offset2.dy)
         ..close();
 
       canvas.drawPath(path, paint);
