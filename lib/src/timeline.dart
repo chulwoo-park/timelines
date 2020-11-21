@@ -77,6 +77,14 @@ enum ConnectorStyle {
   transparent,
 }
 
+/// TODO doc
+enum ConnectionType { before, after }
+
+/// if index is first, then prev is null. also if index is last, then next is null.
+typedef ConnectedWidgetBuilder = Widget Function(int prev, int current, int next);
+
+/// WARNING: The interface of this class is not yet clear. It may change frequently.
+///
 /// A delegate that supplies [TimelineTile] for timeline using a builder callback.
 ///
 /// The widgets returned from the builder callback are automatically wrapped in [AutomaticKeepAlive] widgets if
@@ -97,7 +105,146 @@ enum ConnectorStyle {
 ///
 ///  * [IndexedSemantics], for an example of manually annotating child nodes with semantic indexes.
 class TimelineTileBuilder extends SliverChildBuilderDelegate {
+  /// Creates a connected timeline.
+  ///
+  /// Check below for how to build:
+  ///
+  /// Original build system:
+  ///
+  /// |            <-- builder(0)
+  /// O contents1  <-- builder(0)
+  /// |            <-- builder(0)
+  /// |            <-- builder(1)
+  /// O contents2  <-- builder(1)
+  /// |            <-- builder(1)
+  ///
+  ///
+  /// Connected build system(before):
+  ///
+  /// |            <-- draw if provided [firstConnectorBuilder]
+  /// O contents1  <-- builder(0)
+  /// |            <-- builder(0)
+  /// |            <-- builder(0)
+  /// O contents2  <-- builder(1)
+  /// |            <-- builder(1)
+  /// |            <-- builder(1)
+  /// O            <-- builder(2)
+  /// |            <-- builder(2)
+  /// ..
+  /// |            <-- draw if provided [lastConnectorBuilder]
+  ///
+  ///
+  /// Connected build system(after):
+  ///
+  /// |            <-- draw if provided [firstConnectorBuilder]
+  /// O contents1  <-- builder(0)
+  /// |            <-- builder(1)
+  /// |            <-- builder(1)
+  /// O contents2  <-- builder(1)
+  /// |            <-- builder(2)
+  /// |            <-- builder(2)
+  /// O            <-- builder(2)
+  /// |            <-- builder(3)
+  /// ..
+  /// |            <-- draw if provided [lastConnectorBuilder]
+  ///
+  /// connectBefore
+  factory TimelineTileBuilder.connected({
+    int itemCount,
+    ConnectionType connectionType = ConnectionType.after,
+    IndexedWidgetBuilder contentsBuilder,
+    IndexedWidgetBuilder oppositeContentsBuilder,
+    IndexedWidgetBuilder indicatorBuilder,
+    IndexedWidgetBuilder connectorBuilder,
+    WidgetBuilder firstConnectorBuilder,
+    WidgetBuilder lastConnectorBuilder,
+    double itemExtent,
+    double nodePosition,
+    double indicatorPosition,
+    bool addAutomaticKeepAlives = true,
+    bool addRepaintBoundaries = true,
+    bool addSemanticIndexes = true,
+  }) {
+    assert(connectionType != null);
+
+    return TimelineTileBuilder(
+      itemCount: itemCount,
+      contentsBuilder: contentsBuilder,
+      oppositeContentsBuilder: oppositeContentsBuilder,
+      indicatorBuilder: indicatorBuilder,
+      startConnectorBuilder: _createConnectedStartConnectorBuilder(
+        connectionType: connectionType,
+        firstConnectorBuilder: firstConnectorBuilder,
+        connectorBuilder: connectorBuilder,
+      ),
+      endConnectorBuilder: _createConnectedEndConnectorBuilder(
+        connectionType: connectionType,
+        lastConnectorBuilder: lastConnectorBuilder,
+        connectorBuilder: connectorBuilder,
+        itemCount: itemCount,
+      ),
+      itemExtent: itemExtent,
+      nodePosition: nodePosition,
+      indicatorPosition: indicatorPosition,
+      addAutomaticKeepAlives: addAutomaticKeepAlives,
+      addRepaintBoundaries: addRepaintBoundaries,
+      addSemanticIndexes: addSemanticIndexes,
+    );
+  }
+
+  ///
+  ///
+  /// See also:
+  ///  * [TimelineTileBuilder.connected], How to build a connected timeline is described.
+  ///  * [TimelineTileBuilder.fromStyle]
+  factory TimelineTileBuilder.connectedFromStyle({
+    @required int itemCount,
+    ConnectionType connectionType = ConnectionType.after,
+    IndexedWidgetBuilder contentsBuilder,
+    IndexedWidgetBuilder oppositeContentsBuilder,
+    ContentsAlign contentsAlign = ContentsAlign.basic,
+    IndicatorStyle indicatorStyle = IndicatorStyle.dot,
+    ConnectorStyle connectorStyle = ConnectorStyle.solidLine,
+    ConnectorStyle endConnectorStyle = ConnectorStyle.solidLine,
+    ConnectorStyle firstConnectorStyle = ConnectorStyle.solidLine,
+    ConnectorStyle lastConnectorStyle = ConnectorStyle.solidLine,
+    double itemExtent,
+    double nodePosition,
+    double indicatorPosition,
+    bool addAutomaticKeepAlives = true,
+    bool addRepaintBoundaries = true,
+    bool addSemanticIndexes = true,
+  }) {
+    assert(connectionType != null);
+
+    return TimelineTileBuilder(
+      itemCount: itemCount,
+      contentsBuilder: contentsBuilder,
+      oppositeContentsBuilder: oppositeContentsBuilder,
+      indicatorBuilder: (context, _) => _createStyledIndicatorBuilder(indicatorStyle)(context),
+      startConnectorBuilder: _createConnectedStartConnectorBuilder(
+        connectionType: connectionType,
+        firstConnectorBuilder: (context) => _createStyledConnectorBuilder(firstConnectorStyle)(context),
+        connectorBuilder: (context, _) => _createStyledConnectorBuilder(connectorStyle)(context),
+      ),
+      endConnectorBuilder: _createConnectedEndConnectorBuilder(
+        connectionType: connectionType,
+        lastConnectorBuilder: (context) => _createStyledConnectorBuilder(lastConnectorStyle)(context),
+        connectorBuilder: (context, _) => _createStyledConnectorBuilder(endConnectorStyle)(context),
+        itemCount: itemCount,
+      ),
+      itemExtent: itemExtent,
+      nodePosition: nodePosition,
+      indicatorPosition: indicatorPosition,
+      addAutomaticKeepAlives: addAutomaticKeepAlives,
+      addRepaintBoundaries: addRepaintBoundaries,
+      addSemanticIndexes: addSemanticIndexes,
+    );
+  }
+
   /// Creates tiles from style.
+  ///
+  /// TODO: style each index
   ///
   /// See also:
   ///
@@ -119,80 +266,22 @@ class TimelineTileBuilder extends SliverChildBuilderDelegate {
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,
   }) {
-    final effectiveContentsBuilder = (context, index) {
-      switch (contentsAlign) {
-        case ContentsAlign.alternating:
-          if (index.isOdd) {
-            return oppositeContentsBuilder?.call(context, index);
-          }
-
-          return contentsBuilder(context, index);
-        case ContentsAlign.reverse:
-          return oppositeContentsBuilder?.call(context, index);
-        case ContentsAlign.basic:
-        default:
-          return contentsBuilder?.call(context, index);
-      }
-    };
-    final effectiveOppositeContentsBuilder = (context, index) {
-      switch (contentsAlign) {
-        case ContentsAlign.alternating:
-          if (index.isOdd) {
-            return contentsBuilder?.call(context, index);
-          }
-
-          return oppositeContentsBuilder(context, index);
-        case ContentsAlign.reverse:
-          return contentsBuilder?.call(context, index);
-        case ContentsAlign.basic:
-        default:
-          return oppositeContentsBuilder?.call(context, index);
-      }
-    };
-    final effectiveIndicatorBuilder = (_, __) {
-      switch (indicatorStyle) {
-        case IndicatorStyle.dot:
-          return Indicator.dot();
-        case IndicatorStyle.outlined:
-          return Indicator.outlined();
-        case IndicatorStyle.container:
-          return Indicator.widget();
-        case IndicatorStyle.transparent:
-        default:
-          return Indicator.transparent();
-      }
-    };
-    final startConnectorBuilder = (_, __) {
-      switch (connectorStyle) {
-        case ConnectorStyle.solidLine:
-          return Connector.solidLine();
-        case ConnectorStyle.dashedLine:
-          return Connector.dashedLine();
-        case ConnectorStyle.transparent:
-        default:
-          return Connector.transparent();
-      }
-    };
-    final endConnectorBuilder = (_, __) {
-      switch (endConnectorStyle) {
-        case ConnectorStyle.solidLine:
-          return Connector.solidLine();
-        case ConnectorStyle.dashedLine:
-          return Connector.dashedLine();
-        case ConnectorStyle.transparent:
-        default:
-          return Connector.transparent();
-      }
-    };
-
     return TimelineTileBuilder(
       itemCount: itemCount,
       itemExtent: itemExtent,
-      contentsBuilder: effectiveContentsBuilder,
-      oppositeContentsBuilder: effectiveOppositeContentsBuilder,
-      indicatorBuilder: effectiveIndicatorBuilder,
-      startConnectorBuilder: startConnectorBuilder,
-      endConnectorBuilder: endConnectorBuilder,
+      contentsBuilder: _createStyledContentsBuilder(
+        align: contentsAlign,
+        contentsBuilder: contentsBuilder,
+        oppositeContentsBuilder: oppositeContentsBuilder,
+      ),
+      oppositeContentsBuilder: _createStyledContentsBuilder(
+        align: contentsAlign,
+        contentsBuilder: oppositeContentsBuilder,
+        oppositeContentsBuilder: contentsBuilder,
+      ),
+      indicatorBuilder: (context, index) => _createStyledIndicatorBuilder(indicatorStyle)(context),
+      startConnectorBuilder: (context, _) => _createStyledConnectorBuilder(connectorStyle)(context),
+      endConnectorBuilder: (context, _) => _createStyledConnectorBuilder(connectorStyle)(context),
       nodePosition: nodePosition,
       indicatorPosition: indicatorPosition,
       addAutomaticKeepAlives: addAutomaticKeepAlives,
@@ -249,6 +338,118 @@ class TimelineTileBuilder extends SliverChildBuilderDelegate {
           addSemanticIndexes: addSemanticIndexes,
           childCount: itemCount,
         );
+
+  static IndexedWidgetBuilder _createConnectedStartConnectorBuilder({
+    @required ConnectionType connectionType,
+    @required WidgetBuilder firstConnectorBuilder,
+    @required IndexedWidgetBuilder connectorBuilder,
+  }) =>
+      (context, index) {
+        if (index == 0 && firstConnectorBuilder != null) {
+          return firstConnectorBuilder(context);
+        }
+
+        if (connectionType == ConnectionType.before) {
+          return connectorBuilder(context, index - 1);
+        } else {
+          return connectorBuilder(context, index);
+        }
+      };
+
+  static IndexedWidgetBuilder _createConnectedEndConnectorBuilder({
+    @required ConnectionType connectionType,
+    @required WidgetBuilder lastConnectorBuilder,
+    @required IndexedWidgetBuilder connectorBuilder,
+    int itemCount,
+  }) =>
+      (context, index) {
+        if (itemCount != null && index == itemCount - 1 && lastConnectorBuilder != null) {
+          return lastConnectorBuilder(context);
+        }
+
+        if (connectionType == ConnectionType.before) {
+          return connectorBuilder(context, index);
+        } else {
+          return connectorBuilder(context, index + 1);
+        }
+      };
+
+  static IndexedWidgetBuilder _createStyledContentsBuilder({
+    @required ContentsAlign align,
+    IndexedWidgetBuilder contentsBuilder,
+    IndexedWidgetBuilder oppositeContentsBuilder,
+  }) {
+    assert(align != null);
+
+    return (context, index) {
+      switch (align) {
+        case ContentsAlign.alternating:
+          if (index.isOdd) {
+            return oppositeContentsBuilder?.call(context, index);
+          }
+
+          return contentsBuilder(context, index);
+        case ContentsAlign.reverse:
+          return oppositeContentsBuilder?.call(context, index);
+        case ContentsAlign.basic:
+        default:
+          return contentsBuilder?.call(context, index);
+      }
+    };
+  }
+
+  static IndexedWidgetBuilder _createStyledOppositeContentsBuilder({
+    @required ContentsAlign align,
+    IndexedWidgetBuilder contentsBuilder,
+    IndexedWidgetBuilder oppositeContentsBuilder,
+  }) {
+    assert(align != null);
+
+    return (context, index) {
+      switch (align) {
+        case ContentsAlign.alternating:
+          if (index.isOdd) {
+            return contentsBuilder?.call(context, index);
+          }
+          return oppositeContentsBuilder(context, index);
+        case ContentsAlign.reverse:
+          return contentsBuilder?.call(context, index);
+        case ContentsAlign.basic:
+        default:
+          return oppositeContentsBuilder?.call(context, index);
+      }
+    };
+  }
+
+  static WidgetBuilder _createStyledIndicatorBuilder(IndicatorStyle style) {
+    return (_) {
+      switch (style) {
+        case IndicatorStyle.dot:
+          return Indicator.dot();
+        case IndicatorStyle.outlined:
+          return Indicator.outlined();
+        case IndicatorStyle.container:
+          return Indicator.widget();
+        case IndicatorStyle.transparent:
+        default:
+          return Indicator.transparent();
+      }
+    };
+  }
+
+  static WidgetBuilder _createStyledConnectorBuilder(ConnectorStyle style) {
+    return (_) {
+      switch (style) {
+        case ConnectorStyle.solidLine:
+          return Connector.solidLine();
+        case ConnectorStyle.dashedLine:
+          return Connector.dashedLine();
+        case ConnectorStyle.transparent:
+        default:
+          return Connector.transparent();
+      }
+    };
+  }
 }
 
 /// A scrollable timeline of widgets arranged linearly.
