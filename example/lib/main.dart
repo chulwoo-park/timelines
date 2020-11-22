@@ -4,6 +4,9 @@ import 'package:flutter/rendering.dart';
 import 'package:timelines/timelines.dart';
 
 import 'component_page.dart';
+import 'showcase/package_delevery_tracking.dart';
+import 'showcase/process_timeline.dart';
+import 'showcase/timeline_status.dart';
 import 'showcase_page.dart';
 import 'theme_page.dart';
 import 'widget.dart';
@@ -13,36 +16,68 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final _navigatorKey = GlobalKey<NavigatorState>();
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Timelines Demo',
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      home: WillPopScope(
-        onWillPop: () async {
-          if (_navigatorKey.currentState?.canPop() ?? false) {
-            _navigatorKey.currentState.maybePop();
-            return false;
-          } else {
-            return true;
-          }
-        },
-        child: Column(
-          children: [
-            Expanded(
-              child: Navigator(
-                key: _navigatorKey,
-                onGenerateRoute: (settings) => MaterialPageRoute(
-                  builder: (context) => ExamplePage(),
-                ),
+      onGenerateRoute: (settings) {
+        String path = Uri.tryParse(settings.name)?.path;
+        Widget child;
+        switch (path) {
+          case 'timeline_status':
+            child = TimelineStatusPage();
+            break;
+          case 'package_delevery_tracking':
+            child = PackageDeliveryTrackingPage();
+            break;
+          case 'process_timeline':
+            child = ProcessTimelinePage();
+            break;
+          default:
+            child = ExamplePage();
+        }
+
+        return MaterialPageRoute(builder: (context) => HomePage(child: child));
+      },
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  HomePage({
+    Key key,
+    @required this.child,
+  }) : super(key: key);
+
+  final Widget child;
+
+  final _navigatorKey = GlobalKey<NavigatorState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        if (_navigatorKey.currentState?.canPop() ?? false) {
+          _navigatorKey.currentState.maybePop();
+          return false;
+        } else {
+          return true;
+        }
+      },
+      child: Column(
+        children: [
+          Expanded(
+            child: Navigator(
+              key: _navigatorKey,
+              onGenerateRoute: (settings) => MaterialPageRoute(
+                builder: (context) => child,
               ),
             ),
-            if (kIsWeb) WebAlert()
-          ],
-        ),
+          ),
+          if (kIsWeb) WebAlert()
+        ],
       ),
     );
   }
