@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:timelines/timelines.dart';
@@ -12,13 +13,51 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  final _navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Timelines Demo',
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      home: ExamplePage(),
+      home: WillPopScope(
+        onWillPop: () async {
+          if (_navigatorKey.currentState?.canPop() ?? false) {
+            _navigatorKey.currentState.maybePop();
+            return false;
+          } else {
+            return true;
+          }
+        },
+        child: Column(
+          children: [
+            Expanded(
+              child: Navigator(
+                key: _navigatorKey,
+                onGenerateRoute: (settings) => MaterialPageRoute(
+                  builder: (context) => ExamplePage(),
+                ),
+              ),
+            ),
+            if (kIsWeb) WebAlert()
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class WebAlert extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 80.0,
+      child: Material(
+        child: Center(
+          child: Text("You are using the web version now. Some UI may be broken."),
+        ),
+      ),
     );
   }
 }
