@@ -163,6 +163,7 @@ class TimelineTileBuilder {
   ///  * [TimelineTileBuilder.connectedFromStyle], which builds connected tiles from style.
   factory TimelineTileBuilder.connected({
     @required int itemCount,
+    ContentsAlign contentsAlign = ContentsAlign.basic,
     ConnectionDirection connectionDirection = ConnectionDirection.after,
     IndexedWidgetBuilder contentsBuilder,
     IndexedWidgetBuilder oppositeContentsBuilder,
@@ -181,6 +182,7 @@ class TimelineTileBuilder {
     assert(connectionDirection != null);
     return TimelineTileBuilder(
       itemCount: itemCount,
+      contentsAlign: contentsAlign,
       contentsBuilder: contentsBuilder,
       oppositeContentsBuilder: oppositeContentsBuilder,
       indicatorBuilder: indicatorBuilder,
@@ -230,6 +232,7 @@ class TimelineTileBuilder {
 
     return TimelineTileBuilder(
       itemCount: itemCount,
+      contentsAlign: contentsAlign,
       contentsBuilder: contentsBuilder,
       oppositeContentsBuilder: oppositeContentsBuilder,
       indicatorBuilder: (context, _) => _createStyledIndicatorBuilder(indicatorStyle)(context),
@@ -279,16 +282,9 @@ class TimelineTileBuilder {
   }) {
     return TimelineTileBuilder(
       itemCount: itemCount,
-      contentsBuilder: _createStyledContentsBuilder(
-        align: contentsAlign,
-        contentsBuilder: contentsBuilder,
-        oppositeContentsBuilder: oppositeContentsBuilder,
-      ),
-      oppositeContentsBuilder: _createStyledContentsBuilder(
-        align: contentsAlign,
-        contentsBuilder: oppositeContentsBuilder,
-        oppositeContentsBuilder: contentsBuilder,
-      ),
+      contentsAlign: contentsAlign,
+      contentsBuilder: contentsBuilder,
+      oppositeContentsBuilder: oppositeContentsBuilder,
       indicatorBuilder: (context, index) => _createStyledIndicatorBuilder(indicatorStyle)(context),
       startConnectorBuilder: (context, _) => _createStyledConnectorBuilder(connectorStyle)(context),
       endConnectorBuilder: (context, _) => _createStyledConnectorBuilder(connectorStyle)(context),
@@ -308,6 +304,7 @@ class TimelineTileBuilder {
   /// TODO: need refactoring, is it has many builders...?
   factory TimelineTileBuilder({
     @required int itemCount,
+    ContentsAlign contentsAlign,
     IndexedWidgetBuilder contentsBuilder,
     IndexedWidgetBuilder oppositeContentsBuilder,
     IndexedWidgetBuilder indicatorBuilder,
@@ -325,6 +322,17 @@ class TimelineTileBuilder {
       'Cannot provide both a itemExtent and a itemExtentBuilder.',
     );
 
+    final effectiveContentsBuilder = _createAlignedContentsBuilder(
+      align: contentsAlign,
+      contentsBuilder: contentsBuilder,
+      oppositeContentsBuilder: oppositeContentsBuilder,
+    );
+    final effectiveOppositeContentsBuilder = _createAlignedContentsBuilder(
+      align: contentsAlign,
+      contentsBuilder: oppositeContentsBuilder,
+      oppositeContentsBuilder: contentsBuilder,
+    );
+
     return TimelineTileBuilder._(
       (context, index) {
         final tile = TimelineTile(
@@ -337,8 +345,8 @@ class TimelineTileBuilder {
             position: nodePositionBuilder?.call(context, index),
             indicatorPosition: indicatorPositionBuilder?.call(context, index),
           ),
-          contents: contentsBuilder?.call(context, index),
-          oppositeContents: oppositeContentsBuilder?.call(context, index),
+          contents: effectiveContentsBuilder(context, index),
+          oppositeContents: effectiveOppositeContentsBuilder(context, index),
         );
 
         final theme = themeBuilder?.call(context, index);
@@ -411,7 +419,7 @@ class TimelineTileBuilder {
         }
       };
 
-  static IndexedWidgetBuilder _createStyledContentsBuilder({
+  static IndexedWidgetBuilder _createAlignedContentsBuilder({
     @required ContentsAlign align,
     IndexedWidgetBuilder contentsBuilder,
     IndexedWidgetBuilder oppositeContentsBuilder,
@@ -425,7 +433,7 @@ class TimelineTileBuilder {
             return oppositeContentsBuilder?.call(context, index);
           }
 
-          return contentsBuilder(context, index);
+          return contentsBuilder?.call(context, index);
         case ContentsAlign.reverse:
           return oppositeContentsBuilder?.call(context, index);
         case ContentsAlign.basic:
