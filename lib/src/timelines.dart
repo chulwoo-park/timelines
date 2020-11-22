@@ -284,13 +284,21 @@ class Timeline extends BoxScrollView {
       result = SliverList(delegate: childrenDelegate);
     }
 
-    return TimelineTheme(
-      data: theme ??
-          TimelineThemeData(
-            direction: scrollDirection,
-          ),
-      child: result,
-    );
+    var theme;
+    if (this.theme != null) {
+      theme = this.theme;
+    } else if (scrollDirection != TimelineTheme.of(context).direction) {
+      theme = TimelineTheme.of(context).copyWith(direction: scrollDirection);
+    }
+
+    if (theme != null) {
+      return TimelineTheme(
+        data: theme,
+        child: result,
+      );
+    } else {
+      return result;
+    }
   }
 }
 
@@ -441,20 +449,33 @@ class FixedTimeline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final direction = this.direction ?? theme?.direction ?? Axis.vertical;
-    return TimelineTheme(
-      data: theme ??
-          TimelineThemeData(
-            direction: direction,
-          ),
-      child: Flex(
-        direction: direction,
-        children: children,
-        mainAxisSize: mainAxisSize,
-        textDirection: textDirection,
-        verticalDirection: verticalDirection,
-        clipBehavior: clipBehavior,
-      ),
+    final direction = this.direction ?? this.theme?.direction ?? Axis.vertical;
+
+    Widget result = Flex(
+      direction: direction,
+      children: children,
+      mainAxisSize: mainAxisSize,
+      textDirection: textDirection,
+      verticalDirection: verticalDirection,
+      clipBehavior: clipBehavior,
     );
+
+    var theme;
+    if (this.direction != null) {
+      if (direction != TimelineTheme.of(context).direction) {
+        theme = TimelineTheme.of(context).copyWith(direction: this.direction);
+      }
+    } else if (this.theme != null) {
+      theme = this.theme;
+    }
+
+    if (theme != null) {
+      return TimelineTheme(
+        data: theme,
+        child: result,
+      );
+    } else {
+      return result;
+    }
   }
 }
