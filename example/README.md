@@ -1,16 +1,7 @@
-# example
+# Examples
 
-A new Flutter application.
+Check it out on the [web](https://chulwoo.dev/timelines/) or look at the [source code](https://github.com/chulwoo-park/timelines/tree/release/0.1.0/example).
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+| Timeline status | Package delivery tracking | Process timeline |
+| - | - | - |
+| [![timeline_status](https://raw.github.com/chulwoo-park/timelines/release/0.1.0/screenshots/timeline_status.gif)](https://chulwoo.dev/timelines/#/timeline_status) | [![package_delivery_tracking.gif](https://raw.github.com/chulwoo-park/timelines/release/0.1.0/screenshots/package_delivery_tracking.gif)](https://chulwoo.dev/timelines/#/package_delivery_tracking) | [![process_timeline.gif](https://raw.github.com/chulwoo-park/timelines/release/0.1.0/screenshots/process_timeline.gif)](https://chulwoo.dev/timelines/#/process_timeline) |
