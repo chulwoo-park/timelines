@@ -19,14 +19,6 @@ class ProcessTimelinePage extends StatefulWidget {
 }
 
 class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
-  final processes = [
-    'Prospect',
-    'Tour',
-    'Offer',
-    'Contract',
-    'Settled',
-  ];
-
   int _processIndex = 2;
 
   Color getColor(int index) {
@@ -44,7 +36,7 @@ class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: TitleAppBar('Process Timeline'),
-      body: Timeline.timelineTile(
+      body: Timeline.tileBuilder(
         theme: TimelineThemeData(
           direction: Axis.horizontal,
           connectorTheme: ConnectorThemeData(
@@ -52,8 +44,9 @@ class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
             thickness: 5.0,
           ),
         ),
-        itemBuilder: TimelineTileBuilder(
-          itemExtent: MediaQuery.of(context).size.width / processes.length,
+        builder: TimelineTileBuilder.connected(
+          connectionDirection: ConnectionDirection.before,
+          itemExtentBuilder: (_, __) => MediaQuery.of(context).size.width / _processes.length,
           oppositeContentsBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.only(bottom: 15.0),
@@ -68,7 +61,7 @@ class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
             return Padding(
               padding: const EdgeInsets.only(top: 15.0),
               child: Text(
-                processes[index],
+                _processes[index],
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: getColor(index),
@@ -124,7 +117,7 @@ class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
                     size: Size(15.0, 15.0),
                     painter: _BezierPainter(
                       color: color,
-                      drawEnd: index < processes.length - 1,
+                      drawEnd: index < _processes.length - 1,
                     ),
                   ),
                   OutlinedDotIndicator(
@@ -135,15 +128,21 @@ class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
               );
             }
           },
-          startConnectorBuilder: (_, index) {
+          connectorBuilder: (_, index, type) {
             if (index > 0) {
               if (index == _processIndex) {
                 final prevColor = getColor(index - 1);
                 final color = getColor(index);
+                var gradientColors;
+                if (type == ConnectorType.start) {
+                  gradientColors = [Color.lerp(prevColor, color, 0.5), color];
+                } else {
+                  gradientColors = [prevColor, Color.lerp(prevColor, color, 0.5)];
+                }
                 return DecoratedLineConnector(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Color.lerp(prevColor, color, 0.5), color],
+                      colors: gradientColors,
                     ),
                   ),
                 );
@@ -156,35 +155,14 @@ class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
               return null;
             }
           },
-          endConnectorBuilder: (_, index) {
-            if (index < processes.length - 1) {
-              if (index < _processIndex) {
-                final color = getColor(index);
-                final nextColor = getColor(index + 1);
-                return DecoratedLineConnector(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [color, Color.lerp(color, nextColor, 0.5)],
-                    ),
-                  ),
-                );
-              } else {
-                return SolidLineConnector(
-                  color: todoColor,
-                );
-              }
-            } else {
-              return null;
-            }
-          },
-          itemCount: processes.length,
+          itemCount: _processes.length,
         ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(FontAwesomeIcons.chevronRight),
         onPressed: () {
           setState(() {
-            _processIndex = (_processIndex + 1) % processes.length;
+            _processIndex = (_processIndex + 1) % _processes.length;
           });
         },
         backgroundColor: inProgressColor,
@@ -259,3 +237,11 @@ class _BezierPainter extends CustomPainter {
     return oldDelegate.color != color || oldDelegate.drawStart != drawStart || oldDelegate.drawEnd != drawEnd;
   }
 }
+
+final _processes = [
+  'Prospect',
+  'Tour',
+  'Offer',
+  'Contract',
+  'Settled',
+];

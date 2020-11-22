@@ -60,10 +60,10 @@ class ComponentPage extends StatelessWidget {
         name: 'Horizontal\nTimeline',
         item: SizedBox(
           height: 150,
-          child: Timeline.timelineTile(
+          child: Timeline.tileBuilder(
             // shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            itemBuilder: TimelineTileBuilder.fromStyle(
+            builder: TimelineTileBuilder.fromStyle(
               contentsBuilder: (context, index) => Card(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -83,10 +83,10 @@ class ComponentPage extends StatelessWidget {
         name: 'Styled node\nHorizontal\nTimeline',
         item: SizedBox(
           height: 150,
-          child: Timeline.timelineTile(
+          child: Timeline.tileBuilder(
             // shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            itemBuilder: TimelineTileBuilder.fromStyle(
+            builder: TimelineTileBuilder.fromStyle(
               contentsBuilder: (context, index) => Card(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -108,10 +108,10 @@ class ComponentPage extends StatelessWidget {
         name: 'Reverse\nHorizontal\nTimeline',
         item: SizedBox(
           height: 150,
-          child: Timeline.timelineTile(
+          child: Timeline.tileBuilder(
             // shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            itemBuilder: TimelineTileBuilder.fromStyle(
+            builder: TimelineTileBuilder.fromStyle(
               contentsBuilder: (context, index) => Card(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -132,10 +132,10 @@ class ComponentPage extends StatelessWidget {
         name: 'Alternating\nHorizontal\nTimeline',
         item: SizedBox(
           height: 150,
-          child: Timeline.timelineTile(
+          child: Timeline.tileBuilder(
             // shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            itemBuilder: TimelineTileBuilder.fromStyle(
+            builder: TimelineTileBuilder.fromStyle(
               contentsBuilder: (context, index) => Card(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -156,8 +156,8 @@ class ComponentPage extends StatelessWidget {
         name: 'Vertical\nTimeline',
         item: SizedBox(
           height: 500,
-          child: Timeline.timelineTile(
-            itemBuilder: TimelineTileBuilder.fromStyle(
+          child: Timeline.tileBuilder(
+            builder: TimelineTileBuilder.fromStyle(
               contentsBuilder: (context, index) => Card(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),

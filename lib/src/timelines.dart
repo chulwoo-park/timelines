@@ -2,254 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'connectors.dart';
-import 'indicators.dart';
-import 'timeline_node.dart';
 import 'timeline_theme.dart';
-import 'timeline_tile.dart';
-
-/// How a contents displayed be into timeline.
-///
-/// See also:
-///  * [TimelineTileBuilder.fromStyle]
-enum ContentsAlign {
-  /// The contents aligned end of timeline. And the opposite contents aligned start of timeline.
-  ///
-  /// Example:
-  ///
-  /// opposite contents  |  contents
-  /// opposite contents  |  contents
-  /// opposite contents  |  contents
-  basic,
-
-  /// The contents aligned start of timeline. And the opposite contents aligned end of timeline.
-  ///
-  /// Example:
-  ///
-  /// contents  |  opposite contents
-  /// contents  |  opposite contents
-  /// contents  |  opposite contents
-  reverse,
-
-  /// The contents and opposite contents displayed alternating.
-  ///
-  /// Example:
-  ///
-  ///          contents  |  opposite contents
-  /// opposite contents  |  contents
-  ///          contents  |  opposite contents
-  /// opposite contents  |  contents
-  ///          contents  |  opposite contents
-  alternating,
-}
-
-/// Types of indicators displayed into timeline
-///
-/// See also:
-///
-///  * [TimelineTileBuilder.fromStyle]
-enum IndicatorStyle {
-  /// Draw dot indicator.
-  dot,
-
-  /// Draw outlined dot indicator.
-  outlined,
-
-  /// Draw container indicator. TODO: need child to builds...
-  container,
-
-  /// Draw transparent indicator. (invisible indicator)
-  transparent,
-}
-
-/// Types of connectors displayed into timeline
-///
-/// See also:
-/// * [TimelineTileBuilder.fromStyle].
-enum ConnectorStyle {
-  /// Draw solid line connector.
-  solidLine,
-
-  /// Draw dashed line connector.
-  dashedLine,
-
-  /// Draw transparent connector. (invisible connector)
-  transparent,
-}
-
-/// A delegate that supplies [TimelineTile] for timeline using a builder callback.
-///
-/// The widgets returned from the builder callback are automatically wrapped in [AutomaticKeepAlive] widgets if
-/// [addAutomaticKeepAlives] is true (the default) and in [RepaintBoundary] widgets if [addRepaintBoundaries] is true
-/// (also the default).
-///
-/// ## Accessibility
-///
-/// The [CustomScrollView] requires that its semantic children are annotated using [IndexedSemantics]. This is done by
-/// default in the delegate with the `addSemanticIndexes` parameter set to true.
-///
-/// If multiple delegates are used in a single scroll view, then the indexes will not be correct by default. The
-/// `semanticIndexOffset` can be used to offset the semantic indexes of each delegate so that the indexes are
-/// monotonically increasing. For example, if a scroll view contains two delegates where the first has 10 children
-/// contributing semantics, then the second delegate should offset its children by 10.
-///
-/// See also:
-///
-///  * [IndexedSemantics], for an example of manually annotating child nodes with semantic indexes.
-class TimelineTileBuilder extends SliverChildBuilderDelegate {
-  /// Creates tiles from style.
-  ///
-  /// See also:
-  ///
-  ///  * [IndicatorStyle]
-  ///  * [ConnectorStyle]
-  ///  * [ContentsAlign]
-  factory TimelineTileBuilder.fromStyle({
-    int itemCount,
-    IndexedWidgetBuilder contentsBuilder,
-    IndexedWidgetBuilder oppositeContentsBuilder,
-    ContentsAlign contentsAlign = ContentsAlign.basic,
-    IndicatorStyle indicatorStyle = IndicatorStyle.dot,
-    ConnectorStyle connectorStyle = ConnectorStyle.solidLine,
-    ConnectorStyle endConnectorStyle = ConnectorStyle.solidLine,
-    double itemExtent,
-    double nodePosition,
-    double indicatorPosition,
-    bool addAutomaticKeepAlives = true,
-    bool addRepaintBoundaries = true,
-    bool addSemanticIndexes = true,
-  }) {
-    final effectiveContentsBuilder = (context, index) {
-      switch (contentsAlign) {
-        case ContentsAlign.alternating:
-          if (index.isOdd) {
-            return oppositeContentsBuilder?.call(context, index);
-          }
-
-          return contentsBuilder(context, index);
-        case ContentsAlign.reverse:
-          return oppositeContentsBuilder?.call(context, index);
-        case ContentsAlign.basic:
-        default:
-          return contentsBuilder?.call(context, index);
-      }
-    };
-    final effectiveOppositeContentsBuilder = (context, index) {
-      switch (contentsAlign) {
-        case ContentsAlign.alternating:
-          if (index.isOdd) {
-            return contentsBuilder?.call(context, index);
-          }
-
-          return oppositeContentsBuilder(context, index);
-        case ContentsAlign.reverse:
-          return contentsBuilder?.call(context, index);
-        case ContentsAlign.basic:
-        default:
-          return oppositeContentsBuilder?.call(context, index);
-      }
-    };
-    final effectiveIndicatorBuilder = (_, __) {
-      switch (indicatorStyle) {
-        case IndicatorStyle.dot:
-          return Indicator.dot();
-        case IndicatorStyle.outlined:
-          return Indicator.outlined();
-        case IndicatorStyle.container:
-          return Indicator.widget();
-        case IndicatorStyle.transparent:
-        default:
-          return Indicator.transparent();
-      }
-    };
-    final startConnectorBuilder = (_, __) {
-      switch (connectorStyle) {
-        case ConnectorStyle.solidLine:
-          return Connector.solidLine();
-        case ConnectorStyle.dashedLine:
-          return Connector.dashedLine();
-        case ConnectorStyle.transparent:
-        default:
-          return Connector.transparent();
-      }
-    };
-    final endConnectorBuilder = (_, __) {
-      switch (endConnectorStyle) {
-        case ConnectorStyle.solidLine:
-          return Connector.solidLine();
-        case ConnectorStyle.dashedLine:
-          return Connector.dashedLine();
-        case ConnectorStyle.transparent:
-        default:
-          return Connector.transparent();
-      }
-    };
-
-    return TimelineTileBuilder(
-      itemCount: itemCount,
-      itemExtent: itemExtent,
-      contentsBuilder: effectiveContentsBuilder,
-      oppositeContentsBuilder: effectiveOppositeContentsBuilder,
-      indicatorBuilder: effectiveIndicatorBuilder,
-      startConnectorBuilder: startConnectorBuilder,
-      endConnectorBuilder: endConnectorBuilder,
-      nodePosition: nodePosition,
-      indicatorPosition: indicatorPosition,
-      addAutomaticKeepAlives: addAutomaticKeepAlives,
-      addRepaintBoundaries: addRepaintBoundaries,
-      addSemanticIndexes: addSemanticIndexes,
-    );
-  }
-
-  /// Creates tiles from each component builders.
-  factory TimelineTileBuilder({
-    int itemCount,
-    IndexedWidgetBuilder contentsBuilder,
-    IndexedWidgetBuilder oppositeContentsBuilder,
-    IndexedWidgetBuilder indicatorBuilder,
-    IndexedWidgetBuilder startConnectorBuilder,
-    IndexedWidgetBuilder endConnectorBuilder,
-    double itemExtent,
-    double nodePosition,
-    double indicatorPosition,
-    bool addAutomaticKeepAlives = true,
-    bool addRepaintBoundaries = true,
-    bool addSemanticIndexes = true,
-  }) {
-    return TimelineTileBuilder._(
-      (context, index) => TimelineTile(
-        mainAxisExtent: itemExtent,
-        node: TimelineNode(
-          indicator: indicatorBuilder?.call(context, index) ?? Indicator.transparent(),
-          startConnector: startConnectorBuilder?.call(context, index),
-          endConnector: endConnectorBuilder?.call(context, index),
-          position: nodePosition,
-          indicatorPosition: indicatorPosition,
-        ),
-        contents: contentsBuilder?.call(context, index),
-        oppositeContents: oppositeContentsBuilder?.call(context, index),
-      ),
-      itemCount: itemCount,
-      addAutomaticKeepAlives: addAutomaticKeepAlives,
-      addRepaintBoundaries: addRepaintBoundaries,
-      addSemanticIndexes: addSemanticIndexes,
-    );
-  }
-
-  const TimelineTileBuilder._(
-    IndexedWidgetBuilder builder, {
-    int itemCount,
-    bool addAutomaticKeepAlives = true,
-    bool addRepaintBoundaries = true,
-    bool addSemanticIndexes = true,
-  }) : super(
-          builder,
-          addAutomaticKeepAlives: addAutomaticKeepAlives,
-          addRepaintBoundaries: addRepaintBoundaries,
-          addSemanticIndexes: addSemanticIndexes,
-          childCount: itemCount,
-        );
-}
+import 'timeline_tile_builder.dart';
 
 /// A scrollable timeline of widgets arranged linearly.
 class Timeline extends BoxScrollView {
@@ -276,8 +30,9 @@ class Timeline extends BoxScrollView {
   ///
   /// [Timeline.builder] by default does not support child reordering. If you are planning to change child order at a
   /// later time, consider using [Timeline] or [Timeline.custom].
-  factory Timeline.timelineTile({
+  factory Timeline.tileBuilder({
     Key key,
+    @required TimelineTileBuilder builder,
     Axis scrollDirection,
     bool reverse = false,
     ScrollController controller,
@@ -285,24 +40,24 @@ class Timeline extends BoxScrollView {
     ScrollPhysics physics,
     bool shrinkWrap = false,
     EdgeInsetsGeometry padding,
-    @required TimelineTileBuilder itemBuilder,
-    double itemExtent,
+    // double itemExtent, TODO: fixedExtentTileBuilder?
     double cacheExtent,
     int semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     ScrollViewKeyboardDismissBehavior keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
     String restorationId,
     Clip clipBehavior = Clip.hardEdge,
-    double nodePosition,
-    double indicatorPosition,
     TimelineThemeData theme,
   }) {
-    assert(itemBuilder.childCount == null || itemBuilder.childCount >= 0);
-    assert(semanticChildCount == null || semanticChildCount <= itemBuilder.childCount);
-    assert(scrollDirection == null || theme == null, 'Cannot provide both a scrollDirection and a theme.');
+    assert(builder.itemCount == null || builder.itemCount >= 0);
+    assert(semanticChildCount == null || semanticChildCount <= builder.itemCount);
     return Timeline.custom(
       key: key,
-      childrenDelegate: itemBuilder,
+      childrenDelegate: SliverChildBuilderDelegate(
+        builder.build,
+        childCount: builder.itemCount,
+        // TODO: apply some fields if needed.
+      ),
       scrollDirection: scrollDirection,
       reverse: reverse,
       controller: controller,
@@ -310,9 +65,9 @@ class Timeline extends BoxScrollView {
       physics: physics,
       shrinkWrap: shrinkWrap,
       padding: padding,
-      itemExtent: itemExtent,
+      // itemExtent: itemExtent,
       cacheExtent: cacheExtent,
-      semanticChildCount: semanticChildCount ?? itemBuilder.childCount,
+      semanticChildCount: semanticChildCount ?? builder.itemCount,
       dragStartBehavior: dragStartBehavior,
       keyboardDismissBehavior: keyboardDismissBehavior,
       restorationId: restorationId,
@@ -414,7 +169,7 @@ class Timeline extends BoxScrollView {
     EdgeInsetsGeometry padding,
     this.itemExtent,
     @required IndexedWidgetBuilder itemBuilder,
-    int itemCount,
+    @required int itemCount,
     bool addAutomaticKeepAlives = true,
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,
@@ -535,6 +290,58 @@ class Timeline extends BoxScrollView {
             direction: scrollDirection,
           ),
       child: result,
+    );
+  }
+}
+
+/// A widget that displays its children in a one-dimensional array with timeline theme.
+class FixedTimeline extends StatelessWidget {
+  /// Creates a timeline flex layout.
+  factory FixedTimeline.tileBuilder({
+    Key key,
+    @required TimelineTileBuilder builder,
+    TimelineThemeData theme,
+    Axis direction,
+  }) {
+    assert(builder != null);
+    // TODO: how remove Builders?
+    return FixedTimeline(
+      children: [
+        for (int i = 0; i < builder.itemCount; i++)
+          Builder(
+            builder: (context) => builder.build(context, i),
+          ),
+      ],
+      theme: theme,
+      direction: direction,
+    );
+  }
+
+  /// Creates a timeline flex layout.
+  const FixedTimeline({
+    Key key,
+    this.theme,
+    this.direction,
+    this.children = const [],
+  })  : assert(direction == null || theme == null, 'Cannot provide both a direction and a theme.'),
+        super(key: key);
+
+  final TimelineThemeData theme;
+  final Axis direction;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    final direction = this.direction ?? theme?.direction ?? Axis.vertical;
+    return TimelineTheme(
+      data: theme ??
+          TimelineThemeData(
+            direction: direction,
+          ),
+      child: Flex(
+        direction: direction,
+        children: children,
+      ),
     );
   }
 }
