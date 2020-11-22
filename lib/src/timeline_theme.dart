@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 
 import 'connector_theme.dart';
 import 'indicator_theme.dart';
-import 'timeline.dart';
+import 'timelines.dart';
 
 /// Applies a theme to descendant timeline widgets.
 ///

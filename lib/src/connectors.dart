@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 
 import 'connector_theme.dart';
 import 'line_painter.dart';
-import 'timeline.dart';
+import 'timelines.dart';
 import 'timeline_node.dart';
 import 'timeline_theme.dart';
 
