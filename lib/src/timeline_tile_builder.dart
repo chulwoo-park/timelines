@@ -218,9 +218,8 @@ class TimelineTileBuilder {
     IndexedWidgetBuilder contentsBuilder,
     IndexedWidgetBuilder oppositeContentsBuilder,
     ContentsAlign contentsAlign = ContentsAlign.basic,
-    IndicatorStyle indicatorStyle = IndicatorStyle.dot,
-    ConnectorStyle connectorStyle = ConnectorStyle.solidLine,
-    ConnectorStyle endConnectorStyle = ConnectorStyle.solidLine,
+    IndexedValueBuilder<IndicatorStyle> indicatorStyleBuilder,
+    IndexedValueBuilder<ConnectorStyle> connectorStyleBuilder,
     ConnectorStyle firstConnectorStyle = ConnectorStyle.solidLine,
     ConnectorStyle lastConnectorStyle = ConnectorStyle.solidLine,
     double itemExtent,
@@ -235,16 +234,19 @@ class TimelineTileBuilder {
       contentsAlign: contentsAlign,
       contentsBuilder: contentsBuilder,
       oppositeContentsBuilder: oppositeContentsBuilder,
-      indicatorBuilder: (context, _) => _createStyledIndicatorBuilder(indicatorStyle)(context),
+      indicatorBuilder: (context, index) =>
+          _createStyledIndicatorBuilder(indicatorStyleBuilder?.call(context, index))(context),
       startConnectorBuilder: _createConnectedStartConnectorBuilder(
         connectionDirection: connectionDirection,
         firstConnectorBuilder: (context) => _createStyledConnectorBuilder(firstConnectorStyle)(context),
-        connectorBuilder: (context, _, __) => _createStyledConnectorBuilder(connectorStyle)(context),
+        connectorBuilder: (context, index, __) =>
+            _createStyledConnectorBuilder(connectorStyleBuilder?.call(context, index))(context),
       ),
       endConnectorBuilder: _createConnectedEndConnectorBuilder(
         connectionDirection: connectionDirection,
         lastConnectorBuilder: (context) => _createStyledConnectorBuilder(lastConnectorStyle)(context),
-        connectorBuilder: (context, _, __) => _createStyledConnectorBuilder(endConnectorStyle)(context),
+        connectorBuilder: (context, index, __) =>
+            _createStyledConnectorBuilder(connectorStyleBuilder?.call(context, index))(context),
         itemCount: itemCount,
       ),
       itemExtent: itemExtent,
