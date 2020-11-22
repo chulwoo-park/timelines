@@ -304,7 +304,7 @@ class TimelineTileBuilder {
   /// TODO: need refactoring, is it has many builders...?
   factory TimelineTileBuilder({
     @required int itemCount,
-    ContentsAlign contentsAlign,
+    ContentsAlign contentsAlign = ContentsAlign.basic,
     IndexedWidgetBuilder contentsBuilder,
     IndexedWidgetBuilder oppositeContentsBuilder,
     IndexedWidgetBuilder indicatorBuilder,
