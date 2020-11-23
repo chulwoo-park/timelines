@@ -1,4 +1,4 @@
-[![banner](https://raw.github.com/chulwoo-park/timelines/master/design/feature_graphic.png)](https://github.com/chulwoo-park/timelines)
+[![banner](https://raw.github.com/chulwoo-park/timelines/main/design/feature_graphic.png)](https://github.com/chulwoo-park/timelines)
 
 <p align="center">
   <a href="https://pub.dartlang.org/packages/timelines">
@@ -13,17 +13,17 @@
 
 # Examples
 
-Check it out on the [web](https://chulwoo.dev/timelines/) or look at the [source code](https://github.com/chulwoo-park/timelines/tree/master/example).
+Check it out on the [web](https://chulwoo.dev/timelines/) or look at the [source code](https://github.com/chulwoo-park/timelines/tree/main/example).
 
 | Timeline status | Package delivery tracking | Process timeline |
 | - | - | - |
-| [![timeline_status](https://raw.github.com/chulwoo-park/timelines/master/screenshots/timeline_status.gif)](https://chulwoo.dev/timelines/#/timeline_status) | [![package_delivery_tracking.gif](https://raw.github.com/chulwoo-park/timelines/master/screenshots/package_delivery_tracking.gif)](https://chulwoo.dev/timelines/#/package_delivery_tracking) | [![process_timeline.gif](https://raw.github.com/chulwoo-park/timelines/master/screenshots/process_timeline.gif)](https://chulwoo.dev/timelines/#/process_timeline) |
+| [![timeline_status](https://raw.github.com/chulwoo-park/timelines/main/screenshots/timeline_status.gif)](https://chulwoo.dev/timelines/#/timeline_status) | [![package_delivery_tracking.gif](https://raw.github.com/chulwoo-park/timelines/main/screenshots/package_delivery_tracking.gif)](https://chulwoo.dev/timelines/#/package_delivery_tracking) | [![process_timeline.gif](https://raw.github.com/chulwoo-park/timelines/main/screenshots/process_timeline.gif)](https://chulwoo.dev/timelines/#/process_timeline) |
 
 <p align="center">More examples<br/>🚧 WIP 🚧</p>
 
 # Features
 
-### The [timeline](https://github.com/chulwoo-park/timelines/tree/master#Components) and each [components](https://github.com/chulwoo-park/timelines/tree/master#Components) are all WIDGET.
+### The [timeline](https://github.com/chulwoo-park/timelines/tree/main#Components) and each [components](https://github.com/chulwoo-park/timelines/tree/main#Components) are all WIDGET.
 
 * Common styles can be easily implemented with predefined components.
 * Vertical, horizontal direction.
@@ -33,16 +33,16 @@ Check it out on the [web](https://chulwoo.dev/timelines/) or look at the [source
 
 # Getting started
 
-- [Installation](https://github.com/chulwoo-park/timelines/tree/master#installation)
-- [Basic Usage](https://github.com/chulwoo-park/timelines/tree/master#Basic-Usage)
-- [Components](https://github.com/chulwoo-park/timelines/tree/master#Components)
-  - [Theme](https://github.com/chulwoo-park/timelines/tree/master#Theme)
-  - [Indicator](https://github.com/chulwoo-park/timelines/tree/master#Indicator)
-  - [Connector](https://github.com/chulwoo-park/timelines/tree/master#Connector)
-  - [TimelineNode](https://github.com/chulwoo-park/timelines/tree/master#TimelineNode)
-  - [TimelineTile](https://github.com/chulwoo-park/timelines/tree/master#TimelineTile)
-  - [TimelineTileBuilder](https://github.com/chulwoo-park/timelines/tree/master#TimelineTileBuilder)
-  - [Timeline](https://github.com/chulwoo-park/timelines/tree/master#Timeline)
+- [Installation](https://github.com/chulwoo-park/timelines/tree/main#installation)
+- [Basic Usage](https://github.com/chulwoo-park/timelines/tree/main#Basic-Usage)
+- [Components](https://github.com/chulwoo-park/timelines/tree/main#Components)
+  - [Theme](https://github.com/chulwoo-park/timelines/tree/main#Theme)
+  - [Indicator](https://github.com/chulwoo-park/timelines/tree/main#Indicator)
+  - [Connector](https://github.com/chulwoo-park/timelines/tree/main#Connector)
+  - [TimelineNode](https://github.com/chulwoo-park/timelines/tree/main#TimelineNode)
+  - [TimelineTile](https://github.com/chulwoo-park/timelines/tree/main#TimelineTile)
+  - [TimelineTileBuilder](https://github.com/chulwoo-park/timelines/tree/main#TimelineTileBuilder)
+  - [Timeline](https://github.com/chulwoo-park/timelines/tree/main#Timeline)
 
 ## Installation
 
@@ -88,7 +88,7 @@ Widget build(BuildContext context) {
 }
 ```
 
-Check the [Example](https://github.com/chulwoo-park/timelines/tree/master/example) or the [API reference](https://pub.dev/documentation/timelines/latest/) for more details.
+Check the [Example](https://github.com/chulwoo-park/timelines/tree/main/example) or the [API reference](https://pub.dev/documentation/timelines/latest/) for more details.
 
 ## Components
 
@@ -129,7 +129,7 @@ FixedTimeline(
   <th colspan="2">ContainerIndicator</th>
   <tr>
     <td align="center">
-      <img src="https://raw.github.com/chulwoo-park/timelines/master/screenshots/container_indicator.png" alt="ContainerIndicator">
+      <img src="https://raw.github.com/chulwoo-park/timelines/main/screenshots/container_indicator.png" alt="ContainerIndicator">
     </td>
     <td>
       <pre lang="dart">
@@ -145,14 +145,14 @@ ContainerIndicator(
   <th colspan="2">DotIndicator</th>
   <tr>
     <td align="center">
-      <img src="https://raw.github.com/chulwoo-park/timelines/master/screenshots/dot_indicator.png" alt="DotIndicator">
+      <img src="https://raw.github.com/chulwoo-park/timelines/main/screenshots/dot_indicator.png" alt="DotIndicator">
     </td>
     <td><pre lang="dart">DotIndicator()</pre></td>
   </tr>
   <th colspan="2">OutlinedDotIndicator</th>
   <tr>
     <td align="center">
-      <img src="https://raw.github.com/chulwoo-park/timelines/master/screenshots/outlined_dot_indicator.png" alt="OutlinedDotIndicator">
+      <img src="https://raw.github.com/chulwoo-park/timelines/main/screenshots/outlined_dot_indicator.png" alt="OutlinedDotIndicator">
     </td>
     <td><pre lang="dart">OutlinedDotIndicator()</pre></td>
   </tr>
@@ -164,7 +164,7 @@ ContainerIndicator(
   <th colspan="2">SolidLineConnector</th>
   <tr>
     <td align="center">
-      <img src="https://raw.github.com/chulwoo-park/timelines/master/screenshots/solid_line_connector.png" alt="SolidLineConnector">
+      <img src="https://raw.github.com/chulwoo-park/timelines/main/screenshots/solid_line_connector.png" alt="SolidLineConnector">
     </td>
     <td>
       <pre lang="dart">
@@ -177,7 +177,7 @@ SizedBox(
   <th colspan="2">DashedLineConnector</th>
   <tr>
     <td align="center">
-      <img src="https://raw.github.com/chulwoo-park/timelines/master/screenshots/dashed_line_connector.png" alt="DashedLineConnector">
+      <img src="https://raw.github.com/chulwoo-park/timelines/main/screenshots/dashed_line_connector.png" alt="DashedLineConnector">
     </td>
     <td>
       <pre lang="dart">
@@ -190,7 +190,7 @@ SizedBox(
   <th colspan="2">DecoratedLineConnector</th>
   <tr>
     <td align="center">
-      <img src="https://raw.github.com/chulwoo-park/timelines/master/screenshots/decorated_line_connector.png" alt="DecoratedLineConnector">
+      <img src="https://raw.github.com/chulwoo-park/timelines/main/screenshots/decorated_line_connector.png" alt="DecoratedLineConnector">
     </td>
     <td>
       <pre lang="dart">
@@ -221,7 +221,7 @@ The TimelineNode contains an indicator and two connectors on both sides of the i
   <th colspan="2">Simple TimelineNode</th>
   <tr>
     <td align="center">
-      <img src="https://raw.github.com/chulwoo-park/timelines/master/screenshots/simple_timeline_node.png" alt="Simple TimelineNode">
+      <img src="https://raw.github.com/chulwoo-park/timelines/main/screenshots/simple_timeline_node.png" alt="Simple TimelineNode">
     </td>
     <td>
       <pre lang="dart">
@@ -234,7 +234,7 @@ SizedBox(
   <th colspan="2">Complex TimelineNode</th>
   <tr>
     <td align="center">
-      <img src="https://raw.github.com/chulwoo-park/timelines/master/screenshots/complex_timeline_node.png" alt="Complex TimelineNode">
+      <img src="https://raw.github.com/chulwoo-park/timelines/main/screenshots/complex_timeline_node.png" alt="Complex TimelineNode">
     </td>
     <td>
       <pre lang="dart">
@@ -264,7 +264,7 @@ Displays content on both sides of the node:
   <th colspan="2">TimelineTile</th>
   <tr>
     <td align="center">
-      <img src="https://raw.github.com/chulwoo-park/timelines/master/screenshots/timeline_tile.png" alt="TimelineTile">
+      <img src="https://raw.github.com/chulwoo-park/timelines/main/screenshots/timeline_tile.png" alt="TimelineTile">
     </td>
     <td>
       <pre lang="dart">
@@ -303,7 +303,7 @@ Using the `connected` constructor, lines connecting adjacent tiles can build as 
   <th colspan="2">ConnectionDirection.before</th>
   <tr>
     <td align="center">
-      <img src="https://raw.github.com/chulwoo-park/timelines/master/screenshots/connection_direction_before.png" alt="Connection direction before">
+      <img src="https://raw.github.com/chulwoo-park/timelines/main/screenshots/connection_direction_before.png" alt="Connection direction before">
     </td>
     <td>
       <pre lang="dart">
@@ -323,7 +323,7 @@ FixedTimeline.tileBuilder(
   <th colspan="2">ConnectionDirection.after</th>
   <tr>
     <td align="center">
-      <img src="https://raw.github.com/chulwoo-park/timelines/master/screenshots/connection_direction_after.png" alt="Connection direction after">
+      <img src="https://raw.github.com/chulwoo-park/timelines/main/screenshots/connection_direction_after.png" alt="Connection direction after">
     </td>
     <td>
       <pre lang="dart">
@@ -351,7 +351,7 @@ This value determines how the contents of the timeline will be built:
   <th colspan="2">ContentsAlign.basic</th>
   <tr>
     <td align="center">
-      <img src="https://raw.github.com/chulwoo-park/timelines/master/screenshots/contents_align_basic.png" alt="Basic contents align">
+      <img src="https://raw.github.com/chulwoo-park/timelines/main/screenshots/contents_align_basic.png" alt="Basic contents align">
     </td>
     <td>
       <pre lang="dart">
@@ -378,7 +378,7 @@ FixedTimeline.tileBuilder(
   <th colspan="2">ContentsAlign.reverse</th>
   <tr>
     <td align="center">
-      <img src="https://raw.github.com/chulwoo-park/timelines/master/screenshots/contents_align_reverse.png" alt="Reverse contents align">
+      <img src="https://raw.github.com/chulwoo-park/timelines/main/screenshots/contents_align_reverse.png" alt="Reverse contents align">
     </td>
     <td>
       <pre lang="dart">
@@ -405,7 +405,7 @@ FixedTimeline.tileBuilder(
   <th colspan="2">ContentsAlign.alternating</th>
   <tr>
     <td align="center">
-      <img src="https://raw.github.com/chulwoo-park/timelines/master/screenshots/contents_align_alternating.png" alt="Alternating contents align">
+      <img src="https://raw.github.com/chulwoo-park/timelines/main/screenshots/contents_align_alternating.png" alt="Alternating contents align">
     </td>
     <td>
       <pre lang="dart">
@@ -453,12 +453,12 @@ See full [documentation](https://pub.dev/documentation/timelines/latest/)
 
 # Changelog
 
-See [CHANGELOG.md](https://github.com/chulwoo-park/timelines/blob/master/CHANGELOG.md).
+See [CHANGELOG.md](https://github.com/chulwoo-park/timelines/blob/main/CHANGELOG.md).
 
 # Code of conduct
 
-See [CODE_OF_CONDUCT.md](https://github.com/chulwoo-park/timelines/blob/master/CODE_OF_CONDUCT.md).
+See [CODE_OF_CONDUCT.md](https://github.com/chulwoo-park/timelines/blob/main/CODE_OF_CONDUCT.md).
 
 # License
 
-[MIT](https://github.com/chulwoo-park/timelines/blob/master/LICENSE)
+[MIT](https://github.com/chulwoo-park/timelines/blob/main/LICENSE)
