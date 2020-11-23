@@ -4,7 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:timelines/timelines.dart';
 
 import 'component_page.dart';
-import 'showcase/package_delevery_tracking.dart';
+import 'showcase/package_delivery_tracking.dart';
 import 'showcase/process_timeline.dart';
 import 'showcase/timeline_status.dart';
 import 'showcase_page.dart';
@@ -26,13 +26,16 @@ class MyApp extends StatelessWidget {
         String path = Uri.tryParse(settings.name)?.path;
         Widget child;
         switch (path) {
-          case 'timeline_status':
+          case '/theme':
+            child = ThemePage();
+            break;
+          case '/timeline_status':
             child = TimelineStatusPage();
             break;
-          case 'package_delevery_tracking':
+          case '/package_delivery_tracking':
             child = PackageDeliveryTrackingPage();
             break;
-          case 'process_timeline':
+          case '/process_timeline':
             child = ProcessTimelinePage();
             break;
           default:
@@ -41,11 +44,12 @@ class MyApp extends StatelessWidget {
 
         return MaterialPageRoute(builder: (context) => HomePage(child: child));
       },
+      initialRoute: '/',
     );
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({
     Key key,
     @required this.child,
@@ -53,7 +57,20 @@ class HomePage extends StatelessWidget {
 
   final Widget child;
 
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final _navigatorKey = GlobalKey<NavigatorState>();
+
+  @override
+  void didUpdateWidget(covariant HomePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.child != widget.child) {
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +89,7 @@ class HomePage extends StatelessWidget {
             child: Navigator(
               key: _navigatorKey,
               onGenerateRoute: (settings) => MaterialPageRoute(
-                builder: (context) => child,
+                builder: (context) => widget.child,
               ),
             ),
           ),
@@ -90,7 +107,7 @@ class WebAlert extends StatelessWidget {
       height: 80.0,
       child: Material(
         child: Center(
-          child: Text("You are using the web version now. Some UI may be broken."),
+          child: Text('You are using the web version now.\nSome UI can be broken.'),
         ),
       ),
     );
