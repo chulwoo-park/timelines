@@ -108,7 +108,9 @@ class WebAlert extends StatelessWidget {
       child: Material(
         child: Center(
           child: Text(
-              'You are using the web version now.\nSome UI can be broken.'),
+            'You are using the web version now.\nSome UI can be broken.',
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );
