@@ -335,15 +335,12 @@ class FixedTimeline extends StatelessWidget {
 
   /// Creates a timeline flex layout.
   ///
-  /// The [direction], [mainAxisAlignment], [crossAxisAlignment], and
-  /// [verticalDirection] arguments must not be null. If [crossAxisAlignment] is
-  /// [CrossAxisAlignment.baseline], then [textBaseline] must not be null.
+  /// The [direction], [verticalDirection] arguments must not be null.
   ///
-  /// The [textDirection] argument defaults to the ambient [Directionality], if
-  /// any. If there is no ambient directionality, and a text direction is going
-  /// to be necessary to decide which direction to lay the children in or to
-  /// disambiguate `start` or `end` values for the main or cross axis
-  /// directions, the [textDirection] must not be null.
+  /// The [textDirection] argument defaults to the ambient [Directionality], if any. If there is no ambient
+  /// directionality, and a text direction is going to be necessary to decide which direction to lay the children in or
+  /// to disambiguate `start` or `end` values for the main or cross axis directions, the [textDirection] must not be
+  /// null.
   const FixedTimeline({
     Key key,
     this.theme,
@@ -369,10 +366,8 @@ class FixedTimeline extends StatelessWidget {
 
   /// The widgets below this widget in the tree.
   ///
-  /// If this list is going to be mutated, it is usually wise to put a [Key] on
-  /// each of the child widgets, so that the framework can match old
-  /// configurations to new configurations and maintain the underlying render
-  /// objects.
+  /// If this list is going to be mutated, it is usually wise to put a [Key] on each of the child widgets, so that the
+  /// framework can match old configurations to new configurations and maintain the underlying render objects.
   ///
   /// See also:
   ///
@@ -381,68 +376,41 @@ class FixedTimeline extends StatelessWidget {
 
   /// How much space should be occupied in the main axis.
   ///
-  /// After allocating space to children, there might be some remaining free
-  /// space. This value controls whether to maximize or minimize the amount of
-  /// free space, subject to the incoming layout constraints.
+  /// After allocating space to children, there might be some remaining free space. This value controls whether to
+  /// maximize or minimize the amount of free space, subject to the incoming layout constraints.
   ///
-  /// If some children have a non-zero flex factors (and none have a fit of
-  /// [FlexFit.loose]), they will expand to consume all the available space and
-  /// there will be no remaining free space to maximize or minimize, making this
+  /// If some children have a non-zero flex factors (and none have a fit of [FlexFit.loose]), they will expand to
+  /// consume all the available space and there will be no remaining free space to maximize or minimize, making this
   /// value irrelevant to the final layout.
   final MainAxisSize mainAxisSize;
 
-  /// Determines the order to lay children out horizontally and how to interpret
-  /// `start` and `end` in the horizontal direction.
+  /// Determines the order to lay children out horizontally and how to interpret `start` and `end` in the horizontal
+  /// direction.
   ///
   /// Defaults to the ambient [Directionality].
   ///
-  /// If [textDirection] is [TextDirection.rtl], then the direction in which
-  /// text flows starts from right to left. Otherwise, if [textDirection] is
-  /// [TextDirection.ltr], then the direction in which text flows starts from
-  /// left to right.
+  /// If [textDirection] is [TextDirection.rtl], then the direction in which text flows starts from right to left.
+  /// Otherwise, if [textDirection] is [TextDirection.ltr], then the direction in which text flows starts from left to
+  /// right.
   ///
-  /// If the [direction] is [Axis.horizontal], this controls the order in which
-  /// the children are positioned (left-to-right or right-to-left), and the
-  /// meaning of the [mainAxisAlignment] property's [MainAxisAlignment.start] and
-  /// [MainAxisAlignment.end] values.
+  /// If the [direction] is [Axis.horizontal], this controls the order in which the children are positioned
+  /// (left-to-right or right-to-left).
   ///
-  /// If the [direction] is [Axis.horizontal], and either the
-  /// [mainAxisAlignment] is either [MainAxisAlignment.start] or
-  /// [MainAxisAlignment.end], or there's more than one child, then the
-  /// [textDirection] (or the ambient [Directionality]) must not be null.
-  ///
-  /// If the [direction] is [Axis.vertical], this controls the meaning of the
-  /// [crossAxisAlignment] property's [CrossAxisAlignment.start] and
-  /// [CrossAxisAlignment.end] values.
-  ///
-  /// If the [direction] is [Axis.vertical], and the [crossAxisAlignment] is
-  /// either [CrossAxisAlignment.start] or [CrossAxisAlignment.end], then the
-  /// [textDirection] (or the ambient [Directionality]) must not be null.
+  /// If the [direction] is [Axis.horizontal], and there's more than one child, then the [textDirection] (or the
+  /// ambient [Directionality]) must not be null.
   final TextDirection textDirection;
 
-  /// Determines the order to lay children out vertically and how to interpret
-  /// `start` and `end` in the vertical direction.
+  /// Determines the order to lay children out vertically and how to interpret `start` and `end` in the vertical
+  /// direction.
   ///
   /// Defaults to [VerticalDirection.down].
   ///
-  /// If the [direction] is [Axis.vertical], this controls which order children
-  /// are painted in (down or up), the meaning of the [mainAxisAlignment]
-  /// property's [MainAxisAlignment.start] and [MainAxisAlignment.end] values.
-  ///
-  /// If the [direction] is [Axis.vertical], and either the [mainAxisAlignment]
-  /// is either [MainAxisAlignment.start] or [MainAxisAlignment.end], or there's
-  /// more than one child, then the [verticalDirection] must not be null.
-  ///
-  /// If the [direction] is [Axis.horizontal], this controls the meaning of the
-  /// [crossAxisAlignment] property's [CrossAxisAlignment.start] and
-  /// [CrossAxisAlignment.end] values.
-  ///
-  /// If the [direction] is [Axis.horizontal], and the [crossAxisAlignment] is
-  /// either [CrossAxisAlignment.start] or [CrossAxisAlignment.end], then the
-  /// [verticalDirection] must not be null.
+  /// If the [direction] is [Axis.vertical], there's more than one child, then the [verticalDirection] must not be null.
   final VerticalDirection verticalDirection;
 
-  /// {@macro flutter.material.Material.clipBehavior}
+  /// The content will be clipped (or not) according to this option.
+  ///
+  /// See the enum Clip for details of all possible options and their common use cases.
   ///
   /// Defaults to [Clip.none].
   final Clip clipBehavior;

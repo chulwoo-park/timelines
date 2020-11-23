@@ -170,7 +170,7 @@ mixin ThemedConnectorComponent on Widget {
   }
 
   /// {@template timelines.connector.space}
-  /// If this is null, then the [DividerThemeData.space] is used. If that is also null, then this defaults to
+  /// If this is null, then the [ConnectorThemeData.space] is used. If that is also null, then this defaults to
   /// double.infinity.
   /// {@endtemplate}
   double get space;

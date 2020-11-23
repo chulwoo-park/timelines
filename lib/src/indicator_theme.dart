@@ -42,8 +42,7 @@ class IndicatorThemeData with Diagnosticable {
   /// A position of indicator inside both two connectors.
   final double position;
 
-  /// Creates a copy of this object with the given fields replaced with the
-  /// new values.
+  /// Creates a copy of this object with the given fields replaced with the new values.
   IndicatorThemeData copyWith({
     Color color,
     double size,
