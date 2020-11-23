@@ -9,26 +9,34 @@ import 'timeline_tile_builder.dart';
 class Timeline extends BoxScrollView {
   /// Creates a scrollable, linear array of widgets that are created on demand.
   ///
-  /// This constructor is appropriate for list views with a large (or infinite) number of children because the builder
-  /// is called only for those children that are actually visible.
+  /// This constructor is appropriate for list views with a large (or infinite)
+  /// number of children because the builder is called only for those children
+  /// that are actually visible.
   ///
-  /// Providing a non-null `itemCount` improves the ability of the [Timeline] to estimate the maximum scroll extent.
+  /// Providing a non-null `itemCount` improves the ability of the [Timeline] to
+  /// estimate the maximum scroll extent.
   ///
-  /// The `itemBuilder` callback will be called only with indices greater than or equal to zero and less than
-  /// `itemCount`.
+  /// The `itemBuilder` callback will be called only with indices greater than
+  /// or equal to zero and less than `itemCount`.
   ///
-  /// The `itemBuilder` should always return a non-null widget, and actually create the widget instances when called.
-  /// Avoid using a builder that returns a previously-constructed widget; if the timeline view's children are created in
-  /// advance, or all at once when the [Timeline] itself is created, it is more efficient to use the [Timeline]
-  /// constructor. Even more efficient, however, is to create the instances on demand using this constructor's
-  /// `itemBuilder` callback.
+  /// The `itemBuilder` should always return a non-null widget, and actually
+  /// create the widget instances when called.
+  /// Avoid using a builder that returns a previously-constructed widget; if the
+  /// timeline view's children are created in advance, or all at once when the
+  /// [Timeline] itself is created, it is more efficient to use the [Timeline]
+  /// constructor. Even more efficient, however, is to create the instances on
+  /// demand using this constructor's `itemBuilder` callback.
   ///
-  /// The `addAutomaticKeepAlives` argument corresponds to the [SliverChildBuilderDelegate.addAutomaticKeepAlives]
-  /// property. The `addRepaintBoundaries` argument corresponds to the [SliverChildBuilderDelegate.addRepaintBoundaries]
-  /// property. The `addSemanticIndexes` argument corresponds to the [SliverChildBuilderDelegate.addSemanticIndexes]
-  /// property. None may be null.
+  /// The `addAutomaticKeepAlives` argument corresponds to the
+  /// [SliverChildBuilderDelegate.addAutomaticKeepAlives] property. The
+  /// `addRepaintBoundaries` argument corresponds to the
+  /// [SliverChildBuilderDelegate.addRepaintBoundaries] property. The
+  /// `addSemanticIndexes` argument corresponds to the
+  /// [SliverChildBuilderDelegate.addSemanticIndexes] property. None
+  /// may be null.
   ///
-  /// [Timeline.builder] by default does not support child reordering. If you are planning to change child order at a
+  /// [Timeline.builder] by default does not support child reordering. If you
+  /// are planning to change child order at a
   /// later time, consider using [Timeline] or [Timeline.custom].
   factory Timeline.tileBuilder({
     Key key,
@@ -44,13 +52,15 @@ class Timeline extends BoxScrollView {
     double cacheExtent,
     int semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
     String restorationId,
     Clip clipBehavior = Clip.hardEdge,
     TimelineThemeData theme,
   }) {
     assert(builder.itemCount == null || builder.itemCount >= 0);
-    assert(semanticChildCount == null || semanticChildCount <= builder.itemCount);
+    assert(
+        semanticChildCount == null || semanticChildCount <= builder.itemCount);
     return Timeline.custom(
       key: key,
       childrenDelegate: SliverChildBuilderDelegate(
@@ -78,17 +88,21 @@ class Timeline extends BoxScrollView {
 
   /// Creates a scrollable, linear array of widgets from an explicit [List].
   ///
-  /// This constructor is appropriate for timeline views with a small number of children because constructing the [List]
-  /// requires doing work for every child that could possibly be displayed in the timeline view instead of just those
-  /// children that are actually visible.
+  /// This constructor is appropriate for timeline views with a small number of
+  /// children because constructing the [List] requires doing work for every
+  /// child that could possibly be displayed in the timeline view instead of
+  /// just those children that are actually visible.
   ///
-  /// It is usually more efficient to create children on demand using [Timeline.builder] because it will create the
-  /// widget children lazily as necessary.
+  /// It is usually more efficient to create children on demand using
+  /// [Timeline.builder] because it will create the widget children lazily as
+  /// necessary.
   ///
-  /// The `addAutomaticKeepAlives` argument corresponds to the [SliverChildListDelegate.addAutomaticKeepAlives]
-  /// property. The `addRepaintBoundaries` argument corresponds to the [SliverChildListDelegate.addRepaintBoundaries]
-  /// property. The `addSemanticIndexes` argument corresponds to the [SliverChildListDelegate.addSemanticIndexes]
-  /// property. None may be null.
+  /// The `addAutomaticKeepAlives` argument corresponds to the
+  /// [SliverChildListDelegate.addAutomaticKeepAlives] property. The
+  /// `addRepaintBoundaries` argument corresponds to the
+  /// [SliverChildListDelegate.addRepaintBoundaries] property. The
+  /// `addSemanticIndexes` argument corresponds to the
+  /// [SliverChildListDelegate.addSemanticIndexes] property. None may be null.
   Timeline({
     Key key,
     Axis scrollDirection,
@@ -106,7 +120,8 @@ class Timeline extends BoxScrollView {
     List<Widget> children = const <Widget>[],
     int semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
     String restorationId,
     Clip clipBehavior = Clip.hardEdge,
     TimelineThemeData theme,
@@ -116,7 +131,8 @@ class Timeline extends BoxScrollView {
           addRepaintBoundaries: addRepaintBoundaries,
           addSemanticIndexes: addSemanticIndexes,
         ),
-        assert(scrollDirection == null || theme == null, 'Cannot provide both a scrollDirection and a theme.'),
+        assert(scrollDirection == null || theme == null,
+            'Cannot provide both a scrollDirection and a theme.'),
         this.theme = theme,
         super(
           key: key,
@@ -137,26 +153,34 @@ class Timeline extends BoxScrollView {
 
   /// Creates a scrollable, linear array of widgets that are created on demand.
   ///
-  /// This constructor is appropriate for list views with a large (or infinite) number of children because the builder
-  /// is called only for those children that are actually visible.
+  /// This constructor is appropriate for list views with a large (or infinite)
+  /// number of children because the builder is called only for those children
+  /// that are actually visible.
   ///
-  /// Providing a non-null `itemCount` improves the ability of the [Timeline] to estimate the maximum scroll extent.
+  /// Providing a non-null `itemCount` improves the ability of the [Timeline] to
+  /// estimate the maximum scroll extent.
   ///
-  /// The `itemBuilder` callback will be called only with indices greater than or equal to zero and less than
-  /// `itemCount`.
+  /// The `itemBuilder` callback will be called only with indices greater than
+  /// or equal to zero and less than `itemCount`.
   ///
-  /// The `itemBuilder` should always return a non-null widget, and actually create the widget instances when called.
-  /// Avoid using a builder that returns a previously-constructed widget; if the timeline view's children are created in
-  /// advance, or all at once when the [Timeline] itself is created, it is more efficient to use the [Timeline]
-  /// constructor. Even more efficient, however, is to create the instances on demand using this constructor's
-  /// `itemBuilder` callback.
+  /// The `itemBuilder` should always return a non-null widget, and actually
+  /// create the widget instances when called.
+  /// Avoid using a builder that returns a previously-constructed widget; if the
+  /// timeline view's children are created in advance, or all at once when the
+  /// [Timeline] itself is created, it is more efficient to use the [Timeline]
+  /// constructor. Even more efficient, however, is to create the instances on
+  /// demand using this constructor's `itemBuilder` callback.
   ///
-  /// The `addAutomaticKeepAlives` argument corresponds to the [SliverChildBuilderDelegate.addAutomaticKeepAlives]
-  /// property. The `addRepaintBoundaries` argument corresponds to the [SliverChildBuilderDelegate.addRepaintBoundaries]
-  /// property. The `addSemanticIndexes` argument corresponds to the [SliverChildBuilderDelegate.addSemanticIndexes]
-  /// property. None may be null.
+  /// The `addAutomaticKeepAlives` argument corresponds to the
+  /// [SliverChildBuilderDelegate.addAutomaticKeepAlives] property. The
+  /// `addRepaintBoundaries` argument corresponds to the
+  /// [SliverChildBuilderDelegate.addRepaintBoundaries] property. The
+  /// `addSemanticIndexes` argument corresponds to the
+  /// [SliverChildBuilderDelegate.addSemanticIndexes] property. None
+  /// may be null.
   ///
-  /// [Timeline.builder] by default does not support child reordering. If you are planning to change child order at a
+  /// [Timeline.builder] by default does not support child reordering. If you
+  /// are planning to change child order at a
   /// later time, consider using [Timeline] or [Timeline.custom].
   Timeline.builder({
     Key key,
@@ -176,13 +200,15 @@ class Timeline extends BoxScrollView {
     double cacheExtent,
     int semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
     String restorationId,
     Clip clipBehavior = Clip.hardEdge,
     TimelineThemeData theme,
   })  : assert(itemCount == null || itemCount >= 0),
         assert(semanticChildCount == null || semanticChildCount <= itemCount),
-        assert(scrollDirection == null || theme == null, 'Cannot provide both a scrollDirection and a theme.'),
+        assert(scrollDirection == null || theme == null,
+            'Cannot provide both a scrollDirection and a theme.'),
         childrenDelegate = SliverChildBuilderDelegate(
           itemBuilder,
           childCount: itemCount,
@@ -210,8 +236,8 @@ class Timeline extends BoxScrollView {
 
   /// Creates a scrollable, linear array of widgets with a custom child model.
   ///
-  /// For example, a custom child model can control the algorithm used to estimate the size of children that are not
-  /// actually visible.
+  /// For example, a custom child model can control the algorithm used to
+  /// estimate the size of children that are not actually visible.
   ///
   /// See also:
   ///
@@ -230,12 +256,14 @@ class Timeline extends BoxScrollView {
     double cacheExtent,
     int semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
     String restorationId,
     Clip clipBehavior = Clip.hardEdge,
     TimelineThemeData theme,
   })  : assert(childrenDelegate != null),
-        assert(scrollDirection == null || theme == null, 'Cannot provide both a scrollDirection and a theme.'),
+        assert(scrollDirection == null || theme == null,
+            'Cannot provide both a scrollDirection and a theme.'),
         this.theme = theme,
         super(
           key: key,
@@ -254,22 +282,28 @@ class Timeline extends BoxScrollView {
           clipBehavior: clipBehavior,
         );
 
-  /// If non-null, forces the children to have the given extent in the scroll direction.
+  /// If non-null, forces the children to have the given extent in the scroll
+  /// direction.
   ///
-  /// Specifying an [itemExtent] is more efficient than letting the children determine their own extent because the
-  /// scrolling machinery can make use of the foreknowledge of the children's extent to save work, for example when the
-  /// scroll position changes drastically.
+  /// Specifying an [itemExtent] is more efficient than letting the children
+  /// determine their own extent because the scrolling machinery can make use
+  /// of the foreknowledge of the children's extent to save work, for example
+  /// when the scroll position changes drastically.
   final double itemExtent;
 
   /// A delegate that provides the children for the [Timeline].
   ///
-  /// The [Timeline.custom] constructor lets you specify this delegate explicitly. The [Timeline] and [Timeline.builder]
-  /// constructors create a [childrenDelegate] that wraps the given [List] and [IndexedWidgetBuilder], respectively.
+  /// The [Timeline.custom] constructor lets you specify this delegate
+  /// explicitly. The [Timeline] and [Timeline.builder] constructors create a
+  /// [childrenDelegate] that wraps the given [List] and [IndexedWidgetBuilder],
+  /// respectively.
   final SliverChildDelegate childrenDelegate;
 
-  /// Default visual properties, like colors, size and spaces, for this timeline's component widgets.
+  /// Default visual properties, like colors, size and spaces, for this
+  /// timeline's component widgets.
   ///
-  /// The default value of this property is the value of [TimelineThemeData.vertical()].
+  /// The default value of this property is the value of
+  /// [TimelineThemeData.vertical()].
   final TimelineThemeData theme;
 
   @override
@@ -302,7 +336,8 @@ class Timeline extends BoxScrollView {
   }
 }
 
-/// A widget that displays its children in a one-dimensional array with timeline theme.
+/// A widget that displays its children in a one-dimensional array with
+/// timeline theme.
 class FixedTimeline extends StatelessWidget {
   /// Creates a timeline flex layout.
   factory FixedTimeline.tileBuilder({
@@ -337,10 +372,11 @@ class FixedTimeline extends StatelessWidget {
   ///
   /// The [direction], [verticalDirection] arguments must not be null.
   ///
-  /// The [textDirection] argument defaults to the ambient [Directionality], if any. If there is no ambient
-  /// directionality, and a text direction is going to be necessary to decide which direction to lay the children in or
-  /// to disambiguate `start` or `end` values for the main or cross axis directions, the [textDirection] must not be
-  /// null.
+  /// The [textDirection] argument defaults to the ambient [Directionality],
+  /// if any. If there is no ambient directionality, and a text direction is
+  /// going to be necessary to decide which direction to lay the children in or
+  /// to disambiguate `start` or `end` values for the main or cross axis
+  /// directions, the [textDirection] must not be null.
   const FixedTimeline({
     Key key,
     this.theme,
@@ -350,15 +386,18 @@ class FixedTimeline extends StatelessWidget {
     this.verticalDirection = VerticalDirection.down,
     this.clipBehavior = Clip.none,
     this.children = const [],
-  })  : assert(direction == null || theme == null, 'Cannot provide both a direction and a theme.'),
+  })  : assert(direction == null || theme == null,
+            'Cannot provide both a direction and a theme.'),
         assert(mainAxisSize != null),
         assert(verticalDirection != null),
         assert(clipBehavior != null),
         super(key: key);
 
-  /// Default visual properties, like colors, size and spaces, for this timeline's component widgets.
+  /// Default visual properties, like colors, size and spaces, for this
+  /// timeline's component widgets.
   ///
-  /// The default value of this property is the value of [TimelineThemeData.vertical()].
+  /// The default value of this property is the value of
+  /// [TimelineThemeData.vertical()].
   final TimelineThemeData theme;
 
   /// The direction to use as the main axis.
@@ -366,8 +405,10 @@ class FixedTimeline extends StatelessWidget {
 
   /// The widgets below this widget in the tree.
   ///
-  /// If this list is going to be mutated, it is usually wise to put a [Key] on each of the child widgets, so that the
-  /// framework can match old configurations to new configurations and maintain the underlying render objects.
+  /// If this list is going to be mutated, it is usually wise to put a [Key] on
+  /// each of the child widgets, so that the framework can match old
+  /// configurations to new configurations and maintain the underlying
+  /// render objects.
   ///
   /// See also:
   ///
@@ -376,41 +417,47 @@ class FixedTimeline extends StatelessWidget {
 
   /// How much space should be occupied in the main axis.
   ///
-  /// After allocating space to children, there might be some remaining free space. This value controls whether to
-  /// maximize or minimize the amount of free space, subject to the incoming layout constraints.
+  /// After allocating space to children, there might be some remaining free
+  /// space. This value controls whether to maximize or minimize the amount of
+  /// free space, subject to the incoming layout constraints.
   ///
-  /// If some children have a non-zero flex factors (and none have a fit of [FlexFit.loose]), they will expand to
-  /// consume all the available space and there will be no remaining free space to maximize or minimize, making this
+  /// If some children have a non-zero flex factors (and none have a fit of
+  /// [FlexFit.loose]), they will expand to consume all the available space and
+  /// there will be no remaining free space to maximize or minimize, making this
   /// value irrelevant to the final layout.
   final MainAxisSize mainAxisSize;
 
-  /// Determines the order to lay children out horizontally and how to interpret `start` and `end` in the horizontal
-  /// direction.
+  /// Determines the order to lay children out horizontally and how to interpret
+  /// `start` and `end` in the horizontal direction.
   ///
   /// Defaults to the ambient [Directionality].
   ///
-  /// If [textDirection] is [TextDirection.rtl], then the direction in which text flows starts from right to left.
-  /// Otherwise, if [textDirection] is [TextDirection.ltr], then the direction in which text flows starts from left to
-  /// right.
+  /// If [textDirection] is [TextDirection.rtl], then the direction in which
+  /// text flows starts from right to left. Otherwise, if [textDirection] is
+  /// [TextDirection.ltr], then the direction in which text flows starts from
+  /// left to right.
   ///
-  /// If the [direction] is [Axis.horizontal], this controls the order in which the children are positioned
-  /// (left-to-right or right-to-left).
+  /// If the [direction] is [Axis.horizontal], this controls the order in which
+  /// the children are positioned (left-to-right or right-to-left).
   ///
-  /// If the [direction] is [Axis.horizontal], and there's more than one child, then the [textDirection] (or the
-  /// ambient [Directionality]) must not be null.
+  /// If the [direction] is [Axis.horizontal], and there's more than one child,
+  /// then the [textDirection] (or the ambient [Directionality]) must not
+  /// be null.
   final TextDirection textDirection;
 
-  /// Determines the order to lay children out vertically and how to interpret `start` and `end` in the vertical
-  /// direction.
+  /// Determines the order to lay children out vertically and how to interpret
+  /// `start` and `end` in the vertical direction.
   ///
   /// Defaults to [VerticalDirection.down].
   ///
-  /// If the [direction] is [Axis.vertical], there's more than one child, then the [verticalDirection] must not be null.
+  /// If the [direction] is [Axis.vertical], there's more than one child, then
+  /// the [verticalDirection] must not be null.
   final VerticalDirection verticalDirection;
 
   /// The content will be clipped (or not) according to this option.
   ///
-  /// See the enum Clip for details of all possible options and their common use cases.
+  /// See the enum Clip for details of all possible options and their common
+  /// use cases.
   ///
   /// Defaults to [Clip.none].
   final Clip clipBehavior;

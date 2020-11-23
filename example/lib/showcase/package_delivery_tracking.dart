@@ -103,7 +103,8 @@ class _InnerTimeline extends StatelessWidget {
               ),
         ),
         builder: TimelineTileBuilder(
-          indicatorBuilder: (_, index) => !isEdgeIndex(index) ? Indicator.outlined(borderWidth: 1.0) : null,
+          indicatorBuilder: (_, index) =>
+              !isEdgeIndex(index) ? Indicator.outlined(borderWidth: 1.0) : null,
           startConnectorBuilder: (_, index) => Connector.solidLine(),
           endConnectorBuilder: (_, index) => Connector.solidLine(),
           contentsBuilder: (_, index) {
@@ -117,7 +118,8 @@ class _InnerTimeline extends StatelessWidget {
             );
           },
           itemExtentBuilder: (_, index) => isEdgeIndex(index) ? 10.0 : 30.0,
-          nodeItemOverlapBuilder: (_, index) => isEdgeIndex(index) ? true : null,
+          nodeItemOverlapBuilder: (_, index) =>
+              isEdgeIndex(index) ? true : null,
           itemCount: messages.length + 2,
         ),
       ),
@@ -257,7 +259,8 @@ _OrderInfo _data(int id) => _OrderInfo(
       date: DateTime.now(),
       driverInfo: _DriverInfo(
         name: 'Philipe',
-        thumbnailUrl: 'https://i.pinimg.com/originals/08/45/81/084581e3155d339376bf1d0e17979dc6.jpg',
+        thumbnailUrl:
+            'https://i.pinimg.com/originals/08/45/81/084581e3155d339376bf1d0e17979dc6.jpg',
       ),
       deliveryProcesses: [
         _DeliveryProcess(
