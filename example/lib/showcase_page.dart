@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'showcase/package_delevery_tracking.dart';
+import 'showcase/package_delivery_tracking.dart';
 import 'showcase/process_timeline.dart';
 import 'showcase/timeline_status.dart';
 import 'widget.dart';
@@ -24,7 +24,7 @@ class ShowcasePage extends StatelessWidget {
               navigationBuilder: () => TimelineStatusPage(),
             ),
             _ShowcaseCard(
-              image: 'assets/images/package_delevery_tracking.png',
+              image: 'assets/images/package_delivery_tracking.png',
               title: 'Package Delivery Tracking',
               designer: 'Series Eight',
               url:
