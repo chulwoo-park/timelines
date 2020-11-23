@@ -1,0 +1,6 @@
+iinclude: package:pedantic/analysis_options.yaml
+
+linter:
+  rules:
+   - prefer_relative_imports
+   - sort_constructors_first

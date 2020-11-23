@@ -1,0 +1,32 @@
+name: Deploy github pages
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    name: Build Web
+    env:
+      my_secret: ${{secrets.commit_secret}}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'beta'
+      - run: flutter config --enable-web
+      - run: flutter pub get
+      - run: |
+          cd example
+          flutter build web --release
+      - run: |
+          cd example/build/web
+          git init
+          git config --global user.email park@chulwoo.dev
+          git config --global user.name chulwoo.park
+          git status
+          git remote add origin https://${{secrets.commit_secret}}@github.com/chulwoo-park/timelines.git
+          git checkout -b gh-pages
+          git add --all
+          git commit -m "Update gh-pages"
+          git push origin gh-pages -f

@@ -1,7 +1,9 @@
 name: timelines
-description: A simple timeline widget.
-version: 0.0.1
+version: 0.0.2
+description: A powerful & easy to use timeline package for Flutter. All UI components in this package are separate widgets.
 homepage: https://chulwoo.dev
+repository: https://github.com/chulwoo-park/timelines/
+issue_tracker: https://github.com/chulwoo-park/timelines/issues
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -14,5 +16,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  pedantic: ^1.9.2
 
 flutter: 
