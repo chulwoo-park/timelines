@@ -21,7 +21,8 @@ enum TimelineNodeAlign {
 
 /// A widget that displays timeline node and two contents.
 ///
-/// The [contents] are displayed on the end side, and the [oppositeContents] are displayed on the start side.
+/// The [contents] are displayed on the end side, and the [oppositeContents] are
+/// displayed on the start side.
 /// The [node] is displayed between the two.
 class TimelineTile extends StatelessWidget {
   const TimelineTile({
@@ -37,7 +38,8 @@ class TimelineTile extends StatelessWidget {
   })  : assert(node != null),
         assert(nodeAlign != null),
         assert(
-          nodeAlign == TimelineNodeAlign.basic || (nodeAlign != TimelineNodeAlign.basic && nodePosition == null),
+          nodeAlign == TimelineNodeAlign.basic ||
+              (nodeAlign != TimelineNodeAlign.basic && nodePosition == null),
           'Cannot provide both a nodeAlign and a nodePosition',
         ),
         assert(nodePosition == null || nodePosition >= 0),
@@ -53,10 +55,13 @@ class TimelineTile extends StatelessWidget {
 
   /// Align the [node] within the timeline tile.
   ///
-  /// If try to use indicators with different sizes in each timeline tile, the timeline node may be broken.
-  /// This can be prevented by set [IndicatorThemeData.size] to an appropriate size.
+  /// If try to use indicators with different sizes in each timeline tile, the
+  /// timeline node may be broken.
+  /// This can be prevented by set [IndicatorThemeData.size] to an appropriate
+  /// size.
   ///
-  /// If [nodeAlign] is not [TimelineNodeAlign.basic], then [nodePosition] is ignored.
+  /// If [nodeAlign] is not [TimelineNodeAlign.basic], then [nodePosition] is
+  /// ignored.
   final TimelineNodeAlign nodeAlign;
 
   /// A position of [node] inside both two contents.
@@ -71,19 +76,21 @@ class TimelineTile extends StatelessWidget {
   final Widget oppositeContents;
 
   /// The extent of the child in the scrolling axis.
-  /// If the scroll axis is vertical, this extent is the child's height. If the scroll axis is horizontal, this extent
-  /// is the child's width.
+  /// If the scroll axis is vertical, this extent is the child's height. If the
+  /// scroll axis is horizontal, this extent is the child's width.
   ///
-  /// If non-null, forces the tile to have the given extent in the scroll direction.
+  /// If non-null, forces the tile to have the given extent in the scroll
+  /// direction.
   ///
-  /// Specifying an [mainAxisExtent] is more efficient than letting the tile determine their own extent because the
-  /// because it don't use the Intrinsic widget([IntrinsicHeight]/[IntrinsicWidth]) when building.
+  /// Specifying an [mainAxisExtent] is more efficient than letting the tile
+  /// determine their own extent because the because it don't use the Intrinsic
+  /// widget([IntrinsicHeight]/[IntrinsicWidth]) when building.
   final double mainAxisExtent;
 
   /// The extent of the child in the non-scrolling axis.
   ///
-  /// If the scroll axis is vertical, this extent is the child's width. If the scroll axis is horizontal, this extent is
-  /// the child's height.
+  /// If the scroll axis is vertical, this extent is the child's width. If the
+  /// scroll axis is horizontal, this extent is the child's height.
   final double crossAxisExtent;
 
   double _getEffectiveNodePosition(BuildContext context) {
@@ -108,7 +115,9 @@ class TimelineTile extends StatelessWidget {
         Expanded(
           flex: nodeFlex.toInt(),
           child: Align(
-            alignment: direction == Axis.vertical ? AlignmentDirectional.centerEnd : Alignment.bottomCenter,
+            alignment: direction == Axis.vertical
+                ? AlignmentDirectional.centerEnd
+                : Alignment.bottomCenter,
             child: oppositeContents ?? SizedBox.shrink(),
           ),
         ),
@@ -123,7 +132,9 @@ class TimelineTile extends StatelessWidget {
         Expanded(
           flex: (kFlexMultiplier - nodeFlex).toInt(),
           child: Align(
-            alignment: direction == Axis.vertical ? AlignmentDirectional.centerStart : Alignment.topCenter,
+            alignment: direction == Axis.vertical
+                ? AlignmentDirectional.centerStart
+                : Alignment.topCenter,
             child: contents ?? SizedBox.shrink(),
           ),
         ),

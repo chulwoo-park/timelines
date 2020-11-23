@@ -8,17 +8,25 @@ import 'connectors.dart';
 /// Paints a [DashedLineConnector].
 ///
 /// Draw the line like this:
+/// ```
 ///  0 > [dash][gap][dash][gap] < constraints size
+/// ```
 ///
-/// [dashSize] specifies the size of [dash]. and [gapSize] specifies the size of [gap].
+/// [dashSize] specifies the size of [dash]. and [gapSize] specifies the size of
+/// [gap].
 ///
-/// When using the default colors, this painter draws a dotted line or dashed line that familiar.
-/// If set other [gapColor], this painter draws a line that alternates between two colors.
+/// When using the default colors, this painter draws a dotted line or dashed
+/// line that familiar.
+/// If set other [gapColor], this painter draws a line that alternates between
+/// two colors.
 class DashedLinePainter extends CustomPainter {
   /// Creates a dashed line painter.
   ///
-  /// The [dashSize] argument must be 1 or more, and the [gapSize] and [strokeWidth] arguments must be positive numbers.
-  /// The [direction], [color], [gapColor] and [strokeCap] arguments must not be null.
+  /// The [dashSize] argument must be 1 or more, and the [gapSize] and
+  /// [strokeWidth] arguments must be positive numbers.
+  ///
+  /// The [direction], [color], [gapColor] and [strokeCap] arguments must not be
+  /// null.
   const DashedLinePainter({
     @required this.direction,
     @required this.color,

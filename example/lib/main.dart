@@ -107,7 +107,8 @@ class WebAlert extends StatelessWidget {
       height: 80.0,
       child: Material(
         child: Center(
-          child: Text('You are using the web version now.\nSome UI can be broken.'),
+          child: Text(
+              'You are using the web version now.\nSome UI can be broken.'),
         ),
       ),
     );

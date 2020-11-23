@@ -6,12 +6,14 @@ import 'timeline_theme.dart';
 /// [TimelineNode]'s indicator.
 mixin PositionedIndicator on Widget {
   /// {@template timelines.indicator.position}
-  /// If this is null, then the [IndicatorThemeData.position] is used. If that is also null, then this defaults to
-  /// [TimelineThemeData.indicatorPosition].
+  /// If this is null, then the [IndicatorThemeData.position] is used. If that
+  /// is also null, then this defaults to [TimelineThemeData.indicatorPosition].
   /// {@endtemplate}
   double get position;
   double getEffectivePosition(BuildContext context) {
-    return position ?? IndicatorTheme.of(context).position ?? TimelineTheme.of(context).indicatorPosition;
+    return position ??
+        IndicatorTheme.of(context).position ??
+        TimelineTheme.of(context).indicatorPosition;
   }
 }
 
@@ -22,7 +24,8 @@ mixin PositionedIndicator on Widget {
 ///  * [DotIndicator], which is a [Indicator] that draws dot.
 ///  * [OutlinedDotIndicator], which is a [Indicator] that draws outlined dot.
 ///  * [ContainerIndicator], which is a [Indicator] that draws it's child.
-abstract class Indicator extends StatelessWidget with PositionedIndicator, ThemedIndicatorComponent {
+abstract class Indicator extends StatelessWidget
+    with PositionedIndicator, ThemedIndicatorComponent {
   /// Creates an indicator.
   const Indicator({
     Key key,
@@ -138,7 +141,8 @@ abstract class Indicator extends StatelessWidget with PositionedIndicator, Theme
   final Widget child;
 }
 
-/// A widget that displays an [child]. The [child] if null, the indicator is not visible.
+/// A widget that displays an [child]. The [child] if null, the indicator is not
+/// visible.
 class ContainerIndicator extends Indicator {
   /// Creates a container indicator.
   const ContainerIndicator({

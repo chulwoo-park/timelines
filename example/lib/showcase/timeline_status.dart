@@ -125,7 +125,9 @@ class _Timeline2 extends StatelessWidget {
           connectorBuilder: (_, index, connectorType) {
             var color;
             if (index + 1 < data.length - 1) {
-              color = data[index].isInProgress && data[index + 1].isInProgress ? Color(0xff193fcc) : null;
+              color = data[index].isInProgress && data[index + 1].isInProgress
+                  ? Color(0xff193fcc)
+                  : null;
             }
             return SolidLineConnector(
               indent: connectorType == ConnectorType.start ? 0 : 2.0,
@@ -169,14 +171,18 @@ class _Timeline3 extends StatelessWidget {
           indicatorBuilder: (context, index) {
             final status = data[index];
             return OutlinedDotIndicator(
-              color: status.isInProgress ? Color(0xff6ad192) : Color(0xffe6e7e9),
-              backgroundColor: status.isInProgress ? Color(0xffd4f5d6) : Color(0xffc2c5c9),
+              color:
+                  status.isInProgress ? Color(0xff6ad192) : Color(0xffe6e7e9),
+              backgroundColor:
+                  status.isInProgress ? Color(0xffd4f5d6) : Color(0xffc2c5c9),
               borderWidth: status.isInProgress ? 3.0 : 2.5,
             );
           },
           connectorBuilder: (context, index, connectorType) {
             var color;
-            if (index + 1 < data.length - 1 && data[index].isInProgress && data[index + 1].isInProgress) {
+            if (index + 1 < data.length - 1 &&
+                data[index].isInProgress &&
+                data[index + 1].isInProgress) {
               color = data[index].isInProgress ? Color(0xff6ad192) : null;
             }
             return SolidLineConnector(
@@ -185,7 +191,9 @@ class _Timeline3 extends StatelessWidget {
           },
           contentsBuilder: (context, index) {
             var height;
-            if (index + 1 < data.length - 1 && data[index].isInProgress && data[index + 1].isInProgress) {
+            if (index + 1 < data.length - 1 &&
+                data[index].isInProgress &&
+                data[index + 1].isInProgress) {
               height = kTileHeight - 10;
             } else {
               height = kTileHeight + 5;

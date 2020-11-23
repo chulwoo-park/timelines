@@ -115,7 +115,8 @@ abstract class Connector extends StatelessWidget with ThemedConnectorComponent {
 
   /// The connector's cross axis size extent.
   ///
-  /// The connector itself is always drawn as a line that is centered within the size specified by this value.
+  /// The connector itself is always drawn as a line that is centered within the
+  /// size specified by this value.
   /// {@macro timelines.connector.space}
   @override
   final double space;
@@ -128,33 +129,37 @@ abstract class Connector extends StatelessWidget with ThemedConnectorComponent {
 
   /// The amount of empty space to the leading edge of the connector.
   ///
-  /// If this is null, then the [ConnectorThemeData.indent] is used. If that is also null, then this defaults to 0.0.
+  /// If this is null, then the [ConnectorThemeData.indent] is used. If that is
+  /// also null, then this defaults to 0.0.
   @override
   final double indent;
 
   /// The amount of empty space to the trailing edge of the connector.
   ///
-  /// If this is null, then the [ConnectorThemeData.indent] is used. If that is also null, then this defaults to 0.0.
+  /// If this is null, then the [ConnectorThemeData.indent] is used. If that is
+  /// also null, then this defaults to 0.0.
   @override
   final double endIndent;
 
   /// The color to use when painting the line.
   ///
-  /// If this is null, then the [ConnectorThemeData.color] is used. If that is also null, then [TimelineThemeData.color]
-  /// is used.
+  /// If this is null, then the [ConnectorThemeData.color] is used. If that is
+  /// also null, then [TimelineThemeData.color] is used.
   @override
   final Color color;
 }
 
 /// A thin line, with padding on either side.
 ///
-/// The box's total cross axis size(width or height, depend on [direction]) is controlled by [space].
+/// The box's total cross axis size(width or height, depend on [direction]) is
+/// controlled by [space].
 ///
 /// The appropriate padding is automatically computed from the cross axis size.
 class SolidLineConnector extends Connector {
   /// Creates a solid line connector.
   ///
-  /// The [thickness], [space], [indent], and [endIndent] must be null or non-negative.
+  /// The [thickness], [space], [indent], and [endIndent] must be null or
+  /// non-negative.
   const SolidLineConnector({
     Key key,
     Axis direction,
@@ -212,13 +217,15 @@ class SolidLineConnector extends Connector {
 
 /// A decorated thin line, with padding on either side.
 ///
-/// The box's total cross axis size(width or height, depend on [direction]) is controlled by [space].
+/// The box's total cross axis size(width or height, depend on [direction]) is
+/// controlled by [space].
 ///
 /// The appropriate padding is automatically computed from the cross axis size.
 class DecoratedLineConnector extends Connector {
   /// Creates a decorated line connector.
   ///
-  /// The [thickness], [space], [indent], and [endIndent] must be null or non-negative.
+  /// The [thickness], [space], [indent], and [endIndent] must be null or
+  /// non-negative.
   const DecoratedLineConnector({
     Key key,
     Axis direction,
@@ -282,7 +289,8 @@ class DecoratedLineConnector extends Connector {
 
 /// A thin dashed line, with padding on either side.
 ///
-/// The box's total cross axis size(width or height, depend on [direction]) is controlled by [space].
+/// The box's total cross axis size(width or height, depend on [direction]) is
+/// controlled by [space].
 ///
 /// The appropriate padding is automatically computed from the cross axis size.
 ///
@@ -292,7 +300,8 @@ class DecoratedLineConnector extends Connector {
 class DashedLineConnector extends Connector {
   /// Creates a dashed line connector.
   ///
-  /// The [thickness], [space], [indent], and [endIndent] must be null or non-negative.
+  /// The [thickness], [space], [indent], and [endIndent] must be null or
+  /// non-negative.
   const DashedLineConnector({
     Key key,
     Axis direction,
@@ -389,7 +398,8 @@ class TransparentConnector extends Connector {
 class _ConnectorIndent extends StatelessWidget {
   /// Creates a indent.
   ///
-  /// The [direction]and [child] must be null. And [space], [indent] and [endIndent] must be null or non-negative.
+  /// The [direction]and [child] must be null. And [space], [indent] and
+  /// [endIndent] must be null or non-negative.
   const _ConnectorIndent({
     Key key,
     @required this.direction,
@@ -409,7 +419,8 @@ class _ConnectorIndent extends StatelessWidget {
 
   /// The connector's cross axis size extent.
   ///
-  /// The connector itself is always drawn as a line that is centered within the size specified by this value.
+  /// The connector itself is always drawn as a line that is centered within the
+  /// size specified by this value.
   final double space;
 
   /// The amount of empty space to the leading edge of the connector.

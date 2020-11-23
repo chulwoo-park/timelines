@@ -106,7 +106,9 @@ class ComponentPage extends StatelessWidget {
             builder: TimelineTileBuilder.connectedFromStyle(
               connectionDirection: ConnectionDirection.before,
               connectorStyleBuilder: (context, index) {
-                return (index == 1) ? ConnectorStyle.dashedLine : ConnectorStyle.solidLine;
+                return (index == 1)
+                    ? ConnectorStyle.dashedLine
+                    : ConnectorStyle.solidLine;
               },
               indicatorStyleBuilder: (context, index) => IndicatorStyle.dot,
               itemExtent: 40.0,
@@ -123,7 +125,9 @@ class ComponentPage extends StatelessWidget {
             builder: TimelineTileBuilder.connectedFromStyle(
               connectionDirection: ConnectionDirection.after,
               connectorStyleBuilder: (context, index) {
-                return (index == 1) ? ConnectorStyle.dashedLine : ConnectorStyle.solidLine;
+                return (index == 1)
+                    ? ConnectorStyle.dashedLine
+                    : ConnectorStyle.solidLine;
               },
               indicatorStyleBuilder: (context, index) => IndicatorStyle.dot,
               itemExtent: 40.0,
@@ -149,7 +153,8 @@ class ComponentPage extends StatelessWidget {
                   child: Text('Contents'),
                 ),
               ),
-              connectorStyleBuilder: (context, index) => ConnectorStyle.solidLine,
+              connectorStyleBuilder: (context, index) =>
+                  ConnectorStyle.solidLine,
               indicatorStyleBuilder: (context, index) => IndicatorStyle.dot,
               itemCount: 3,
             ),
@@ -173,7 +178,8 @@ class ComponentPage extends StatelessWidget {
                   child: Text('Contents'),
                 ),
               ),
-              connectorStyleBuilder: (context, index) => ConnectorStyle.solidLine,
+              connectorStyleBuilder: (context, index) =>
+                  ConnectorStyle.solidLine,
               indicatorStyleBuilder: (context, index) => IndicatorStyle.dot,
               itemCount: 3,
             ),

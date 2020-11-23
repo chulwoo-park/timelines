@@ -23,7 +23,8 @@ class NavigationCard extends StatelessWidget with NavigateMixin {
   const NavigationCard({
     Key key,
     this.margin,
-    this.borderRadius = const BorderRadius.all(Radius.circular(kNavigationCardRadius)),
+    this.borderRadius =
+        const BorderRadius.all(Radius.circular(kNavigationCardRadius)),
     this.navigationBuilder,
     @required this.child,
   }) : super(key: key);
