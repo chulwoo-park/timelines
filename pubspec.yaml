@@ -1,6 +1,6 @@
 name: timelines
-version: 0.0.1
-description: Widgets that make it easy to implement the timeline UI component.
+version: 0.0.2
+description: A powerful & easy to use timeline package for Flutter. All UI components in this package are separate widgets.
 homepage: https://chulwoo.dev
 repository: https://github.com/chulwoo-park/timelines/
 issue_tracker: https://github.com/chulwoo-park/timelines/issues
