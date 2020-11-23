@@ -1,3 +1,8 @@
+## 0.0.2+1
+
+* Dartfmt line length changed from 120 to 80
+
+
 ## 0.0.2
 
 ### Add basic components
