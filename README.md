@@ -11,6 +11,8 @@
 
 <p align="center">A powerful & easy to use timeline package for Flutter! 🚀</p>
 
+> ***Caveat***: This package is an early stage. Not enough testing has been done to guarantee stability. And some apis can be change.
+
 # Examples
 
 Check it out on the [web](https://chulwoo.dev/timelines/) or look at the [source code](https://github.com/chulwoo-park/timelines/tree/main/example).
