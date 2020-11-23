@@ -14,30 +14,34 @@ enum ContentsAlign {
   /// The contents aligned end of timeline. And the opposite contents aligned start of timeline.
   ///
   /// Example:
-  ///
+  /// ```
   /// opposite contents  |  contents
   /// opposite contents  |  contents
   /// opposite contents  |  contents
+  /// ```
   basic,
 
   /// The contents aligned start of timeline. And the opposite contents aligned end of timeline.
   ///
   /// Example:
   ///
+  /// ```
   /// contents  |  opposite contents
   /// contents  |  opposite contents
   /// contents  |  opposite contents
+  /// ```
   reverse,
 
   /// The contents and opposite contents displayed alternating.
   ///
   /// Example:
-  ///
+  /// ```
   ///          contents  |  opposite contents
   /// opposite contents  |  contents
   ///          contents  |  opposite contents
   /// opposite contents  |  contents
   ///          contents  |  opposite contents
+  /// ```
   alternating,
 }
 
@@ -52,9 +56,10 @@ enum ConnectionDirection { before, after }
 /// An enum that representing the connector type in [TimelineNode].
 ///
 /// For example, if the timeline direction is Axis.horizontal and the text direction is LTR:
+/// ```
 ///   start   end
 ///   ---- O ----
-///
+/// ```
 /// See also:
 ///
 ///  * [ConnectedConnectorBuilder], which is use this.
@@ -116,16 +121,18 @@ class TimelineTileBuilder {
   ///
   /// Original build system:
   ///
+  /// ```
   /// |            <-- builder(0)
   /// O contents1  <-- builder(0)
   /// |            <-- builder(0)
   /// |            <-- builder(1)
   /// O contents2  <-- builder(1)
   /// |            <-- builder(1)
-  ///
+  /// ```
   ///
   /// Connected build system(before):
   ///
+  /// ```
   /// |            <-- draw if provided [firstConnectorBuilder]
   /// O contents1  <-- builder(0)
   /// |            <-- builder(1)
@@ -137,10 +144,12 @@ class TimelineTileBuilder {
   /// |            <-- builder(3)
   /// ..
   /// |            <-- draw if provided [lastConnectorBuilder]
+  /// ```
   ///
   ///
   /// Connected build system(after):
   ///
+  /// ```
   /// |            <-- draw if provided [firstConnectorBuilder]
   /// O contents1  <-- builder(0)
   /// |            <-- builder(0)
@@ -152,6 +161,7 @@ class TimelineTileBuilder {
   /// |            <-- builder(2)
   /// ..
   /// |            <-- draw if provided [lastConnectorBuilder]
+  /// ```
   ///
   /// The above example can be made similar by just set the [TimelineNode.indicatorPosition] as 0 or 1, but the contents
   /// position may be limited.
@@ -163,6 +173,7 @@ class TimelineTileBuilder {
   ///  * [TimelineTileBuilder.connectedFromStyle], which builds connected tiles from style.
   factory TimelineTileBuilder.connected({
     @required int itemCount,
+    ContentsAlign contentsAlign = ContentsAlign.basic,
     ConnectionDirection connectionDirection = ConnectionDirection.after,
     IndexedWidgetBuilder contentsBuilder,
     IndexedWidgetBuilder oppositeContentsBuilder,
@@ -181,6 +192,7 @@ class TimelineTileBuilder {
     assert(connectionDirection != null);
     return TimelineTileBuilder(
       itemCount: itemCount,
+      contentsAlign: contentsAlign,
       contentsBuilder: contentsBuilder,
       oppositeContentsBuilder: oppositeContentsBuilder,
       indicatorBuilder: indicatorBuilder,
@@ -216,9 +228,8 @@ class TimelineTileBuilder {
     IndexedWidgetBuilder contentsBuilder,
     IndexedWidgetBuilder oppositeContentsBuilder,
     ContentsAlign contentsAlign = ContentsAlign.basic,
-    IndicatorStyle indicatorStyle = IndicatorStyle.dot,
-    ConnectorStyle connectorStyle = ConnectorStyle.solidLine,
-    ConnectorStyle endConnectorStyle = ConnectorStyle.solidLine,
+    IndexedValueBuilder<IndicatorStyle> indicatorStyleBuilder,
+    IndexedValueBuilder<ConnectorStyle> connectorStyleBuilder,
     ConnectorStyle firstConnectorStyle = ConnectorStyle.solidLine,
     ConnectorStyle lastConnectorStyle = ConnectorStyle.solidLine,
     double itemExtent,
@@ -230,18 +241,22 @@ class TimelineTileBuilder {
 
     return TimelineTileBuilder(
       itemCount: itemCount,
+      contentsAlign: contentsAlign,
       contentsBuilder: contentsBuilder,
       oppositeContentsBuilder: oppositeContentsBuilder,
-      indicatorBuilder: (context, _) => _createStyledIndicatorBuilder(indicatorStyle)(context),
+      indicatorBuilder: (context, index) =>
+          _createStyledIndicatorBuilder(indicatorStyleBuilder?.call(context, index))(context),
       startConnectorBuilder: _createConnectedStartConnectorBuilder(
         connectionDirection: connectionDirection,
         firstConnectorBuilder: (context) => _createStyledConnectorBuilder(firstConnectorStyle)(context),
-        connectorBuilder: (context, _, __) => _createStyledConnectorBuilder(connectorStyle)(context),
+        connectorBuilder: (context, index, __) =>
+            _createStyledConnectorBuilder(connectorStyleBuilder?.call(context, index))(context),
       ),
       endConnectorBuilder: _createConnectedEndConnectorBuilder(
         connectionDirection: connectionDirection,
         lastConnectorBuilder: (context) => _createStyledConnectorBuilder(lastConnectorStyle)(context),
-        connectorBuilder: (context, _, __) => _createStyledConnectorBuilder(endConnectorStyle)(context),
+        connectorBuilder: (context, index, __) =>
+            _createStyledConnectorBuilder(connectorStyleBuilder?.call(context, index))(context),
         itemCount: itemCount,
       ),
       itemExtent: itemExtent,
@@ -279,16 +294,9 @@ class TimelineTileBuilder {
   }) {
     return TimelineTileBuilder(
       itemCount: itemCount,
-      contentsBuilder: _createStyledContentsBuilder(
-        align: contentsAlign,
-        contentsBuilder: contentsBuilder,
-        oppositeContentsBuilder: oppositeContentsBuilder,
-      ),
-      oppositeContentsBuilder: _createStyledContentsBuilder(
-        align: contentsAlign,
-        contentsBuilder: oppositeContentsBuilder,
-        oppositeContentsBuilder: contentsBuilder,
-      ),
+      contentsAlign: contentsAlign,
+      contentsBuilder: contentsBuilder,
+      oppositeContentsBuilder: oppositeContentsBuilder,
       indicatorBuilder: (context, index) => _createStyledIndicatorBuilder(indicatorStyle)(context),
       startConnectorBuilder: (context, _) => _createStyledConnectorBuilder(connectorStyle)(context),
       endConnectorBuilder: (context, _) => _createStyledConnectorBuilder(connectorStyle)(context),
@@ -308,6 +316,7 @@ class TimelineTileBuilder {
   /// TODO: need refactoring, is it has many builders...?
   factory TimelineTileBuilder({
     @required int itemCount,
+    ContentsAlign contentsAlign = ContentsAlign.basic,
     IndexedWidgetBuilder contentsBuilder,
     IndexedWidgetBuilder oppositeContentsBuilder,
     IndexedWidgetBuilder indicatorBuilder,
@@ -325,6 +334,17 @@ class TimelineTileBuilder {
       'Cannot provide both a itemExtent and a itemExtentBuilder.',
     );
 
+    final effectiveContentsBuilder = _createAlignedContentsBuilder(
+      align: contentsAlign,
+      contentsBuilder: contentsBuilder,
+      oppositeContentsBuilder: oppositeContentsBuilder,
+    );
+    final effectiveOppositeContentsBuilder = _createAlignedContentsBuilder(
+      align: contentsAlign,
+      contentsBuilder: oppositeContentsBuilder,
+      oppositeContentsBuilder: contentsBuilder,
+    );
+
     return TimelineTileBuilder._(
       (context, index) {
         final tile = TimelineTile(
@@ -337,8 +357,8 @@ class TimelineTileBuilder {
             position: nodePositionBuilder?.call(context, index),
             indicatorPosition: indicatorPositionBuilder?.call(context, index),
           ),
-          contents: contentsBuilder?.call(context, index),
-          oppositeContents: oppositeContentsBuilder?.call(context, index),
+          contents: effectiveContentsBuilder(context, index),
+          oppositeContents: effectiveOppositeContentsBuilder(context, index),
         );
 
         final theme = themeBuilder?.call(context, index);
@@ -411,7 +431,7 @@ class TimelineTileBuilder {
         }
       };
 
-  static IndexedWidgetBuilder _createStyledContentsBuilder({
+  static IndexedWidgetBuilder _createAlignedContentsBuilder({
     @required ContentsAlign align,
     IndexedWidgetBuilder contentsBuilder,
     IndexedWidgetBuilder oppositeContentsBuilder,
@@ -425,7 +445,7 @@ class TimelineTileBuilder {
             return oppositeContentsBuilder?.call(context, index);
           }
 
-          return contentsBuilder(context, index);
+          return contentsBuilder?.call(context, index);
         case ContentsAlign.reverse:
           return oppositeContentsBuilder?.call(context, index);
         case ContentsAlign.basic:
@@ -487,7 +507,7 @@ int _kDefaultSemanticIndexCallback(Widget _, int localIndex) => localIndex;
 ///  * [IndexedSemantics], for an example of manually annotating child nodes with semantic indexes.
 class TimelineTileBuilderDelegate extends SliverChildBuilderDelegate {
   TimelineTileBuilderDelegate(
-    NullableIndexedWidgetBuilder builder, {
+    IndexedWidgetBuilder builder, {
     ChildIndexGetter findChildIndexCallback,
     int childCount,
     bool addAutomaticKeepAlives = true,

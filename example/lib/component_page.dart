@@ -16,6 +16,16 @@ class ComponentPage extends StatelessWidget {
         item: OutlinedDotIndicator(),
       ),
       _ComponentRow(
+        name: 'Container\nIndicator',
+        item: ContainerIndicator(
+          child: Container(
+            width: 15.0,
+            height: 15.0,
+            color: Colors.blue,
+          ),
+        ),
+      ),
+      _ComponentRow(
         name: 'Solid line\nConnector',
         item: SizedBox(
           height: 20.0,
@@ -30,10 +40,42 @@ class ComponentPage extends StatelessWidget {
         ),
       ),
       _ComponentRow(
-        name: 'TimelineNode',
+        name: 'Decorated line\nConnector',
+        item: SizedBox(
+          height: 20.0,
+          child: DecoratedLineConnector(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.blue, Colors.lightBlueAccent[100]],
+              ),
+            ),
+          ),
+        ),
+      ),
+      _ComponentRow(
+        name: 'Simple TimelineNode',
         item: SizedBox(
           height: 50.0,
           child: TimelineNode.simple(),
+        ),
+      ),
+      _ComponentRow(
+        name: 'Complex TimelineNode',
+        item: SizedBox(
+          height: 80.0,
+          child: TimelineNode(
+            indicator: Card(
+              margin: EdgeInsets.zero,
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Complex'),
+              ),
+            ),
+            startConnector: DashedLineConnector(),
+            endConnector: SolidLineConnector(),
+          ),
         ),
       ),
       _ComponentRow(
@@ -53,6 +95,109 @@ class ComponentPage extends StatelessWidget {
             indicator: DotIndicator(),
             startConnector: SolidLineConnector(),
             endConnector: SolidLineConnector(),
+          ),
+        ),
+      ),
+      _ComponentRow(
+        name: 'ConnectionDirection.before',
+        item: Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: FixedTimeline.tileBuilder(
+            builder: TimelineTileBuilder.connectedFromStyle(
+              connectionDirection: ConnectionDirection.before,
+              connectorStyleBuilder: (context, index) {
+                return (index == 1) ? ConnectorStyle.dashedLine : ConnectorStyle.solidLine;
+              },
+              indicatorStyleBuilder: (context, index) => IndicatorStyle.dot,
+              itemExtent: 40.0,
+              itemCount: 3,
+            ),
+          ),
+        ),
+      ),
+      _ComponentRow(
+        name: 'ConnectionDirection.after',
+        item: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: FixedTimeline.tileBuilder(
+            builder: TimelineTileBuilder.connectedFromStyle(
+              connectionDirection: ConnectionDirection.after,
+              connectorStyleBuilder: (context, index) {
+                return (index == 1) ? ConnectorStyle.dashedLine : ConnectorStyle.solidLine;
+              },
+              indicatorStyleBuilder: (context, index) => IndicatorStyle.dot,
+              itemExtent: 40.0,
+              itemCount: 3,
+            ),
+          ),
+        ),
+      ),
+      _ComponentRow(
+        name: 'ContentsAlign.basic',
+        item: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: FixedTimeline.tileBuilder(
+            builder: TimelineTileBuilder.connectedFromStyle(
+              contentsAlign: ContentsAlign.basic,
+              oppositeContentsBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('opposite\ncontents'),
+              ),
+              contentsBuilder: (context, index) => Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Contents'),
+                ),
+              ),
+              connectorStyleBuilder: (context, index) => ConnectorStyle.solidLine,
+              indicatorStyleBuilder: (context, index) => IndicatorStyle.dot,
+              itemCount: 3,
+            ),
+          ),
+        ),
+      ),
+      _ComponentRow(
+        name: 'ContentsAlign.reverse',
+        item: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: FixedTimeline.tileBuilder(
+            builder: TimelineTileBuilder.connectedFromStyle(
+              contentsAlign: ContentsAlign.reverse,
+              oppositeContentsBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('opposite\ncontents'),
+              ),
+              contentsBuilder: (context, index) => Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Contents'),
+                ),
+              ),
+              connectorStyleBuilder: (context, index) => ConnectorStyle.solidLine,
+              indicatorStyleBuilder: (context, index) => IndicatorStyle.dot,
+              itemCount: 3,
+            ),
+          ),
+        ),
+      ),
+      _ComponentRow(
+        name: 'ContentsAlign.alternating',
+        item: FixedTimeline.tileBuilder(
+          builder: TimelineTileBuilder.connectedFromStyle(
+            contentsAlign: ContentsAlign.alternating,
+            oppositeContentsBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('opposite\ncontents'),
+            ),
+            contentsBuilder: (context, index) => Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Contents'),
+              ),
+            ),
+            connectorStyleBuilder: (context, index) => ConnectorStyle.solidLine,
+            indicatorStyleBuilder: (context, index) => IndicatorStyle.dot,
+            itemCount: 3,
           ),
         ),
       ),
