@@ -46,7 +46,8 @@ class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
         ),
         builder: TimelineTileBuilder.connected(
           connectionDirection: ConnectionDirection.before,
-          itemExtentBuilder: (_, __) => MediaQuery.of(context).size.width / _processes.length,
+          itemExtentBuilder: (_, __) =>
+              MediaQuery.of(context).size.width / _processes.length,
           oppositeContentsBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.only(bottom: 15.0),
@@ -137,7 +138,10 @@ class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
                 if (type == ConnectorType.start) {
                   gradientColors = [Color.lerp(prevColor, color, 0.5), color];
                 } else {
-                  gradientColors = [prevColor, Color.lerp(prevColor, color, 0.5)];
+                  gradientColors = [
+                    prevColor,
+                    Color.lerp(prevColor, color, 0.5)
+                  ];
                 }
                 return DecoratedLineConnector(
                   decoration: BoxDecoration(
@@ -211,7 +215,8 @@ class _BezierPainter extends CustomPainter {
       offset2 = _offset(radius, -angle);
       path = Path()
         ..moveTo(offset1.dx, offset1.dy)
-        ..quadraticBezierTo(0.0, size.height / 2, -radius, radius) // TODO connector start & gradient
+        ..quadraticBezierTo(0.0, size.height / 2, -radius,
+            radius) // TODO connector start & gradient
         ..quadraticBezierTo(0.0, size.height / 2, offset2.dx, offset2.dy)
         ..close();
 
@@ -224,7 +229,8 @@ class _BezierPainter extends CustomPainter {
 
       path = Path()
         ..moveTo(offset1.dx, offset1.dy)
-        ..quadraticBezierTo(size.width, size.height / 2, size.width + radius, radius) // TODO connector end & gradient
+        ..quadraticBezierTo(size.width, size.height / 2, size.width + radius,
+            radius) // TODO connector end & gradient
         ..quadraticBezierTo(size.width, size.height / 2, offset2.dx, offset2.dy)
         ..close();
 
@@ -234,7 +240,9 @@ class _BezierPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_BezierPainter oldDelegate) {
-    return oldDelegate.color != color || oldDelegate.drawStart != drawStart || oldDelegate.drawEnd != drawEnd;
+    return oldDelegate.color != color ||
+        oldDelegate.drawStart != drawStart ||
+        oldDelegate.drawEnd != drawEnd;
   }
 }
 

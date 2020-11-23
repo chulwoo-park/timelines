@@ -34,7 +34,8 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
     this.position,
     this.overlap,
   })  : assert(indicator != null),
-        assert(indicatorPosition == null || 0 <= indicatorPosition && indicatorPosition <= 1),
+        assert(indicatorPosition == null ||
+            0 <= indicatorPosition && indicatorPosition <= 1),
         super(key: key);
 
   /// Creates a timeline node that connects the dot indicator in a solid line.
@@ -109,7 +110,8 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
 
   /// Determine whether each connectors and indicator will overlap.
   ///
-  /// When each connectors overlap, they are drawn from the center offset of the indicator.
+  /// When each connectors overlap, they are drawn from the center offset of the
+  /// indicator.
   final bool overlap;
 
   double _getEffectiveIndicatorPosition(BuildContext context) {

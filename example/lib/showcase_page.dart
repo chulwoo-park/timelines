@@ -20,7 +20,8 @@ class ShowcasePage extends StatelessWidget {
               image: 'assets/images/timeline_status.png',
               title: 'Timeline Status',
               designer: 'Tridip Thrizu',
-              url: 'https://dribbble.com/shots/5659998-Daily-UI-Component-4-Timeline-Status',
+              url:
+                  'https://dribbble.com/shots/5659998-Daily-UI-Component-4-Timeline-Status',
               navigationBuilder: () => TimelineStatusPage(),
             ),
             _ShowcaseCard(

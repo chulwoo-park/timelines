@@ -11,7 +11,8 @@ import 'timeline_tile.dart';
 /// See also:
 ///  * [TimelineTileBuilder.fromStyle]
 enum ContentsAlign {
-  /// The contents aligned end of timeline. And the opposite contents aligned start of timeline.
+  /// The contents aligned end of timeline. And the opposite contents aligned
+  /// start of timeline.
   ///
   /// Example:
   /// ```
@@ -21,7 +22,8 @@ enum ContentsAlign {
   /// ```
   basic,
 
-  /// The contents aligned start of timeline. And the opposite contents aligned end of timeline.
+  /// The contents aligned start of timeline. And the opposite contents aligned
+  /// end of timeline.
   ///
   /// Example:
   ///
@@ -45,17 +47,21 @@ enum ContentsAlign {
   alternating,
 }
 
-/// An enum that representing the direction the connector is connected through the builder.
+/// An enum that representing the direction the connector is connected through
+/// the builder.
 ///
 /// See also:
 ///
-///  * [TimelineTileBuilder.connected], which is how the builder uses this enum to connect each connector.
-///  * [TimelineTileBuilder.connectedFromStyle], which is how the builder uses this enum to connect each connector.
+///  * [TimelineTileBuilder.connected], which is how the builder uses this enum
+///  to connect each connector.
+///  * [TimelineTileBuilder.connectedFromStyle], which is how the builder uses
+///  this enum to connect each connector.
 enum ConnectionDirection { before, after }
 
 /// An enum that representing the connector type in [TimelineNode].
 ///
-/// For example, if the timeline direction is Axis.horizontal and the text direction is LTR:
+/// For example, if the timeline direction is Axis.horizontal and the text
+/// direction is LTR:
 /// ```
 ///   start   end
 ///   ---- O ----
@@ -102,20 +108,25 @@ enum ConnectorStyle {
   transparent,
 }
 
-/// Signature for a function that creates a connected connector widget for a given index and type, e.g., in a timeline
-/// tile builder.
-typedef ConnectedConnectorBuilder = Widget Function(BuildContext context, int index, ConnectorType type);
+/// Signature for a function that creates a connected connector widget for a
+/// given index and type, e.g., in a timeline tile builder.
+typedef ConnectedConnectorBuilder = Widget Function(
+    BuildContext context, int index, ConnectorType type);
 
-/// Signature for a function that creates a typed value for a given index, e.g., in a timeline tile builder.
+/// Signature for a function that creates a typed value for a given index, e.g.,
+/// in a timeline tile builder.
 ///
 /// Used by [TimelineTileBuilder] that use lazily-generated typed value.
 typedef IndexedValueBuilder<T> = T Function(BuildContext context, int index);
 
-/// WARNING: The interface of this class is not yet clear. It may change frequently.
+/// WARNING: The interface of this class is not yet clear. It may change
+/// frequently.
 ///
-/// A delegate that supplies [TimelineTile] for timeline using a builder callback.
+/// A delegate that supplies [TimelineTile] for timeline using a builder
+/// callback.
 class TimelineTileBuilder {
-  /// Create a connected tile builder, which builds tiles using each component builder.
+  /// Create a connected tile builder, which builds tiles using each component
+  /// builder.
   ///
   /// Check below for how to build:
   ///
@@ -163,14 +174,16 @@ class TimelineTileBuilder {
   /// |            <-- draw if provided [lastConnectorBuilder]
   /// ```
   ///
-  /// The above example can be made similar by just set the [TimelineNode.indicatorPosition] as 0 or 1, but the contents
-  /// position may be limited.
+  /// The above example can be made similar by just set the
+  /// [TimelineNode.indicatorPosition] as 0 or 1, but the contents position may
+  /// be limited.
   ///
   /// {@macro timelines.itemExtentBuilder}
   ///
   /// See also:
   ///
-  ///  * [TimelineTileBuilder.connectedFromStyle], which builds connected tiles from style.
+  ///  * [TimelineTileBuilder.connectedFromStyle], which builds connected tiles
+  ///  from style.
   factory TimelineTileBuilder.connected({
     @required int itemCount,
     ContentsAlign contentsAlign = ContentsAlign.basic,
@@ -244,19 +257,21 @@ class TimelineTileBuilder {
       contentsAlign: contentsAlign,
       contentsBuilder: contentsBuilder,
       oppositeContentsBuilder: oppositeContentsBuilder,
-      indicatorBuilder: (context, index) =>
-          _createStyledIndicatorBuilder(indicatorStyleBuilder?.call(context, index))(context),
+      indicatorBuilder: (context, index) => _createStyledIndicatorBuilder(
+          indicatorStyleBuilder?.call(context, index))(context),
       startConnectorBuilder: _createConnectedStartConnectorBuilder(
         connectionDirection: connectionDirection,
-        firstConnectorBuilder: (context) => _createStyledConnectorBuilder(firstConnectorStyle)(context),
-        connectorBuilder: (context, index, __) =>
-            _createStyledConnectorBuilder(connectorStyleBuilder?.call(context, index))(context),
+        firstConnectorBuilder: (context) =>
+            _createStyledConnectorBuilder(firstConnectorStyle)(context),
+        connectorBuilder: (context, index, __) => _createStyledConnectorBuilder(
+            connectorStyleBuilder?.call(context, index))(context),
       ),
       endConnectorBuilder: _createConnectedEndConnectorBuilder(
         connectionDirection: connectionDirection,
-        lastConnectorBuilder: (context) => _createStyledConnectorBuilder(lastConnectorStyle)(context),
-        connectorBuilder: (context, index, __) =>
-            _createStyledConnectorBuilder(connectorStyleBuilder?.call(context, index))(context),
+        lastConnectorBuilder: (context) =>
+            _createStyledConnectorBuilder(lastConnectorStyle)(context),
+        connectorBuilder: (context, index, __) => _createStyledConnectorBuilder(
+            connectorStyleBuilder?.call(context, index))(context),
         itemCount: itemCount,
       ),
       itemExtent: itemExtent,
@@ -297,9 +312,12 @@ class TimelineTileBuilder {
       contentsAlign: contentsAlign,
       contentsBuilder: contentsBuilder,
       oppositeContentsBuilder: oppositeContentsBuilder,
-      indicatorBuilder: (context, index) => _createStyledIndicatorBuilder(indicatorStyle)(context),
-      startConnectorBuilder: (context, _) => _createStyledConnectorBuilder(connectorStyle)(context),
-      endConnectorBuilder: (context, _) => _createStyledConnectorBuilder(connectorStyle)(context),
+      indicatorBuilder: (context, index) =>
+          _createStyledIndicatorBuilder(indicatorStyle)(context),
+      startConnectorBuilder: (context, _) =>
+          _createStyledConnectorBuilder(connectorStyle)(context),
+      endConnectorBuilder: (context, _) =>
+          _createStyledConnectorBuilder(connectorStyle)(context),
       itemExtent: itemExtent,
       itemExtentBuilder: itemExtentBuilder,
       nodePositionBuilder: nodePositionBuilder,
@@ -310,7 +328,8 @@ class TimelineTileBuilder {
   /// Create a tile builder, which builds tiles using each component builder.
   ///
   /// {@template timelines.itemExtentBuilder}
-  /// If each item has a fixed extent, use [itemExtent], and if each item has a different extent, use [itemExtentBuilder].
+  /// If each item has a fixed extent, use [itemExtent], and if each item has a
+  /// different extent, use [itemExtentBuilder].
   /// {@endtemplate}
   ///
   /// TODO: need refactoring, is it has many builders...?
@@ -350,7 +369,8 @@ class TimelineTileBuilder {
         final tile = TimelineTile(
           mainAxisExtent: itemExtent ?? itemExtentBuilder?.call(context, index),
           node: TimelineNode(
-            indicator: indicatorBuilder?.call(context, index) ?? Indicator.transparent(),
+            indicator: indicatorBuilder?.call(context, index) ??
+                Indicator.transparent(),
             startConnector: startConnectorBuilder?.call(context, index),
             endConnector: endConnectorBuilder?.call(context, index),
             overlap: nodeItemOverlapBuilder?.call(context, index),
@@ -405,7 +425,8 @@ class TimelineTileBuilder {
         if (connectionDirection == ConnectionDirection.before) {
           return connectorBuilder?.call(context, index, ConnectorType.start);
         } else {
-          return connectorBuilder?.call(context, index - 1, ConnectorType.start);
+          return connectorBuilder?.call(
+              context, index - 1, ConnectorType.start);
         }
       };
 
@@ -488,23 +509,28 @@ class TimelineTileBuilder {
 
 int _kDefaultSemanticIndexCallback(Widget _, int localIndex) => localIndex;
 
-/// The widgets returned from the builder callback are automatically wrapped in [AutomaticKeepAlive] widgets if
-/// [addAutomaticKeepAlives] is true (the default) and in [RepaintBoundary] widgets if [addRepaintBoundaries] is true
-/// (also the default).
+/// The widgets returned from the builder callback are automatically wrapped in
+/// [AutomaticKeepAlive] widgets if [addAutomaticKeepAlives] is true
+/// (the default) and in [RepaintBoundary] widgets if [addRepaintBoundaries] is
+/// true (also the default).
 ///
 /// ## Accessibility
 ///
-/// The [CustomScrollView] requires that its semantic children are annotated using [IndexedSemantics]. This is done by
-/// default in the delegate with the `addSemanticIndexes` parameter set to true.
+/// The [CustomScrollView] requires that its semantic children are annotated
+/// using [IndexedSemantics]. This is done by default in the delegate with the
+/// `addSemanticIndexes` parameter set to true.
 ///
-/// If multiple delegates are used in a single scroll view, then the indexes will not be correct by default. The
-/// `semanticIndexOffset` can be used to offset the semantic indexes of each delegate so that the indexes are
-/// monotonically increasing. For example, if a scroll view contains two delegates where the first has 10 children
-/// contributing semantics, then the second delegate should offset its children by 10.
+/// If multiple delegates are used in a single scroll view, then the indexes
+/// will not be correct by default. The `semanticIndexOffset` can be used to
+/// offset the semantic indexes of each delegate so that the indexes are
+/// monotonically increasing. For example, if a scroll view contains two
+/// delegates where the first has 10 children contributing semantics, then the
+/// second delegate should offset its children by 10.
 ///
 /// See also:
 ///
-///  * [IndexedSemantics], for an example of manually annotating child nodes with semantic indexes.
+///  * [IndexedSemantics], for an example of manually annotating child nodes
+///  with semantic indexes.
 class TimelineTileBuilderDelegate extends SliverChildBuilderDelegate {
   TimelineTileBuilderDelegate(
     IndexedWidgetBuilder builder, {
@@ -513,7 +539,8 @@ class TimelineTileBuilderDelegate extends SliverChildBuilderDelegate {
     bool addAutomaticKeepAlives = true,
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,
-    SemanticIndexCallback semanticIndexCallback = _kDefaultSemanticIndexCallback,
+    SemanticIndexCallback semanticIndexCallback =
+        _kDefaultSemanticIndexCallback,
     int semanticIndexOffset = 0,
   }) : super(
           builder,
