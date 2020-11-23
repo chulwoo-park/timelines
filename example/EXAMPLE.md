@@ -1,7 +1,7 @@
 <!-- TODO: sync with readme.md example section -->
 This example shows a simple timeline that has text contents alternating:
 
-![timeline_status](https://raw.github.com/chulwoo-park/timelines/release/0.1.0/screenshots/example.png)
+![timeline_status](https://raw.github.com/chulwoo-park/timelines/mainscreenshots/example.png)
 
 
 ``` dart
