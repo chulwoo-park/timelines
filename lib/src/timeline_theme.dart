@@ -168,7 +168,7 @@ class TimelineThemeData with Diagnosticable {
     ConnectorThemeData connectorTheme,
   }) {
     direction ??= Axis.vertical;
-    color ??= Colors.blue; // TODO: Need to change the default color to the theme color?
+    color ??= Colors.blue;
     nodePosition ??= 0.5;
     nodeItemOverlap ??= false;
     indicatorPosition ??= 0.5;

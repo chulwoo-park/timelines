@@ -285,10 +285,6 @@ class DecoratedLineConnector extends Connector {
 /// The box's total cross axis size(width or height, depend on [direction]) is controlled by [space].
 ///
 /// The appropriate padding is automatically computed from the cross axis size.
-///
-/// See also:
-///
-///  * [DashedLinePainter], which is painter that draws this connector.
 class DashedLineConnector extends Connector {
   /// Creates a dashed line connector.
   ///
@@ -316,12 +312,12 @@ class DashedLineConnector extends Connector {
 
   /// The dash size of the line drawn within the connector.
   ///
-  /// If this is null, then this defaults to 1.0.
+  /// If this is null, then this defaults to 2.0.
   final double dash;
 
   /// The gap of the line drawn within the connector.
   ///
-  /// If this is null, then this defaults to 1.0.
+  /// If this is null, then this defaults to 3.0.
   final double gap;
 
   /// The color to use when painting the gap in the line.
@@ -342,8 +338,8 @@ class DashedLineConnector extends Connector {
           direction: direction,
           color: getEffectiveColor(context),
           strokeWidth: getEffectiveThickness(context),
-          dashSize: dash ?? 1.0,
-          gapSize: gap ?? 1.0,
+          dashSize: dash ?? 2.0,
+          gapSize: gap ?? 3.0,
           gapColor: gapColor ?? Colors.transparent,
         ),
         child: Container(),

@@ -284,21 +284,13 @@ class Timeline extends BoxScrollView {
       result = SliverList(delegate: childrenDelegate);
     }
 
-    var theme;
-    if (this.theme != null) {
-      theme = this.theme;
-    } else if (scrollDirection != TimelineTheme.of(context).direction) {
-      theme = TimelineTheme.of(context).copyWith(direction: scrollDirection);
-    }
-
-    if (theme != null) {
-      return TimelineTheme(
-        data: theme,
-        child: result,
-      );
-    } else {
-      return result;
-    }
+    return TimelineTheme(
+      data: theme ??
+          TimelineThemeData(
+            direction: scrollDirection,
+          ),
+      child: result,
+    );
   }
 }
 
@@ -310,10 +302,6 @@ class FixedTimeline extends StatelessWidget {
     @required TimelineTileBuilder builder,
     TimelineThemeData theme,
     Axis direction,
-    MainAxisSize mainAxisSize = MainAxisSize.max,
-    TextDirection textDirection,
-    VerticalDirection verticalDirection = VerticalDirection.down,
-    Clip clipBehavior = Clip.none,
   }) {
     assert(builder != null);
     // TODO: how remove Builders?
@@ -326,124 +314,34 @@ class FixedTimeline extends StatelessWidget {
       ],
       theme: theme,
       direction: direction,
-      mainAxisSize: mainAxisSize,
-      textDirection: textDirection,
-      verticalDirection: verticalDirection,
-      clipBehavior: clipBehavior,
     );
   }
 
   /// Creates a timeline flex layout.
-  ///
-  /// The [direction], [verticalDirection] arguments must not be null.
-  ///
-  /// The [textDirection] argument defaults to the ambient [Directionality], if any. If there is no ambient
-  /// directionality, and a text direction is going to be necessary to decide which direction to lay the children in or
-  /// to disambiguate `start` or `end` values for the main or cross axis directions, the [textDirection] must not be
-  /// null.
   const FixedTimeline({
     Key key,
     this.theme,
     this.direction,
-    this.mainAxisSize = MainAxisSize.max,
-    this.textDirection,
-    this.verticalDirection = VerticalDirection.down,
-    this.clipBehavior = Clip.none,
     this.children = const [],
   })  : assert(direction == null || theme == null, 'Cannot provide both a direction and a theme.'),
-        assert(mainAxisSize != null),
-        assert(verticalDirection != null),
-        assert(clipBehavior != null),
         super(key: key);
 
-  /// Default visual properties, like colors, size and spaces, for this timeline's component widgets.
-  ///
-  /// The default value of this property is the value of [TimelineThemeData.vertical()].
   final TimelineThemeData theme;
-
-  /// The direction to use as the main axis.
   final Axis direction;
-
-  /// The widgets below this widget in the tree.
-  ///
-  /// If this list is going to be mutated, it is usually wise to put a [Key] on each of the child widgets, so that the
-  /// framework can match old configurations to new configurations and maintain the underlying render objects.
-  ///
-  /// See also:
-  ///
-  ///  * [MultiChildRenderObjectWidget.children]
   final List<Widget> children;
-
-  /// How much space should be occupied in the main axis.
-  ///
-  /// After allocating space to children, there might be some remaining free space. This value controls whether to
-  /// maximize or minimize the amount of free space, subject to the incoming layout constraints.
-  ///
-  /// If some children have a non-zero flex factors (and none have a fit of [FlexFit.loose]), they will expand to
-  /// consume all the available space and there will be no remaining free space to maximize or minimize, making this
-  /// value irrelevant to the final layout.
-  final MainAxisSize mainAxisSize;
-
-  /// Determines the order to lay children out horizontally and how to interpret `start` and `end` in the horizontal
-  /// direction.
-  ///
-  /// Defaults to the ambient [Directionality].
-  ///
-  /// If [textDirection] is [TextDirection.rtl], then the direction in which text flows starts from right to left.
-  /// Otherwise, if [textDirection] is [TextDirection.ltr], then the direction in which text flows starts from left to
-  /// right.
-  ///
-  /// If the [direction] is [Axis.horizontal], this controls the order in which the children are positioned
-  /// (left-to-right or right-to-left).
-  ///
-  /// If the [direction] is [Axis.horizontal], and there's more than one child, then the [textDirection] (or the
-  /// ambient [Directionality]) must not be null.
-  final TextDirection textDirection;
-
-  /// Determines the order to lay children out vertically and how to interpret `start` and `end` in the vertical
-  /// direction.
-  ///
-  /// Defaults to [VerticalDirection.down].
-  ///
-  /// If the [direction] is [Axis.vertical], there's more than one child, then the [verticalDirection] must not be null.
-  final VerticalDirection verticalDirection;
-
-  /// The content will be clipped (or not) according to this option.
-  ///
-  /// See the enum Clip for details of all possible options and their common use cases.
-  ///
-  /// Defaults to [Clip.none].
-  final Clip clipBehavior;
 
   @override
   Widget build(BuildContext context) {
-    final direction = this.direction ?? this.theme?.direction ?? Axis.vertical;
-
-    Widget result = Flex(
-      direction: direction,
-      children: children,
-      mainAxisSize: mainAxisSize,
-      textDirection: textDirection,
-      verticalDirection: verticalDirection,
-      clipBehavior: clipBehavior,
+    final direction = this.direction ?? theme?.direction ?? Axis.vertical;
+    return TimelineTheme(
+      data: theme ??
+          TimelineThemeData(
+            direction: direction,
+          ),
+      child: Flex(
+        direction: direction,
+        children: children,
+      ),
     );
-
-    var theme;
-    if (this.direction != null) {
-      if (direction != TimelineTheme.of(context).direction) {
-        theme = TimelineTheme.of(context).copyWith(direction: this.direction);
-      }
-    } else if (this.theme != null) {
-      theme = this.theme;
-    }
-
-    if (theme != null) {
-      return TimelineTheme(
-        data: theme,
-        child: result,
-      );
-    } else {
-      return result;
-    }
   }
 }

@@ -22,7 +22,7 @@ jobs:
       - run: |
           cd example/build/web
           git init
-          git config --global user.email park@chulwoo.dev
+          git config --global user.email contact@chulwoo.dev
           git config --global user.name chulwoo.park
           git status
           git remote add origin https://${{secrets.commit_secret}}@github.com/chulwoo-park/timelines.git

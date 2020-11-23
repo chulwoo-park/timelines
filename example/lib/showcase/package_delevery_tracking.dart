@@ -212,21 +212,19 @@ class _OnTimeBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Builder(
-          builder: (context) => MaterialButton(
-            onPressed: () {
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('On-time!'),
-                ),
-              );
-            },
-            elevation: 0,
-            shape: StadiumBorder(),
-            color: Color(0xff66c97f),
-            textColor: Colors.white,
-            child: Text('On-time'),
-          ),
+        MaterialButton(
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('On-time!'),
+              ),
+            );
+          },
+          elevation: 0,
+          shape: StadiumBorder(),
+          color: Color(0xff66c97f),
+          textColor: Colors.white,
+          child: Text('On-time'),
         ),
         Spacer(),
         Text(

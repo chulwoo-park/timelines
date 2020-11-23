@@ -23,6 +23,8 @@ enum TimelineNodeAlign {
 ///
 /// The [contents] are displayed on the end side, and the [oppositeContents] are displayed on the start side.
 /// The [node] is displayed between the two.
+///
+/// [nodePosition]
 class TimelineTile extends StatelessWidget {
   const TimelineTile({
     Key key,
