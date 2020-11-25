@@ -1,11 +1,11 @@
 [![banner](https://raw.github.com/chulwoo-park/timelines/main/design/feature_graphic.png)](https://github.com/chulwoo-park/timelines)
 
 <p align="center">
-  <a href="https://github.com/Solido/awesome-flutter">
-    <img alt="Awesome Flutter" src="https://img.shields.io/badge/Awesome-Flutter-blue.svg?longCache=true&style=flat-square" />
-  </a>
   <a href="https://pub.dartlang.org/packages/timelines">
     <img src="https://img.shields.io/pub/v/timelines.svg" alt="Pub" />
+  </a>
+  <a href="https://github.com/Solido/awesome-flutter">
+    <img alt="Awesome Flutter" src="https://img.shields.io/badge/Awesome-Flutter-blue.svg?longCache=true" />
   </a>
   <a href="https://opensource.org/licenses/MIT">
     <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT" />
