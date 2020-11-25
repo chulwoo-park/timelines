@@ -1,0 +1,38 @@
+
+#
+#-------------------------------------------------------------------------------
+#
+# feat - A new feature
+# fix - A bug fix
+# docs - Documentation only changes
+# style - Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+# refactor - A code change that neither fixes a bug nor adds a feature
+# perf - A code change that improves performance
+# test - Adding missing tests or correcting existing tests
+# build - Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
+# ci - Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
+# chore - Other changes that don't modify src or test files
+# revert - Reverts a previous commit
+# bump - Version update
+# localize - Translations update
+#
+#
+# Conventional Commits v1.0.0
+# - Check out the details here: conventionalcommits.org
+#
+#
+# <type>(<scope>): <subject>
+#  ^--^     ^----------^
+#  |        |
+#  |        +-> Summary in present tense.
+#  |
+#  +-------> Type: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert, bump, or localize.
+#
+#  <scope> is optional
+#
+#
+# Each type is referenced here:
+# - joshbuchea's semantic-commit-messages.md
+#
+#-------------------------------------------------------------------------------
+#
