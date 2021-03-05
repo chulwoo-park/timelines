@@ -19,7 +19,7 @@ class _ThemePageState extends State<ThemePage> {
     'ORANGE': Colors.orange,
   };
 
-  TimelineThemeData _theme;
+  late TimelineThemeData _theme;
 
   @override
   void initState() {
@@ -83,7 +83,7 @@ class _ThemePageState extends State<ThemePage> {
                           'Horizontal': Axis.horizontal,
                         },
                         value: _theme.direction,
-                        onChanged: (axis) {
+                        onChanged: (Axis? axis) {
                           if (_theme.direction != axis) {
                             setState(() {
                               _updateTheme(_theme.copyWith(direction: axis));
@@ -95,7 +95,7 @@ class _ThemePageState extends State<ThemePage> {
                         title: 'Color',
                         items: _themeColors,
                         value: _theme.color,
-                        onChanged: (color) {
+                        onChanged: (Color? color) {
                           _updateTheme(_theme.copyWith(color: color));
                         },
                       ),
@@ -142,7 +142,7 @@ class _ThemePageState extends State<ThemePage> {
                         'IndicatorTheme',
                         style: Theme.of(context).textTheme.headline6,
                       ),
-                      _ThemeDropdown(
+                      _ThemeDropdown<Color?>(
                         title: 'Color',
                         items: _themeColors,
                         value: _theme.indicatorTheme.color,
@@ -158,7 +158,7 @@ class _ThemePageState extends State<ThemePage> {
                       SizedBox(height: 10.0),
                       _ThemeSlider(
                         title: 'Position',
-                        value: _theme.indicatorTheme.position,
+                        value: _theme.indicatorTheme.position ?? 0,
                         onChanged: (position) {
                           _updateTheme(
                             _theme.copyWith(
@@ -170,7 +170,7 @@ class _ThemePageState extends State<ThemePage> {
                       ),
                       _ThemeSlider(
                         title: 'Size',
-                        value: _theme.indicatorTheme.size,
+                        value: _theme.indicatorTheme.size ?? 0,
                         max: 100.0,
                         onChanged: (size) {
                           _updateTheme(
@@ -194,7 +194,7 @@ class _ThemePageState extends State<ThemePage> {
                         'ConnectorTheme',
                         style: Theme.of(context).textTheme.headline6,
                       ),
-                      _ThemeDropdown(
+                      _ThemeDropdown<Color?>(
                         title: 'Color',
                         items: _themeColors,
                         value: _theme.connectorTheme.color,
@@ -210,7 +210,7 @@ class _ThemePageState extends State<ThemePage> {
                       SizedBox(height: 10.0),
                       _ThemeSlider(
                         title: 'Space',
-                        value: _theme.connectorTheme.space,
+                        value: _theme.connectorTheme.space ?? 0,
                         max: 100,
                         onChanged: (space) {
                           _updateTheme(
@@ -223,7 +223,7 @@ class _ThemePageState extends State<ThemePage> {
                       ),
                       _ThemeSlider(
                         title: 'Indent',
-                        value: _theme.connectorTheme.indent,
+                        value: _theme.connectorTheme.indent ?? 0,
                         max: 22,
                         onChanged: (indent) {
                           _updateTheme(
@@ -236,7 +236,7 @@ class _ThemePageState extends State<ThemePage> {
                       ),
                       _ThemeSlider(
                         title: 'Thickness',
-                        value: _theme.connectorTheme.thickness,
+                        value: _theme.connectorTheme.thickness ?? 0,
                         max: 100,
                         onChanged: (thickness) {
                           _updateTheme(
@@ -287,17 +287,17 @@ class _ThemePageState extends State<ThemePage> {
 
 class _ThemeDropdown<T> extends StatelessWidget {
   const _ThemeDropdown({
-    Key key,
-    @required this.title,
-    @required this.items,
-    @required this.value,
-    @required this.onChanged,
+    Key? key,
+    required this.title,
+    required this.items,
+    required this.value,
+    required this.onChanged,
   }) : super(key: key);
 
   final String title;
   final Map<String, T> items;
   final T value;
-  final ValueChanged<T> onChanged;
+  final ValueChanged<T?> onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -322,15 +322,15 @@ class _ThemeDropdown<T> extends StatelessWidget {
 
 class _ThemeSlider extends StatelessWidget {
   const _ThemeSlider({
-    Key key,
-    @required this.title,
-    @required this.value,
-    @required this.onChanged,
+    Key? key,
+    required this.title,
+    required this.value,
+    required this.onChanged,
     this.max = 1.0,
   }) : super(key: key);
 
   final String title;
-  final double value;
+  final double? value;
   final ValueChanged<double> onChanged;
   final double max;
 
@@ -339,8 +339,8 @@ class _ThemeSlider extends StatelessWidget {
     var label;
     if (value == null) {
       label = '';
-    } else if (value > 1) {
-      label = value.toInt().toString();
+    } else if (value! > 1) {
+      label = value!.toInt().toString();
     } else {
       label = value.toString();
     }

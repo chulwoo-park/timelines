@@ -68,12 +68,12 @@ class ShowcasePage extends StatelessWidget {
 
 class _ShowcaseCard extends StatelessWidget {
   const _ShowcaseCard({
-    Key key,
-    @required this.navigationBuilder,
-    @required this.image,
-    @required this.title,
-    @required this.designer,
-    @required this.url,
+    Key? key,
+    required this.navigationBuilder,
+    required this.image,
+    required this.title,
+    required this.designer,
+    required this.url,
   }) : super(key: key);
 
   final String image;

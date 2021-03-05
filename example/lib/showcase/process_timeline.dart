@@ -156,7 +156,7 @@ class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
                 );
               }
             } else {
-              return null;
+              return const SizedBox();
             }
           },
           itemCount: _processes.length,
@@ -179,7 +179,7 @@ class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
 /// TODO: Bezier curve into package component
 class _BezierPainter extends CustomPainter {
   const _BezierPainter({
-    @required this.color,
+    required this.color,
     this.drawStart = true,
     this.drawEnd = true,
   });

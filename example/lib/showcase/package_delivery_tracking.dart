@@ -47,10 +47,9 @@ class PackageDeliveryTrackingPage extends StatelessWidget {
 
 class _OrderTitle extends StatelessWidget {
   const _OrderTitle({
-    Key key,
-    @required this.orderInfo,
-  })  : assert(orderInfo != null),
-        super(key: key);
+    Key? key,
+    required this.orderInfo,
+  }) : super(key: key);
 
   final _OrderInfo orderInfo;
 
@@ -78,7 +77,7 @@ class _OrderTitle extends StatelessWidget {
 
 class _InnerTimeline extends StatelessWidget {
   const _InnerTimeline({
-    @required this.messages,
+    required this.messages,
   });
 
   final List<_DeliveryMessage> messages;
@@ -103,13 +102,14 @@ class _InnerTimeline extends StatelessWidget {
               ),
         ),
         builder: TimelineTileBuilder(
-          indicatorBuilder: (_, index) =>
-              !isEdgeIndex(index) ? Indicator.outlined(borderWidth: 1.0) : null,
+          indicatorBuilder: (_, index) => !isEdgeIndex(index)
+              ? Indicator.outlined(borderWidth: 1.0)
+              : const SizedBox(),
           startConnectorBuilder: (_, index) => Connector.solidLine(),
           endConnectorBuilder: (_, index) => Connector.solidLine(),
           contentsBuilder: (_, index) {
             if (isEdgeIndex(index)) {
-              return null;
+              return const SizedBox();
             }
 
             return Padding(
@@ -119,7 +119,7 @@ class _InnerTimeline extends StatelessWidget {
           },
           itemExtentBuilder: (_, index) => isEdgeIndex(index) ? 10.0 : 30.0,
           nodeItemOverlapBuilder: (_, index) =>
-              isEdgeIndex(index) ? true : null,
+              isEdgeIndex(index) ? true : false,
           itemCount: messages.length + 2,
         ),
       ),
@@ -128,9 +128,8 @@ class _InnerTimeline extends StatelessWidget {
 }
 
 class _DeliveryProcesses extends StatelessWidget {
-  const _DeliveryProcesses({Key key, @required this.processes})
-      : assert(processes != null),
-        super(key: key);
+  const _DeliveryProcesses({Key? key, required this.processes})
+      : super(key: key);
 
   final List<_DeliveryProcess> processes;
   @override
@@ -158,7 +157,7 @@ class _DeliveryProcesses extends StatelessWidget {
             connectionDirection: ConnectionDirection.before,
             itemCount: processes.length,
             contentsBuilder: (_, index) {
-              if (processes[index].isCompleted) return null;
+              if (processes[index].isCompleted) return const SizedBox();
 
               return Padding(
                 padding: EdgeInsets.only(left: 8.0),
@@ -204,9 +203,7 @@ class _DeliveryProcesses extends StatelessWidget {
 }
 
 class _OnTimeBar extends StatelessWidget {
-  const _OnTimeBar({Key key, @required this.driver})
-      : assert(driver != null),
-        super(key: key);
+  const _OnTimeBar({Key? key, required this.driver}) : super(key: key);
 
   final _DriverInfo driver;
 
@@ -217,7 +214,7 @@ class _OnTimeBar extends StatelessWidget {
         Builder(
           builder: (context) => MaterialButton(
             onPressed: () {
-              Scaffold.of(context).showSnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('On-time!'),
                 ),
@@ -283,10 +280,10 @@ _OrderInfo _data(int id) => _OrderInfo(
 
 class _OrderInfo {
   const _OrderInfo({
-    @required this.id,
-    @required this.date,
-    @required this.driverInfo,
-    @required this.deliveryProcesses,
+    required this.id,
+    required this.date,
+    required this.driverInfo,
+    required this.deliveryProcesses,
   });
 
   final int id;
@@ -297,8 +294,8 @@ class _OrderInfo {
 
 class _DriverInfo {
   const _DriverInfo({
-    @required this.name,
-    this.thumbnailUrl,
+    required this.name,
+    required this.thumbnailUrl,
   });
 
   final String name;

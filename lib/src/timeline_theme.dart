@@ -25,9 +25,9 @@ class TimelineTheme extends StatelessWidget {
   ///
   /// The [data] and [child] arguments must not be null.
   const TimelineTheme({
-    Key key,
-    @required this.data,
-    @required this.child,
+    Key? key,
+    required this.data,
+    required this.child,
   }) : super(key: key);
 
   /// Specifies the direction for descendant widgets.
@@ -76,7 +76,7 @@ class TimelineTheme extends StatelessWidget {
   static TimelineThemeData of(BuildContext context) {
     final inheritedTheme =
         context.dependOnInheritedWidgetOfExactType<_InheritedTheme>();
-    return inheritedTheme?.theme?.data ?? _kFallbackTheme;
+    return inheritedTheme?.theme.data ?? _kFallbackTheme;
   }
 
   @override
@@ -100,11 +100,10 @@ class TimelineTheme extends StatelessWidget {
 
 class _InheritedTheme extends InheritedTheme {
   const _InheritedTheme({
-    Key key,
-    @required this.theme,
-    @required Widget child,
-  })  : assert(theme != null),
-        super(key: key, child: child);
+    Key? key,
+    required this.theme,
+    required Widget child,
+  }) : super(key: key, child: child);
 
   final TimelineTheme theme;
 
@@ -179,13 +178,13 @@ class TimelineThemeData with Diagnosticable {
   ///  * [TimelineThemeData.horizontal], which creates a horizontal direction
   ///  TimelineThemeData.
   factory TimelineThemeData({
-    Axis direction,
-    Color color,
-    double nodePosition,
-    bool nodeItemOverlap,
-    double indicatorPosition,
-    IndicatorThemeData indicatorTheme,
-    ConnectorThemeData connectorTheme,
+    Axis? direction,
+    Color? color,
+    double? nodePosition,
+    bool? nodeItemOverlap,
+    double? indicatorPosition,
+    IndicatorThemeData? indicatorTheme,
+    ConnectorThemeData? connectorTheme,
   }) {
     direction ??= Axis.vertical;
     color ??= Colors
@@ -218,19 +217,14 @@ class TimelineThemeData with Diagnosticable {
   /// intermediate themes based on two themes created with the
   /// [new TimelineThemeData] constructor.
   const TimelineThemeData.raw({
-    @required this.direction,
-    @required this.color,
-    @required this.nodePosition,
-    @required this.nodeItemOverlap,
-    @required this.indicatorPosition,
-    @required this.indicatorTheme,
-    @required this.connectorTheme,
-  })  : assert(direction != null),
-        assert(color != null),
-        assert(nodePosition != null),
-        assert(indicatorPosition != null),
-        assert(indicatorTheme != null),
-        assert(connectorTheme != null);
+    required this.direction,
+    required this.color,
+    required this.nodePosition,
+    required this.nodeItemOverlap,
+    required this.indicatorPosition,
+    required this.indicatorTheme,
+    required this.connectorTheme,
+  });
 
   /// A default vertical theme.
   factory TimelineThemeData.vertical() => TimelineThemeData(
@@ -276,13 +270,13 @@ class TimelineThemeData with Diagnosticable {
   /// Creates a copy of this theme but with the given fields replaced with the
   /// new values.
   TimelineThemeData copyWith({
-    Axis direction,
-    Color color,
-    double nodePosition,
-    bool nodeItemOverlap,
-    double indicatorPosition,
-    IndicatorThemeData indicatorTheme,
-    ConnectorThemeData connectorTheme,
+    Axis? direction,
+    Color? color,
+    double? nodePosition,
+    bool? nodeItemOverlap,
+    double? indicatorPosition,
+    IndicatorThemeData? indicatorTheme,
+    ConnectorThemeData? connectorTheme,
   }) {
     return TimelineThemeData.raw(
       direction: direction ?? this.direction,
@@ -302,19 +296,16 @@ class TimelineThemeData with Diagnosticable {
   /// {@macro dart.ui.shadow.lerp}
   static TimelineThemeData lerp(
       TimelineThemeData a, TimelineThemeData b, double t) {
-    assert(a != null);
-    assert(b != null);
-    assert(t != null);
     // Warning: make sure these properties are in the exact same order as in
     // hashValues() and in the raw constructor and in the order of fields in
     // the class and in the lerp() method.
     return TimelineThemeData.raw(
       direction: t < 0.5 ? a.direction : b.direction,
-      color: Color.lerp(a.color, b.color, t),
-      nodePosition: lerpDouble(a.nodePosition, b.nodePosition, t),
+      color: Color.lerp(a.color, b.color, t)!,
+      nodePosition: lerpDouble(a.nodePosition, b.nodePosition, t)!,
       nodeItemOverlap: t < 0.5 ? a.nodeItemOverlap : b.nodeItemOverlap,
       indicatorPosition:
-          lerpDouble(a.indicatorPosition, b.indicatorPosition, t),
+          lerpDouble(a.indicatorPosition, b.indicatorPosition, t)!,
       indicatorTheme:
           IndicatorThemeData.lerp(a.indicatorTheme, b.indicatorTheme, t),
       connectorTheme:

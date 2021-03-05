@@ -9,7 +9,7 @@ mixin PositionedIndicator on Widget {
   /// If this is null, then the [IndicatorThemeData.position] is used. If that
   /// is also null, then this defaults to [TimelineThemeData.indicatorPosition].
   /// {@endtemplate}
-  double get position;
+  double? get position;
   double getEffectivePosition(BuildContext context) {
     return position ??
         IndicatorTheme.of(context).position ??
@@ -28,7 +28,7 @@ abstract class Indicator extends StatelessWidget
     with PositionedIndicator, ThemedIndicatorComponent {
   /// Creates an indicator.
   const Indicator({
-    Key key,
+    Key? key,
     this.size,
     this.color,
     this.border,
@@ -44,12 +44,12 @@ abstract class Indicator extends StatelessWidget
   ///
   /// * [DotIndicator],  exactly the same.
   factory Indicator.dot({
-    Key key,
-    double size,
-    Color color,
-    double position,
-    Border border,
-    Widget child,
+    Key? key,
+    double? size,
+    Color? color,
+    double? position,
+    Border? border,
+    Widget? child,
   }) =>
       DotIndicator(
         size: size,
@@ -65,13 +65,13 @@ abstract class Indicator extends StatelessWidget
   ///
   /// * [OutlinedDotIndicator], exactly the same.
   factory Indicator.outlined({
-    Key key,
-    double size,
-    Color color,
-    Color backgroundColor,
-    double position,
+    Key? key,
+    double? size,
+    Color? color,
+    Color? backgroundColor,
+    double? position,
     double borderWidth = 2.0,
-    Widget child,
+    Widget? child,
   }) =>
       OutlinedDotIndicator(
         size: size,
@@ -88,9 +88,9 @@ abstract class Indicator extends StatelessWidget
   ///
   /// * [ContainerIndicator], this is created without child.
   factory Indicator.transparent({
-    Key key,
-    double size,
-    double position,
+    Key? key,
+    double? size,
+    double? position,
   }) =>
       ContainerIndicator(
         size: size,
@@ -103,10 +103,10 @@ abstract class Indicator extends StatelessWidget
   ///
   /// * [OutlinedDotIndicator], exactly the same.
   factory Indicator.widget({
-    Key key,
-    double size,
-    double position,
-    Widget child,
+    Key? key,
+    double? size,
+    double? position,
+    Widget? child,
   }) =>
       ContainerIndicator(
         size: size,
@@ -118,27 +118,27 @@ abstract class Indicator extends StatelessWidget
   ///
   /// {@macro timelines.indicator.size}
   @override
-  final double size;
+  final double? size;
 
   /// The color to use when drawing the dot.
   ///
   /// {@macro timelines.indicator.color}
   @override
-  final Color color;
+  final Color? color;
 
   /// The position of a indicator between the two connectors.
   ///
   /// {@macro timelines.indicator.position}
   @override
-  final double position;
+  final double? position;
 
   /// The border to use when drawing the dot's outline.
-  final BoxBorder border;
+  final BoxBorder? border;
 
   /// The widget below this widget in the tree.
   ///
   /// {@macro flutter.widgets.child}
-  final Widget child;
+  final Widget? child;
 }
 
 /// A widget that displays an [child]. The [child] if null, the indicator is not
@@ -146,9 +146,9 @@ abstract class Indicator extends StatelessWidget
 class ContainerIndicator extends Indicator {
   /// Creates a container indicator.
   const ContainerIndicator({
-    Key key,
-    double size,
-    double position,
+    Key? key,
+    double? size,
+    double? position,
     this.child,
   }) : super(
           key: key,
@@ -160,7 +160,7 @@ class ContainerIndicator extends Indicator {
   /// The widget below this widget in the tree.
   ///
   /// {@macro flutter.widgets.child}
-  final Widget child;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -179,10 +179,10 @@ class DotIndicator extends Indicator {
   ///
   /// The [size] must be null or non-negative.
   const DotIndicator({
-    Key key,
-    double size,
-    Color color,
-    double position,
+    Key? key,
+    double? size,
+    Color? color,
+    double? position,
     this.border,
     this.child,
   }) : super(
@@ -193,12 +193,12 @@ class DotIndicator extends Indicator {
         );
 
   /// The border to use when drawing the dot's outline.
-  final BoxBorder border;
+  final BoxBorder? border;
 
   /// The widget below this widget in the tree.
   ///
   /// {@macro flutter.widgets.child}
-  final Widget child;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -225,10 +225,10 @@ class OutlinedDotIndicator extends Indicator {
   ///
   /// The [size] must be null or non-negative.
   const OutlinedDotIndicator({
-    Key key,
-    double size,
-    Color color,
-    double position,
+    Key? key,
+    double? size,
+    Color? color,
+    double? position,
     this.backgroundColor,
     this.borderWidth = 2.0,
     this.child,
@@ -244,7 +244,7 @@ class OutlinedDotIndicator extends Indicator {
   /// The color to use when drawing the dot in outline.
   ///
   /// {@macro timelines.indicator.color}
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   /// The width of this outline, in logical pixels.
   final double borderWidth;
@@ -252,7 +252,7 @@ class OutlinedDotIndicator extends Indicator {
   /// The widget below this widget in the tree.
   ///
   /// {@macro flutter.widgets.child}
-  final Widget child;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
