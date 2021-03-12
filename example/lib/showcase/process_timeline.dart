@@ -134,13 +134,13 @@ class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
               if (index == _processIndex) {
                 final prevColor = getColor(index - 1);
                 final color = getColor(index);
-                var gradientColors;
+                List<Color> gradientColors;
                 if (type == ConnectorType.start) {
-                  gradientColors = [Color.lerp(prevColor, color, 0.5), color];
+                  gradientColors = [Color.lerp(prevColor, color, 0.5)!, color];
                 } else {
                   gradientColors = [
                     prevColor,
-                    Color.lerp(prevColor, color, 0.5)
+                    Color.lerp(prevColor, color, 0.5)!
                   ];
                 }
                 return DecoratedLineConnector(
