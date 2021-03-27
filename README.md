@@ -14,7 +14,7 @@
 
 <p align="center">A powerful & easy to use timeline package for Flutter! 🚀</p>
 
-> ***Caveat***: This package is an early stage. Not enough testing has been done to guarantee stability. And some apis can be change.
+> ***Caveat***: This package is an early stage. Not enough testing has been done to guarantee stability. Some APIs may change.
 
 # Examples
 
@@ -28,7 +28,7 @@ Check it out on the [web](https://chulwoo.dev/timelines/) or look at the [source
 
 # Features
 
-### The [timeline](https://github.com/chulwoo-park/timelines/tree/main#Components) and each [components](https://github.com/chulwoo-park/timelines/tree/main#Components) are all WIDGET.
+### The [timeline](#timeline) and each [components](#components) are all WIDGET.
 
 * Common styles can be easily implemented with predefined components.
 * Vertical, horizontal direction.
@@ -38,16 +38,16 @@ Check it out on the [web](https://chulwoo.dev/timelines/) or look at the [source
 
 # Getting started
 
-- [Installation](https://github.com/chulwoo-park/timelines/tree/main#installation)
-- [Basic Usage](https://github.com/chulwoo-park/timelines/tree/main#Basic-Usage)
-- [Components](https://github.com/chulwoo-park/timelines/tree/main#Components)
-  - [Theme](https://github.com/chulwoo-park/timelines/tree/main#Theme)
-  - [Indicator](https://github.com/chulwoo-park/timelines/tree/main#Indicator)
-  - [Connector](https://github.com/chulwoo-park/timelines/tree/main#Connector)
-  - [TimelineNode](https://github.com/chulwoo-park/timelines/tree/main#TimelineNode)
-  - [TimelineTile](https://github.com/chulwoo-park/timelines/tree/main#TimelineTile)
-  - [TimelineTileBuilder](https://github.com/chulwoo-park/timelines/tree/main#TimelineTileBuilder)
-  - [Timeline](https://github.com/chulwoo-park/timelines/tree/main#Timeline)
+- [Installation](#installation)
+- [Basic Usage](#basic-usage)
+- [Components](#components)
+  - [Theme](#theme)
+  - [Indicator](#indicator)
+  - [Connector](#connector)
+  - [TimelineNode](#timelinenode)
+  - [TimelineTile](#timelinetile)
+  - [Timeline](#timeline)
+  - [TimelineTileBuilder](#timelinetilebuilder)
 
 ## Installation
 
@@ -297,7 +297,7 @@ TimelineTile(
 
 ### TimelineTileBuilder
 
-TImelineTileBuilder provides powerful build features.
+TimelineTileBuilder provides powerful build features.
 
 #### Connection
 
