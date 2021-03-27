@@ -1,3 +1,7 @@
+## 0.1.0
+
+* Migrate to null safety(thanks to @areille #33)
+
 ## 0.0.2+1
 
 * Dartfmt line length changed from 120 to 80
