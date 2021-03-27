@@ -11,7 +11,7 @@ mixin TimelineTileNode on Widget {
   /// {@template timelines.node.position}
   /// If this is null, then the [TimelineThemeData.nodePosition] is used.
   /// {@endtemplate}
-  double get position;
+  double? get position;
   double getEffectivePosition(BuildContext context) {
     return position ?? TimelineTheme.of(context).nodePosition;
   }
@@ -25,7 +25,7 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
   ///
   /// The [indicatorPosition] must be null or a value between 0 and 1.
   const TimelineNode({
-    Key key,
+    Key? key,
     this.direction,
     this.startConnector,
     this.endConnector,
@@ -33,26 +33,25 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
     this.indicatorPosition,
     this.position,
     this.overlap,
-  })  : assert(indicator != null),
-        assert(indicatorPosition == null ||
+  })  : assert(indicatorPosition == null ||
             0 <= indicatorPosition && indicatorPosition <= 1),
         super(key: key);
 
   /// Creates a timeline node that connects the dot indicator in a solid line.
   TimelineNode.simple({
-    Key key,
-    Axis direction,
-    Color color,
-    double lineThickness,
-    double nodePosition,
-    double indicatorPosition,
-    double indicatorSize,
-    Widget indicatorChild,
-    double indent,
-    double endIndent,
+    Key? key,
+    Axis? direction,
+    Color? color,
+    double? lineThickness,
+    double? nodePosition,
+    double? indicatorPosition,
+    double? indicatorSize,
+    Widget? indicatorChild,
+    double? indent,
+    double? endIndent,
     bool drawStartConnector = true,
     bool drawEndConnector = true,
-    bool overlap,
+    bool? overlap,
   }) : this(
           key: key,
           direction: direction,
@@ -86,13 +85,13 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
         );
 
   /// {@macro timelines.direction}
-  final Axis direction;
+  final Axis? direction;
 
   /// The connector of the start edge of this node
-  final Widget startConnector;
+  final Widget? startConnector;
 
   /// The connector of the end edge of this node
-  final Widget endConnector;
+  final Widget? endConnector;
 
   /// The indicator of the node
   final Widget indicator;
@@ -100,19 +99,19 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
   /// The position of a indicator between the two connectors.
   ///
   /// {@macro timelines.indicator.position}
-  final double indicatorPosition;
+  final double? indicatorPosition;
 
   /// A position of timeline node between both two contents.
   ///
   /// {@macro timelines.node.position}
   @override
-  final double position;
+  final double? position;
 
   /// Determine whether each connectors and indicator will overlap.
   ///
   /// When each connectors overlap, they are drawn from the center offset of the
   /// indicator.
-  final bool overlap;
+  final bool? overlap;
 
   double _getEffectiveIndicatorPosition(BuildContext context) {
     var indicatorPosition = this.indicatorPosition;

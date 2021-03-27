@@ -26,18 +26,16 @@ enum TimelineNodeAlign {
 /// The [node] is displayed between the two.
 class TimelineTile extends StatelessWidget {
   const TimelineTile({
-    Key key,
+    Key? key,
     this.direction,
-    @required this.node,
+    required this.node,
     this.nodeAlign = TimelineNodeAlign.basic,
     this.nodePosition,
     this.contents,
     this.oppositeContents,
     this.mainAxisExtent,
     this.crossAxisExtent,
-  })  : assert(node != null),
-        assert(nodeAlign != null),
-        assert(
+  })  : assert(
           nodeAlign == TimelineNodeAlign.basic ||
               (nodeAlign != TimelineNodeAlign.basic && nodePosition == null),
           'Cannot provide both a nodeAlign and a nodePosition',
@@ -48,7 +46,7 @@ class TimelineTile extends StatelessWidget {
   /// {@template timelines.direction}
   /// The axis along which the timeline scrolls.
   /// {@endtemplate}
-  final Axis direction;
+  final Axis? direction;
 
   /// A widget that displays indicator and two connectors.
   final Widget node;
@@ -67,13 +65,13 @@ class TimelineTile extends StatelessWidget {
   /// A position of [node] inside both two contents.
   ///
   /// {@macro timelines.node.position}
-  final double nodePosition;
+  final double? nodePosition;
 
   /// The contents to display inside the timeline tile.
-  final Widget contents;
+  final Widget? contents;
 
   /// The contents to display on the opposite side of the [contents].
-  final Widget oppositeContents;
+  final Widget? oppositeContents;
 
   /// The extent of the child in the scrolling axis.
   /// If the scroll axis is vertical, this extent is the child's height. If the
@@ -85,13 +83,13 @@ class TimelineTile extends StatelessWidget {
   /// Specifying an [mainAxisExtent] is more efficient than letting the tile
   /// determine their own extent because the because it don't use the Intrinsic
   /// widget([IntrinsicHeight]/[IntrinsicWidth]) when building.
-  final double mainAxisExtent;
+  final double? mainAxisExtent;
 
   /// The extent of the child in the non-scrolling axis.
   ///
   /// If the scroll axis is vertical, this extent is the child's width. If the
   /// scroll axis is horizontal, this extent is the child's height.
-  final double crossAxisExtent;
+  final double? crossAxisExtent;
 
   double _getEffectiveNodePosition(BuildContext context) {
     if (nodeAlign == TimelineNodeAlign.start) return 0.0;

@@ -38,25 +38,25 @@ class ConnectorThemeData with Diagnosticable {
 
   /// The color of [SolidLineConnector]s and connectors inside [TimelineNode]s,
   /// and so forth.
-  final Color color;
+  final Color? color;
 
   /// This represents the amount of horizontal or vertical space the connector
   /// takes up.
-  final double space;
+  final double? space;
 
   /// The thickness of the line drawn within the connector.
-  final double thickness;
+  final double? thickness;
 
   /// The amount of empty space at the edge of [SolidLineConnector].
-  final double indent;
+  final double? indent;
 
   /// Creates a copy of this object with the given fields replaced with the new
   /// values.
   ConnectorThemeData copyWith({
-    Color color,
-    double space,
-    double thickness,
-    double indent,
+    Color? color,
+    double? space,
+    double? thickness,
+    double? indent,
   }) {
     return ConnectorThemeData(
       color: color ?? this.color,
@@ -72,8 +72,7 @@ class ConnectorThemeData with Diagnosticable {
   ///
   /// {@macro dart.ui.shadow.lerp}
   static ConnectorThemeData lerp(
-      ConnectorThemeData a, ConnectorThemeData b, double t) {
-    assert(t != null);
+      ConnectorThemeData? a, ConnectorThemeData? b, double t) {
     return ConnectorThemeData(
       color: Color.lerp(a?.color, b?.color, t),
       space: lerpDouble(a?.space, b?.space, t),
@@ -120,11 +119,10 @@ class ConnectorTheme extends InheritedTheme {
   /// Creates a connector theme that controls the configurations for
   /// [SolidLineConnector]s, connectors inside [TimelineNode]s.
   const ConnectorTheme({
-    Key key,
-    @required this.data,
-    Widget child,
-  })  : assert(data != null),
-        super(key: key, child: child);
+    Key? key,
+    required this.data,
+    required Widget child,
+  }) : super(key: key, child: child);
 
   /// The properties for descendant [SolidLineConnector]s, connectors inside
   /// [TimelineNode]s.
@@ -171,7 +169,7 @@ mixin ThemedConnectorComponent on Widget {
   /// {@template timelines.connector.direction}
   /// If this is null, then the [TimelineThemeData.direction] is used.
   /// {@endtemplate}
-  Axis get direction;
+  Axis? get direction;
   Axis getEffectiveDirection(BuildContext context) {
     return direction ?? TimelineTheme.of(context).direction;
   }
@@ -180,7 +178,7 @@ mixin ThemedConnectorComponent on Widget {
   /// If this is null, then the [ConnectorThemeData.thickness] is used which
   /// defaults to 2.0.
   /// {@endtemplate}
-  double get thickness;
+  double? get thickness;
   double getEffectiveThickness(BuildContext context) {
     return thickness ?? ConnectorTheme.of(context).thickness ?? 2.0;
   }
@@ -189,22 +187,22 @@ mixin ThemedConnectorComponent on Widget {
   /// If this is null, then the [ConnectorThemeData.space] is used. If that is
   /// also null, then this defaults to double.infinity.
   /// {@endtemplate}
-  double get space;
-  double getEffectiveSpace(BuildContext context) {
+  double? get space;
+  double? getEffectiveSpace(BuildContext context) {
     return space ?? ConnectorTheme.of(context).space;
   }
 
-  double get indent;
+  double? get indent;
   double getEffectiveIndent(BuildContext context) {
     return indent ?? ConnectorTheme.of(context).indent ?? 0.0;
   }
 
-  double get endIndent;
+  double? get endIndent;
   double getEffectiveEndIndent(BuildContext context) {
     return endIndent ?? ConnectorTheme.of(context).indent ?? 0.0;
   }
 
-  Color get color;
+  Color? get color;
   Color getEffectiveColor(BuildContext context) {
     return color ??
         ConnectorTheme.of(context).color ??

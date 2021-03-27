@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
       onGenerateRoute: (settings) {
-        String path = Uri.tryParse(settings.name)?.path;
+        String? path = Uri.tryParse(settings.name!)?.path;
         Widget child;
         switch (path) {
           case '/theme':
@@ -51,8 +51,8 @@ class MyApp extends StatelessWidget {
 
 class HomePage extends StatefulWidget {
   HomePage({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
   }) : super(key: key);
 
   final Widget child;
@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
     return WillPopScope(
       onWillPop: () async {
         if (_navigatorKey.currentState?.canPop() ?? false) {
-          _navigatorKey.currentState.maybePop();
+          _navigatorKey.currentState?.maybePop();
           return false;
         } else {
           return true;
@@ -152,13 +152,13 @@ class ExamplePage extends StatelessWidget {
 
 class _NavigationCard extends StatelessWidget {
   const _NavigationCard({
-    Key key,
-    @required this.name,
+    Key? key,
+    required this.name,
     this.navigationBuilder,
   }) : super(key: key);
 
   final String name;
-  final NavigateWidgetBuilder navigationBuilder;
+  final NavigateWidgetBuilder? navigationBuilder;
 
   @override
   Widget build(BuildContext context) {

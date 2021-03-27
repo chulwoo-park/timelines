@@ -3,17 +3,19 @@ import 'package:flutter/material.dart';
 typedef NavigateWidgetBuilder = Widget Function();
 
 mixin NavigateMixin on Widget {
-  NavigateWidgetBuilder get navigationBuilder;
+  NavigateWidgetBuilder? get navigationBuilder;
 
-  Future<T> navigate<T>(BuildContext context) {
-    if (navigationBuilder == null) return Future.value();
-
-    return Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => navigationBuilder(),
-      ),
-    );
+  Future<T?> navigate<T>(BuildContext context) {
+    if (navigationBuilder == null) {
+      return Future.value();
+    } else {
+      return Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => navigationBuilder!(),
+        ),
+      );
+    }
   }
 }
 
@@ -21,27 +23,27 @@ const kNavigationCardRadius = 8.0;
 
 class NavigationCard extends StatelessWidget with NavigateMixin {
   const NavigationCard({
-    Key key,
+    Key? key,
     this.margin,
     this.borderRadius =
         const BorderRadius.all(Radius.circular(kNavigationCardRadius)),
     this.navigationBuilder,
-    @required this.child,
+    required this.child,
   }) : super(key: key);
 
-  final EdgeInsetsGeometry margin;
-  final BorderRadius borderRadius;
+  final EdgeInsetsGeometry? margin;
+  final BorderRadius? borderRadius;
   final Widget child;
-  final NavigateWidgetBuilder navigationBuilder;
+  final NavigateWidgetBuilder? navigationBuilder;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       margin: margin,
-      shape: RoundedRectangleBorder(
-        borderRadius: borderRadius,
-      ),
+      shape: borderRadius != null
+          ? RoundedRectangleBorder(borderRadius: borderRadius!)
+          : null,
       child: InkWell(
         borderRadius: borderRadius,
         onTap: () => navigate(context),
@@ -54,7 +56,7 @@ class NavigationCard extends StatelessWidget with NavigateMixin {
 class TitleAppBar extends StatelessWidget with PreferredSizeWidget {
   TitleAppBar(
     this.title, {
-    Key key,
+    Key? key,
   })  : preferredSize = Size.fromHeight(kToolbarHeight),
         super(key: key);
 

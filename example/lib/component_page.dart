@@ -48,7 +48,7 @@ class ComponentPage extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Colors.blue, Colors.lightBlueAccent[100]],
+                colors: [Colors.blue, Colors.lightBlueAccent.shade100],
               ),
             ),
           ),
@@ -348,8 +348,8 @@ class ComponentPage extends StatelessWidget {
 
 class _ComponentRow extends TableRow {
   _ComponentRow({
-    String name,
-    Widget item,
+    required String name,
+    required Widget item,
   }) : super(
           children: [
             _ComponentName(name),
@@ -360,10 +360,9 @@ class _ComponentRow extends TableRow {
 
 class _ComponentItem extends StatelessWidget {
   const _ComponentItem({
-    Key key,
-    @required this.child,
-  })  : assert(child != null),
-        super(key: key);
+    Key? key,
+    required this.child,
+  }) : super(key: key);
 
   final Widget child;
 
@@ -383,8 +382,8 @@ class _ComponentItem extends StatelessWidget {
 class _ComponentName extends StatelessWidget {
   const _ComponentName(
     this.name, {
-    Key key,
-  })  : assert(name != null && name.length > 0),
+    Key? key,
+  })  : assert(name.length > 0),
         super(key: key);
 
   final String name;

@@ -110,7 +110,7 @@ enum ConnectorStyle {
 
 /// Signature for a function that creates a connected connector widget for a
 /// given index and type, e.g., in a timeline tile builder.
-typedef ConnectedConnectorBuilder = Widget Function(
+typedef ConnectedConnectorBuilder = Widget? Function(
     BuildContext context, int index, ConnectorType type);
 
 /// Signature for a function that creates a typed value for a given index, e.g.,
@@ -185,24 +185,23 @@ class TimelineTileBuilder {
   ///  * [TimelineTileBuilder.connectedFromStyle], which builds connected tiles
   ///  from style.
   factory TimelineTileBuilder.connected({
-    @required int itemCount,
+    required int itemCount,
     ContentsAlign contentsAlign = ContentsAlign.basic,
     ConnectionDirection connectionDirection = ConnectionDirection.after,
-    IndexedWidgetBuilder contentsBuilder,
-    IndexedWidgetBuilder oppositeContentsBuilder,
-    IndexedWidgetBuilder indicatorBuilder,
-    ConnectedConnectorBuilder connectorBuilder,
-    WidgetBuilder firstConnectorBuilder,
-    WidgetBuilder lastConnectorBuilder,
-    double itemExtent,
-    IndexedValueBuilder<double> itemExtentBuilder,
-    IndexedValueBuilder<double> nodePositionBuilder,
-    IndexedValueBuilder<double> indicatorPositionBuilder,
+    NullableIndexedWidgetBuilder? contentsBuilder,
+    NullableIndexedWidgetBuilder? oppositeContentsBuilder,
+    NullableIndexedWidgetBuilder? indicatorBuilder,
+    ConnectedConnectorBuilder? connectorBuilder,
+    WidgetBuilder? firstConnectorBuilder,
+    WidgetBuilder? lastConnectorBuilder,
+    double? itemExtent,
+    IndexedValueBuilder<double>? itemExtentBuilder,
+    IndexedValueBuilder<double>? nodePositionBuilder,
+    IndexedValueBuilder<double>? indicatorPositionBuilder,
     bool addAutomaticKeepAlives = true,
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,
   }) {
-    assert(connectionDirection != null);
     return TimelineTileBuilder(
       itemCount: itemCount,
       contentsAlign: contentsAlign,
@@ -236,22 +235,20 @@ class TimelineTileBuilder {
   ///  * [TimelineTileBuilder.connected], which builds connected tiles.
   ///  * [TimelineTileBuilder.fromStyle], which builds tiles from style.
   factory TimelineTileBuilder.connectedFromStyle({
-    @required @required int itemCount,
+    @required required int itemCount,
     ConnectionDirection connectionDirection = ConnectionDirection.after,
-    IndexedWidgetBuilder contentsBuilder,
-    IndexedWidgetBuilder oppositeContentsBuilder,
+    NullableIndexedWidgetBuilder? contentsBuilder,
+    NullableIndexedWidgetBuilder? oppositeContentsBuilder,
     ContentsAlign contentsAlign = ContentsAlign.basic,
-    IndexedValueBuilder<IndicatorStyle> indicatorStyleBuilder,
-    IndexedValueBuilder<ConnectorStyle> connectorStyleBuilder,
+    IndexedValueBuilder<IndicatorStyle>? indicatorStyleBuilder,
+    IndexedValueBuilder<ConnectorStyle>? connectorStyleBuilder,
     ConnectorStyle firstConnectorStyle = ConnectorStyle.solidLine,
     ConnectorStyle lastConnectorStyle = ConnectorStyle.solidLine,
-    double itemExtent,
-    IndexedValueBuilder<double> itemExtentBuilder,
-    IndexedValueBuilder<double> nodePositionBuilder,
-    IndexedValueBuilder<double> indicatorPositionBuilder,
+    double? itemExtent,
+    IndexedValueBuilder<double>? itemExtentBuilder,
+    IndexedValueBuilder<double>? nodePositionBuilder,
+    IndexedValueBuilder<double>? indicatorPositionBuilder,
   }) {
-    assert(connectionDirection != null);
-
     return TimelineTileBuilder(
       itemCount: itemCount,
       contentsAlign: contentsAlign,
@@ -292,17 +289,17 @@ class TimelineTileBuilder {
   ///  * [ConnectorStyle]
   ///  * [ContentsAlign]
   factory TimelineTileBuilder.fromStyle({
-    @required int itemCount,
-    IndexedWidgetBuilder contentsBuilder,
-    IndexedWidgetBuilder oppositeContentsBuilder,
+    required int itemCount,
+    NullableIndexedWidgetBuilder? contentsBuilder,
+    NullableIndexedWidgetBuilder? oppositeContentsBuilder,
     ContentsAlign contentsAlign = ContentsAlign.basic,
     IndicatorStyle indicatorStyle = IndicatorStyle.dot,
     ConnectorStyle connectorStyle = ConnectorStyle.solidLine,
     ConnectorStyle endConnectorStyle = ConnectorStyle.solidLine,
-    double itemExtent,
-    IndexedValueBuilder<double> itemExtentBuilder,
-    IndexedValueBuilder<double> nodePositionBuilder,
-    IndexedValueBuilder<double> indicatorPositionBuilder,
+    double? itemExtent,
+    IndexedValueBuilder<double>? itemExtentBuilder,
+    IndexedValueBuilder<double>? nodePositionBuilder,
+    IndexedValueBuilder<double>? indicatorPositionBuilder,
     bool addAutomaticKeepAlives = true,
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,
@@ -334,19 +331,19 @@ class TimelineTileBuilder {
   ///
   /// TODO: need refactoring, is it has many builders...?
   factory TimelineTileBuilder({
-    @required int itemCount,
+    required int itemCount,
     ContentsAlign contentsAlign = ContentsAlign.basic,
-    IndexedWidgetBuilder contentsBuilder,
-    IndexedWidgetBuilder oppositeContentsBuilder,
-    IndexedWidgetBuilder indicatorBuilder,
-    IndexedWidgetBuilder startConnectorBuilder,
-    IndexedWidgetBuilder endConnectorBuilder,
-    double itemExtent,
-    IndexedValueBuilder<double> itemExtentBuilder,
-    IndexedValueBuilder<double> nodePositionBuilder,
-    IndexedValueBuilder<bool> nodeItemOverlapBuilder,
-    IndexedValueBuilder<double> indicatorPositionBuilder,
-    IndexedValueBuilder<TimelineThemeData> themeBuilder,
+    NullableIndexedWidgetBuilder? contentsBuilder,
+    NullableIndexedWidgetBuilder? oppositeContentsBuilder,
+    NullableIndexedWidgetBuilder? indicatorBuilder,
+    NullableIndexedWidgetBuilder? startConnectorBuilder,
+    NullableIndexedWidgetBuilder? endConnectorBuilder,
+    double? itemExtent,
+    IndexedValueBuilder<double>? itemExtentBuilder,
+    IndexedValueBuilder<double>? nodePositionBuilder,
+    IndexedValueBuilder<bool?>? nodeItemOverlapBuilder,
+    IndexedValueBuilder<double>? indicatorPositionBuilder,
+    IndexedValueBuilder<TimelineThemeData>? themeBuilder,
   }) {
     assert(
       itemExtent == null || itemExtentBuilder == null,
@@ -397,26 +394,25 @@ class TimelineTileBuilder {
 
   const TimelineTileBuilder._(
     this._builder, {
-    @required this.itemCount,
-  })  : assert(_builder != null),
-        assert(itemCount != null && itemCount >= 0);
+    required this.itemCount,
+  }) : assert(itemCount >= 0);
 
   final IndexedWidgetBuilder _builder;
   final int itemCount;
 
-  Widget build(BuildContext context, index) {
+  Widget build(BuildContext context, int index) {
     return _builder(context, index);
   }
 
-  static IndexedWidgetBuilder _createConnectedStartConnectorBuilder({
-    @required ConnectionDirection connectionDirection,
-    @required WidgetBuilder firstConnectorBuilder,
-    @required ConnectedConnectorBuilder connectorBuilder,
+  static NullableIndexedWidgetBuilder _createConnectedStartConnectorBuilder({
+    ConnectionDirection? connectionDirection,
+    WidgetBuilder? firstConnectorBuilder,
+    ConnectedConnectorBuilder? connectorBuilder,
   }) =>
       (context, index) {
         if (index == 0) {
           if (firstConnectorBuilder != null) {
-            return firstConnectorBuilder?.call(context);
+            return firstConnectorBuilder.call(context);
           } else {
             return null;
           }
@@ -430,16 +426,16 @@ class TimelineTileBuilder {
         }
       };
 
-  static IndexedWidgetBuilder _createConnectedEndConnectorBuilder({
-    @required ConnectionDirection connectionDirection,
-    @required WidgetBuilder lastConnectorBuilder,
-    @required ConnectedConnectorBuilder connectorBuilder,
-    @required int itemCount,
+  static NullableIndexedWidgetBuilder _createConnectedEndConnectorBuilder({
+    ConnectionDirection? connectionDirection,
+    WidgetBuilder? lastConnectorBuilder,
+    ConnectedConnectorBuilder? connectorBuilder,
+    required int itemCount,
   }) =>
       (context, index) {
-        if (itemCount != null && index == itemCount - 1) {
+        if (index == itemCount - 1) {
           if (lastConnectorBuilder != null) {
-            return lastConnectorBuilder?.call(context);
+            return lastConnectorBuilder.call(context);
           } else {
             return null;
           }
@@ -452,13 +448,11 @@ class TimelineTileBuilder {
         }
       };
 
-  static IndexedWidgetBuilder _createAlignedContentsBuilder({
-    @required ContentsAlign align,
-    IndexedWidgetBuilder contentsBuilder,
-    IndexedWidgetBuilder oppositeContentsBuilder,
+  static NullableIndexedWidgetBuilder _createAlignedContentsBuilder({
+    required ContentsAlign align,
+    NullableIndexedWidgetBuilder? contentsBuilder,
+    NullableIndexedWidgetBuilder? oppositeContentsBuilder,
   }) {
-    assert(align != null);
-
     return (context, index) {
       switch (align) {
         case ContentsAlign.alternating:
@@ -476,7 +470,7 @@ class TimelineTileBuilder {
     };
   }
 
-  static WidgetBuilder _createStyledIndicatorBuilder(IndicatorStyle style) {
+  static WidgetBuilder _createStyledIndicatorBuilder(IndicatorStyle? style) {
     return (_) {
       switch (style) {
         case IndicatorStyle.dot:
@@ -492,7 +486,7 @@ class TimelineTileBuilder {
     };
   }
 
-  static WidgetBuilder _createStyledConnectorBuilder(ConnectorStyle style) {
+  static WidgetBuilder _createStyledConnectorBuilder(ConnectorStyle? style) {
     return (_) {
       switch (style) {
         case ConnectorStyle.solidLine:
@@ -533,9 +527,9 @@ int _kDefaultSemanticIndexCallback(Widget _, int localIndex) => localIndex;
 ///  with semantic indexes.
 class TimelineTileBuilderDelegate extends SliverChildBuilderDelegate {
   TimelineTileBuilderDelegate(
-    IndexedWidgetBuilder builder, {
-    ChildIndexGetter findChildIndexCallback,
-    int childCount,
+    NullableIndexedWidgetBuilder builder, {
+    ChildIndexGetter? findChildIndexCallback,
+    int? childCount,
     bool addAutomaticKeepAlives = true,
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,

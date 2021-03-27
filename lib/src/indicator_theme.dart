@@ -37,23 +37,23 @@ class IndicatorThemeData with Diagnosticable {
 
   /// The color of [DotIndicator]s and indicators inside [TimelineNode]s, and so
   /// forth.
-  final Color color;
+  final Color? color;
 
   /// The size of [DotIndicator]s and indicators inside [TimelineNode]s, and so
   /// forth in logical pixels.
   ///
   /// Indicators occupy a square with width and height equal to size.
-  final double size;
+  final double? size;
 
   /// A position of indicator inside both two connectors.
-  final double position;
+  final double? position;
 
   /// Creates a copy of this object with the given fields replaced with the new
   /// values.
   IndicatorThemeData copyWith({
-    Color color,
-    double size,
-    double position,
+    Color? color,
+    double? size,
+    double? position,
   }) {
     return IndicatorThemeData(
       color: color ?? this.color,
@@ -68,8 +68,7 @@ class IndicatorThemeData with Diagnosticable {
   ///
   /// {@macro dart.ui.shadow.lerp}
   static IndicatorThemeData lerp(
-      IndicatorThemeData a, IndicatorThemeData b, double t) {
-    assert(t != null);
+      IndicatorThemeData? a, IndicatorThemeData? b, double t) {
     return IndicatorThemeData(
       color: Color.lerp(a?.color, b?.color, t),
       size: lerpDouble(a?.size, b?.size, t),
@@ -108,11 +107,10 @@ class IndicatorTheme extends InheritedTheme {
   /// Creates an indicator theme that controls the color and size for
   /// [DotIndicator]s, indicators inside [TimelineNode]s.
   const IndicatorTheme({
-    Key key,
-    @required this.data,
-    Widget child,
-  })  : assert(data != null),
-        super(key: key, child: child);
+    Key? key,
+    required this.data,
+    required Widget child,
+  }) : super(key: key, child: child);
 
   /// The properties for descendant [DotIndicator]s, indicators inside
   /// [TimelineNode]s.
@@ -161,7 +159,7 @@ mixin ThemedIndicatorComponent on PositionedIndicator {
   /// If no [IndicatorTheme] and no [TimelineTheme] is specified, indicators
   /// will default to blue.
   /// {@endtemplate}
-  Color get color;
+  Color? get color;
   Color getEffectiveColor(BuildContext context) {
     return color ??
         IndicatorTheme.of(context).color ??
@@ -175,8 +173,8 @@ mixin ThemedIndicatorComponent on PositionedIndicator {
   /// [IndicatorTheme], or it does not specify an explicit size, then it
   /// defaults to own child size(0.0).
   /// {@endtemplate}
-  double get size;
-  double getEffectiveSize(BuildContext context) {
+  double? get size;
+  double? getEffectiveSize(BuildContext context) {
     return size ?? IndicatorTheme.of(context).size;
   }
 }

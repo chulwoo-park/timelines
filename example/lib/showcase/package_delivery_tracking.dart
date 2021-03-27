@@ -47,10 +47,9 @@ class PackageDeliveryTrackingPage extends StatelessWidget {
 
 class _OrderTitle extends StatelessWidget {
   const _OrderTitle({
-    Key key,
-    @required this.orderInfo,
-  })  : assert(orderInfo != null),
-        super(key: key);
+    Key? key,
+    required this.orderInfo,
+  }) : super(key: key);
 
   final _OrderInfo orderInfo;
 
@@ -78,7 +77,7 @@ class _OrderTitle extends StatelessWidget {
 
 class _InnerTimeline extends StatelessWidget {
   const _InnerTimeline({
-    @required this.messages,
+    required this.messages,
   });
 
   final List<_DeliveryMessage> messages;
@@ -128,9 +127,8 @@ class _InnerTimeline extends StatelessWidget {
 }
 
 class _DeliveryProcesses extends StatelessWidget {
-  const _DeliveryProcesses({Key key, @required this.processes})
-      : assert(processes != null),
-        super(key: key);
+  const _DeliveryProcesses({Key? key, required this.processes})
+      : super(key: key);
 
   final List<_DeliveryProcess> processes;
   @override
@@ -204,9 +202,7 @@ class _DeliveryProcesses extends StatelessWidget {
 }
 
 class _OnTimeBar extends StatelessWidget {
-  const _OnTimeBar({Key key, @required this.driver})
-      : assert(driver != null),
-        super(key: key);
+  const _OnTimeBar({Key? key, required this.driver}) : super(key: key);
 
   final _DriverInfo driver;
 
@@ -214,21 +210,19 @@ class _OnTimeBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Builder(
-          builder: (context) => MaterialButton(
-            onPressed: () {
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('On-time!'),
-                ),
-              );
-            },
-            elevation: 0,
-            shape: StadiumBorder(),
-            color: Color(0xff66c97f),
-            textColor: Colors.white,
-            child: Text('On-time'),
-          ),
+        MaterialButton(
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('On-time!'),
+              ),
+            );
+          },
+          elevation: 0,
+          shape: StadiumBorder(),
+          color: Color(0xff66c97f),
+          textColor: Colors.white,
+          child: Text('On-time'),
         ),
         Spacer(),
         Text(
@@ -283,10 +277,10 @@ _OrderInfo _data(int id) => _OrderInfo(
 
 class _OrderInfo {
   const _OrderInfo({
-    @required this.id,
-    @required this.date,
-    @required this.driverInfo,
-    @required this.deliveryProcesses,
+    required this.id,
+    required this.date,
+    required this.driverInfo,
+    required this.deliveryProcesses,
   });
 
   final int id;
@@ -297,8 +291,8 @@ class _OrderInfo {
 
 class _DriverInfo {
   const _DriverInfo({
-    @required this.name,
-    this.thumbnailUrl,
+    required this.name,
+    required this.thumbnailUrl,
   });
 
   final String name;

@@ -39,26 +39,26 @@ class Timeline extends BoxScrollView {
   /// are planning to change child order at a
   /// later time, consider using [Timeline] or [Timeline.custom].
   factory Timeline.tileBuilder({
-    Key key,
-    @required TimelineTileBuilder builder,
-    Axis scrollDirection,
+    Key? key,
+    required TimelineTileBuilder builder,
+    Axis? scrollDirection,
     bool reverse = false,
-    ScrollController controller,
-    bool primary,
-    ScrollPhysics physics,
+    ScrollController? controller,
+    bool? primary,
+    ScrollPhysics? physics,
     bool shrinkWrap = false,
-    EdgeInsetsGeometry padding,
+    EdgeInsetsGeometry? padding,
     // double itemExtent, TODO: fixedExtentTileBuilder?
-    double cacheExtent,
-    int semanticChildCount,
+    double? cacheExtent,
+    int? semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
         ScrollViewKeyboardDismissBehavior.manual,
-    String restorationId,
+    String? restorationId,
     Clip clipBehavior = Clip.hardEdge,
-    TimelineThemeData theme,
+    TimelineThemeData? theme,
   }) {
-    assert(builder.itemCount == null || builder.itemCount >= 0);
+    assert(builder.itemCount >= 0);
     assert(
         semanticChildCount == null || semanticChildCount <= builder.itemCount);
     return Timeline.custom(
@@ -104,27 +104,27 @@ class Timeline extends BoxScrollView {
   /// `addSemanticIndexes` argument corresponds to the
   /// [SliverChildListDelegate.addSemanticIndexes] property. None may be null.
   Timeline({
-    Key key,
-    Axis scrollDirection,
+    Key? key,
+    Axis? scrollDirection,
     bool reverse = false,
-    ScrollController controller,
-    bool primary,
-    ScrollPhysics physics,
+    ScrollController? controller,
+    bool? primary,
+    ScrollPhysics? physics,
     bool shrinkWrap = false,
-    EdgeInsetsGeometry padding,
+    EdgeInsetsGeometry? padding,
     this.itemExtent,
     bool addAutomaticKeepAlives = true,
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,
-    double cacheExtent,
+    double? cacheExtent,
     List<Widget> children = const <Widget>[],
-    int semanticChildCount,
+    int? semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
         ScrollViewKeyboardDismissBehavior.manual,
-    String restorationId,
+    String? restorationId,
     Clip clipBehavior = Clip.hardEdge,
-    TimelineThemeData theme,
+    TimelineThemeData? theme,
   })  : childrenDelegate = SliverChildListDelegate(
           children,
           addAutomaticKeepAlives: addAutomaticKeepAlives,
@@ -183,29 +183,29 @@ class Timeline extends BoxScrollView {
   /// are planning to change child order at a
   /// later time, consider using [Timeline] or [Timeline.custom].
   Timeline.builder({
-    Key key,
-    Axis scrollDirection,
+    Key? key,
+    Axis? scrollDirection,
     bool reverse = false,
-    ScrollController controller,
-    bool primary,
-    ScrollPhysics physics,
+    ScrollController? controller,
+    bool? primary,
+    ScrollPhysics? physics,
     bool shrinkWrap = false,
-    EdgeInsetsGeometry padding,
+    EdgeInsetsGeometry? padding,
     this.itemExtent,
-    @required IndexedWidgetBuilder itemBuilder,
-    @required int itemCount,
+    required IndexedWidgetBuilder itemBuilder,
+    required int itemCount,
     bool addAutomaticKeepAlives = true,
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,
-    double cacheExtent,
-    int semanticChildCount,
+    double? cacheExtent,
+    int? semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
         ScrollViewKeyboardDismissBehavior.manual,
-    String restorationId,
+    String? restorationId,
     Clip clipBehavior = Clip.hardEdge,
-    TimelineThemeData theme,
-  })  : assert(itemCount == null || itemCount >= 0),
+    TimelineThemeData? theme,
+  })  : assert(itemCount >= 0),
         assert(semanticChildCount == null || semanticChildCount <= itemCount),
         assert(scrollDirection == null || theme == null,
             'Cannot provide both a scrollDirection and a theme.'),
@@ -243,26 +243,25 @@ class Timeline extends BoxScrollView {
   ///
   ///  * This works similarly to [ListView.custom].
   Timeline.custom({
-    Key key,
-    Axis scrollDirection,
+    Key? key,
+    Axis? scrollDirection,
     bool reverse = false,
-    ScrollController controller,
-    bool primary,
-    ScrollPhysics physics,
+    ScrollController? controller,
+    bool? primary,
+    ScrollPhysics? physics,
     bool shrinkWrap = false,
-    EdgeInsetsGeometry padding,
+    EdgeInsetsGeometry? padding,
     this.itemExtent,
-    @required this.childrenDelegate,
-    double cacheExtent,
-    int semanticChildCount,
+    required this.childrenDelegate,
+    double? cacheExtent,
+    int? semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
         ScrollViewKeyboardDismissBehavior.manual,
-    String restorationId,
+    String? restorationId,
     Clip clipBehavior = Clip.hardEdge,
-    TimelineThemeData theme,
-  })  : assert(childrenDelegate != null),
-        assert(scrollDirection == null || theme == null,
+    TimelineThemeData? theme,
+  })  : assert(scrollDirection == null || theme == null,
             'Cannot provide both a scrollDirection and a theme.'),
         this.theme = theme,
         super(
@@ -289,7 +288,7 @@ class Timeline extends BoxScrollView {
   /// determine their own extent because the scrolling machinery can make use
   /// of the foreknowledge of the children's extent to save work, for example
   /// when the scroll position changes drastically.
-  final double itemExtent;
+  final double? itemExtent;
 
   /// A delegate that provides the children for the [Timeline].
   ///
@@ -304,7 +303,7 @@ class Timeline extends BoxScrollView {
   ///
   /// The default value of this property is the value of
   /// [TimelineThemeData.vertical()].
-  final TimelineThemeData theme;
+  final TimelineThemeData? theme;
 
   @override
   Widget buildChildLayout(BuildContext context) {
@@ -312,7 +311,7 @@ class Timeline extends BoxScrollView {
     if (itemExtent != null) {
       result = SliverFixedExtentList(
         delegate: childrenDelegate,
-        itemExtent: itemExtent,
+        itemExtent: itemExtent!,
       );
     } else {
       result = SliverList(delegate: childrenDelegate);
@@ -341,16 +340,15 @@ class Timeline extends BoxScrollView {
 class FixedTimeline extends StatelessWidget {
   /// Creates a timeline flex layout.
   factory FixedTimeline.tileBuilder({
-    Key key,
-    @required TimelineTileBuilder builder,
-    TimelineThemeData theme,
-    Axis direction,
+    Key? key,
+    required TimelineTileBuilder builder,
+    TimelineThemeData? theme,
+    Axis? direction,
     MainAxisSize mainAxisSize = MainAxisSize.max,
-    TextDirection textDirection,
+    TextDirection? textDirection,
     VerticalDirection verticalDirection = VerticalDirection.down,
     Clip clipBehavior = Clip.none,
   }) {
-    assert(builder != null);
     // TODO: how remove Builders?
     return FixedTimeline(
       children: [
@@ -378,7 +376,7 @@ class FixedTimeline extends StatelessWidget {
   /// to disambiguate `start` or `end` values for the main or cross axis
   /// directions, the [textDirection] must not be null.
   const FixedTimeline({
-    Key key,
+    Key? key,
     this.theme,
     this.direction,
     this.mainAxisSize = MainAxisSize.max,
@@ -388,9 +386,6 @@ class FixedTimeline extends StatelessWidget {
     this.children = const [],
   })  : assert(direction == null || theme == null,
             'Cannot provide both a direction and a theme.'),
-        assert(mainAxisSize != null),
-        assert(verticalDirection != null),
-        assert(clipBehavior != null),
         super(key: key);
 
   /// Default visual properties, like colors, size and spaces, for this
@@ -398,10 +393,10 @@ class FixedTimeline extends StatelessWidget {
   ///
   /// The default value of this property is the value of
   /// [TimelineThemeData.vertical()].
-  final TimelineThemeData theme;
+  final TimelineThemeData? theme;
 
   /// The direction to use as the main axis.
-  final Axis direction;
+  final Axis? direction;
 
   /// The widgets below this widget in the tree.
   ///
@@ -443,7 +438,7 @@ class FixedTimeline extends StatelessWidget {
   /// If the [direction] is [Axis.horizontal], and there's more than one child,
   /// then the [textDirection] (or the ambient [Directionality]) must not
   /// be null.
-  final TextDirection textDirection;
+  final TextDirection? textDirection;
 
   /// Determines the order to lay children out vertically and how to interpret
   /// `start` and `end` in the vertical direction.
