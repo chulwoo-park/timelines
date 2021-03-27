@@ -156,7 +156,7 @@ class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
                 );
               }
             } else {
-              return const SizedBox();
+              return null;
             }
           },
           itemCount: _processes.length,

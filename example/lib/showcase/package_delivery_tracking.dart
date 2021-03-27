@@ -102,14 +102,13 @@ class _InnerTimeline extends StatelessWidget {
               ),
         ),
         builder: TimelineTileBuilder(
-          indicatorBuilder: (_, index) => !isEdgeIndex(index)
-              ? Indicator.outlined(borderWidth: 1.0)
-              : const SizedBox(),
+          indicatorBuilder: (_, index) =>
+              !isEdgeIndex(index) ? Indicator.outlined(borderWidth: 1.0) : null,
           startConnectorBuilder: (_, index) => Connector.solidLine(),
           endConnectorBuilder: (_, index) => Connector.solidLine(),
           contentsBuilder: (_, index) {
             if (isEdgeIndex(index)) {
-              return const SizedBox();
+              return null;
             }
 
             return Padding(
@@ -119,7 +118,7 @@ class _InnerTimeline extends StatelessWidget {
           },
           itemExtentBuilder: (_, index) => isEdgeIndex(index) ? 10.0 : 30.0,
           nodeItemOverlapBuilder: (_, index) =>
-              isEdgeIndex(index) ? true : false,
+              isEdgeIndex(index) ? true : null,
           itemCount: messages.length + 2,
         ),
       ),
@@ -157,7 +156,7 @@ class _DeliveryProcesses extends StatelessWidget {
             connectionDirection: ConnectionDirection.before,
             itemCount: processes.length,
             contentsBuilder: (_, index) {
-              if (processes[index].isCompleted) return const SizedBox();
+              if (processes[index].isCompleted) return null;
 
               return Padding(
                 padding: EdgeInsets.only(left: 8.0),
@@ -211,21 +210,19 @@ class _OnTimeBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Builder(
-          builder: (context) => MaterialButton(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('On-time!'),
-                ),
-              );
-            },
-            elevation: 0,
-            shape: StadiumBorder(),
-            color: Color(0xff66c97f),
-            textColor: Colors.white,
-            child: Text('On-time'),
-          ),
+        MaterialButton(
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('On-time!'),
+              ),
+            );
+          },
+          elevation: 0,
+          shape: StadiumBorder(),
+          color: Color(0xff66c97f),
+          textColor: Colors.white,
+          child: Text('On-time'),
         ),
         Spacer(),
         Text(

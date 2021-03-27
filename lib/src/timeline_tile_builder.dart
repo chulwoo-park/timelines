@@ -110,7 +110,7 @@ enum ConnectorStyle {
 
 /// Signature for a function that creates a connected connector widget for a
 /// given index and type, e.g., in a timeline tile builder.
-typedef ConnectedConnectorBuilder = Widget Function(
+typedef ConnectedConnectorBuilder = Widget? Function(
     BuildContext context, int index, ConnectorType type);
 
 /// Signature for a function that creates a typed value for a given index, e.g.,
@@ -188,9 +188,9 @@ class TimelineTileBuilder {
     required int itemCount,
     ContentsAlign contentsAlign = ContentsAlign.basic,
     ConnectionDirection connectionDirection = ConnectionDirection.after,
-    IndexedWidgetBuilder? contentsBuilder,
-    IndexedWidgetBuilder? oppositeContentsBuilder,
-    IndexedWidgetBuilder? indicatorBuilder,
+    NullableIndexedWidgetBuilder? contentsBuilder,
+    NullableIndexedWidgetBuilder? oppositeContentsBuilder,
+    NullableIndexedWidgetBuilder? indicatorBuilder,
     ConnectedConnectorBuilder? connectorBuilder,
     WidgetBuilder? firstConnectorBuilder,
     WidgetBuilder? lastConnectorBuilder,
@@ -237,8 +237,8 @@ class TimelineTileBuilder {
   factory TimelineTileBuilder.connectedFromStyle({
     @required required int itemCount,
     ConnectionDirection connectionDirection = ConnectionDirection.after,
-    IndexedWidgetBuilder? contentsBuilder,
-    IndexedWidgetBuilder? oppositeContentsBuilder,
+    NullableIndexedWidgetBuilder? contentsBuilder,
+    NullableIndexedWidgetBuilder? oppositeContentsBuilder,
     ContentsAlign contentsAlign = ContentsAlign.basic,
     IndexedValueBuilder<IndicatorStyle>? indicatorStyleBuilder,
     IndexedValueBuilder<ConnectorStyle>? connectorStyleBuilder,
@@ -290,8 +290,8 @@ class TimelineTileBuilder {
   ///  * [ContentsAlign]
   factory TimelineTileBuilder.fromStyle({
     required int itemCount,
-    IndexedWidgetBuilder? contentsBuilder,
-    IndexedWidgetBuilder? oppositeContentsBuilder,
+    NullableIndexedWidgetBuilder? contentsBuilder,
+    NullableIndexedWidgetBuilder? oppositeContentsBuilder,
     ContentsAlign contentsAlign = ContentsAlign.basic,
     IndicatorStyle indicatorStyle = IndicatorStyle.dot,
     ConnectorStyle connectorStyle = ConnectorStyle.solidLine,
@@ -333,15 +333,15 @@ class TimelineTileBuilder {
   factory TimelineTileBuilder({
     required int itemCount,
     ContentsAlign contentsAlign = ContentsAlign.basic,
-    IndexedWidgetBuilder? contentsBuilder,
-    IndexedWidgetBuilder? oppositeContentsBuilder,
-    IndexedWidgetBuilder? indicatorBuilder,
-    IndexedWidgetBuilder? startConnectorBuilder,
-    IndexedWidgetBuilder? endConnectorBuilder,
+    NullableIndexedWidgetBuilder? contentsBuilder,
+    NullableIndexedWidgetBuilder? oppositeContentsBuilder,
+    NullableIndexedWidgetBuilder? indicatorBuilder,
+    NullableIndexedWidgetBuilder? startConnectorBuilder,
+    NullableIndexedWidgetBuilder? endConnectorBuilder,
     double? itemExtent,
     IndexedValueBuilder<double>? itemExtentBuilder,
     IndexedValueBuilder<double>? nodePositionBuilder,
-    IndexedValueBuilder<bool>? nodeItemOverlapBuilder,
+    IndexedValueBuilder<bool?>? nodeItemOverlapBuilder,
     IndexedValueBuilder<double>? indicatorPositionBuilder,
     IndexedValueBuilder<TimelineThemeData>? themeBuilder,
   }) {
@@ -404,7 +404,7 @@ class TimelineTileBuilder {
     return _builder(context, index);
   }
 
-  static IndexedWidgetBuilder _createConnectedStartConnectorBuilder({
+  static NullableIndexedWidgetBuilder _createConnectedStartConnectorBuilder({
     ConnectionDirection? connectionDirection,
     WidgetBuilder? firstConnectorBuilder,
     ConnectedConnectorBuilder? connectorBuilder,
@@ -414,21 +414,19 @@ class TimelineTileBuilder {
           if (firstConnectorBuilder != null) {
             return firstConnectorBuilder.call(context);
           } else {
-            return SizedBox();
+            return null;
           }
         }
 
         if (connectionDirection == ConnectionDirection.before) {
-          return connectorBuilder?.call(context, index, ConnectorType.start) ??
-              const SizedBox();
+          return connectorBuilder?.call(context, index, ConnectorType.start);
         } else {
           return connectorBuilder?.call(
-                  context, index - 1, ConnectorType.start) ??
-              const SizedBox();
+              context, index - 1, ConnectorType.start);
         }
       };
 
-  static IndexedWidgetBuilder _createConnectedEndConnectorBuilder({
+  static NullableIndexedWidgetBuilder _createConnectedEndConnectorBuilder({
     ConnectionDirection? connectionDirection,
     WidgetBuilder? lastConnectorBuilder,
     ConnectedConnectorBuilder? connectorBuilder,
@@ -439,40 +437,35 @@ class TimelineTileBuilder {
           if (lastConnectorBuilder != null) {
             return lastConnectorBuilder.call(context);
           } else {
-            return const SizedBox();
+            return null;
           }
         }
 
         if (connectionDirection == ConnectionDirection.before) {
-          return connectorBuilder?.call(
-                  context, index + 1, ConnectorType.end) ??
-              const SizedBox();
+          return connectorBuilder?.call(context, index + 1, ConnectorType.end);
         } else {
-          return connectorBuilder?.call(context, index, ConnectorType.end) ??
-              const SizedBox();
+          return connectorBuilder?.call(context, index, ConnectorType.end);
         }
       };
 
-  static IndexedWidgetBuilder _createAlignedContentsBuilder({
+  static NullableIndexedWidgetBuilder _createAlignedContentsBuilder({
     required ContentsAlign align,
-    IndexedWidgetBuilder? contentsBuilder,
-    IndexedWidgetBuilder? oppositeContentsBuilder,
+    NullableIndexedWidgetBuilder? contentsBuilder,
+    NullableIndexedWidgetBuilder? oppositeContentsBuilder,
   }) {
     return (context, index) {
       switch (align) {
         case ContentsAlign.alternating:
           if (index.isOdd) {
-            return oppositeContentsBuilder?.call(context, index) ??
-                const SizedBox();
+            return oppositeContentsBuilder?.call(context, index);
           }
 
-          return contentsBuilder?.call(context, index) ?? const SizedBox();
+          return contentsBuilder?.call(context, index);
         case ContentsAlign.reverse:
-          return oppositeContentsBuilder?.call(context, index) ??
-              const SizedBox();
+          return oppositeContentsBuilder?.call(context, index);
         case ContentsAlign.basic:
         default:
-          return contentsBuilder?.call(context, index) ?? const SizedBox();
+          return contentsBuilder?.call(context, index);
       }
     };
   }
@@ -534,7 +527,7 @@ int _kDefaultSemanticIndexCallback(Widget _, int localIndex) => localIndex;
 ///  with semantic indexes.
 class TimelineTileBuilderDelegate extends SliverChildBuilderDelegate {
   TimelineTileBuilderDelegate(
-    IndexedWidgetBuilder builder, {
+    NullableIndexedWidgetBuilder builder, {
     ChildIndexGetter? findChildIndexCallback,
     int? childCount,
     bool addAutomaticKeepAlives = true,
