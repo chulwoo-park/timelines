@@ -46,6 +46,7 @@ class ProcessTimelinePageState extends State<ProcessTimelinePage> {
           ),
         ),
         builder: TimelineTileBuilder.connected(
+          child: const Text('vcbcv'),
           connectionDirection: ConnectionDirection.before,
           itemExtentBuilder: (_, __) =>
               MediaQuery.of(context).size.width / _processes.length,
@@ -71,7 +72,7 @@ class ProcessTimelinePageState extends State<ProcessTimelinePage> {
               ),
             );
           },
-          indicatorBuilder: (_, index) {
+          indicatorBuilder: (_, index, {child: const Text('eqwewq')}) {
             Color color;
             Widget? child;
             if (index == _processIndex) {

@@ -105,15 +105,46 @@ class ComponentPage extends StatelessWidget {
         item: Padding(
           padding: const EdgeInsets.only(bottom: 8.0),
           child: FixedTimeline.tileBuilder(
+            theme: TimelineThemeData(
+              nodePosition: 0,
+              color: Colors.blue,
+              direction: Axis.vertical,
+              connectorTheme: const ConnectorThemeData(
+                color: Colors.black,
+                space: 65,
+                indent: 0,
+                thickness: 2,
+              ),
+              indicatorTheme: IndicatorThemeData(
+                color: Theme.of(context).colorScheme.secondary,
+                backgroundColor: Colors.pink,
+                size: 20,
+              ),
+            ),
             builder: TimelineTileBuilder.connectedFromStyle(
+              child: const Text('gfjfghasd'),
               connectionDirection: ConnectionDirection.before,
+              firstConnectorStyle: ConnectorStyle.transparent,
+              lastConnectorStyle: ConnectorStyle.transparent,
               connectorStyleBuilder: (context, index) {
-                return (index == 1)
-                    ? ConnectorStyle.dashedLine
-                    : ConnectorStyle.solidLine;
+                return ConnectorStyle.dashedLine;
               },
-              indicatorStyleBuilder: (context, index) => IndicatorStyle.dot,
-              itemExtent: 40.0,
+              indicatorStyleBuilder: (context, index) {
+                return IndicatorStyle.container;
+              },
+              itemExtent: null,
+              nodePositionBuilder: (BuildContext context, int index) {
+                return 0;
+              },
+              indicatorPositionBuilder: (BuildContext context, int index) {
+                return 0.5;
+              },
+              contentsBuilder: (context, index) {
+                return SizedBox(
+                    height: 100,
+                    child: Container(
+                        alignment: Alignment.centerLeft, child: Text('asda')));
+              },
               itemCount: 3,
             ),
           ),
@@ -125,6 +156,7 @@ class ComponentPage extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: FixedTimeline.tileBuilder(
             builder: TimelineTileBuilder.connectedFromStyle(
+              child: const Text('fghfgh'),
               connectionDirection: ConnectionDirection.after,
               connectorStyleBuilder: (context, index) {
                 return (index == 1)
@@ -144,6 +176,7 @@ class ComponentPage extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: FixedTimeline.tileBuilder(
             builder: TimelineTileBuilder.connectedFromStyle(
+              child: const Text('fghffghfghfggh'),
               contentsAlign: ContentsAlign.basic,
               oppositeContentsBuilder: (context, index) => const Padding(
                 padding: EdgeInsets.all(8.0),
@@ -169,6 +202,7 @@ class ComponentPage extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: FixedTimeline.tileBuilder(
             builder: TimelineTileBuilder.connectedFromStyle(
+              child: const Text('fghfghfgbvn'),
               contentsAlign: ContentsAlign.reverse,
               oppositeContentsBuilder: (context, index) => const Padding(
                 padding: EdgeInsets.all(8.0),
@@ -192,6 +226,7 @@ class ComponentPage extends StatelessWidget {
         name: 'ContentsAlign.alternating',
         item: FixedTimeline.tileBuilder(
           builder: TimelineTileBuilder.connectedFromStyle(
+            child: const Text('redgfd'),
             contentsAlign: ContentsAlign.alternating,
             oppositeContentsBuilder: (context, index) => const Padding(
               padding: EdgeInsets.all(8.0),
@@ -217,6 +252,7 @@ class ComponentPage extends StatelessWidget {
             // shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             builder: TimelineTileBuilder.fromStyle(
+              child: const Text('fdgret'),
               contentsBuilder: (context, index) => const Card(
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
@@ -240,6 +276,7 @@ class ComponentPage extends StatelessWidget {
             // shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             builder: TimelineTileBuilder.fromStyle(
+              child: const Text('fdgrtf'),
               contentsBuilder: (context, index) => const Card(
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
@@ -265,6 +302,7 @@ class ComponentPage extends StatelessWidget {
             // shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             builder: TimelineTileBuilder.fromStyle(
+              child: const Text('ertdfg'),
               contentsBuilder: (context, index) => const Card(
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
@@ -289,6 +327,7 @@ class ComponentPage extends StatelessWidget {
             // shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             builder: TimelineTileBuilder.fromStyle(
+              child: const Text('dfhrre'),
               contentsBuilder: (context, index) => const Card(
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
@@ -311,6 +350,7 @@ class ComponentPage extends StatelessWidget {
           height: 500,
           child: Timeline.tileBuilder(
             builder: TimelineTileBuilder.fromStyle(
+              child: const Text('hdvbc'),
               contentsBuilder: (context, index) => const Card(
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
