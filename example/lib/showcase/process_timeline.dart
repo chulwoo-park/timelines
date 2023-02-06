@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -14,11 +13,13 @@ const inProgressColor = Color(0xff5ec792);
 const todoColor = Color(0xffd1d2d7);
 
 class ProcessTimelinePage extends StatefulWidget {
+  const ProcessTimelinePage({Key? key}) : super(key: key);
+
   @override
-  _ProcessTimelinePageState createState() => _ProcessTimelinePageState();
+  ProcessTimelinePageState createState() => ProcessTimelinePageState();
 }
 
-class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
+class ProcessTimelinePageState extends State<ProcessTimelinePage> {
   int _processIndex = 2;
 
   Color getColor(int index) {
@@ -39,12 +40,13 @@ class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
       body: Timeline.tileBuilder(
         theme: TimelineThemeData(
           direction: Axis.horizontal,
-          connectorTheme: ConnectorThemeData(
+          connectorTheme: const ConnectorThemeData(
             space: 30.0,
             thickness: 5.0,
           ),
         ),
         builder: TimelineTileBuilder.connected(
+          indicatorWidget: const Text('vcbcv'),
           connectionDirection: ConnectionDirection.before,
           itemExtentBuilder: (_, __) =>
               MediaQuery.of(context).size.width / _processes.length,
@@ -70,13 +72,13 @@ class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
               ),
             );
           },
-          indicatorBuilder: (_, index) {
-            var color;
-            var child;
+          indicatorBuilder: (_, index, {indicatorWidget}) {
+            Color color;
+            Widget? child;
             if (index == _processIndex) {
               color = inProgressColor;
-              child = Padding(
-                padding: const EdgeInsets.all(8.0),
+              child = const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: CircularProgressIndicator(
                   strokeWidth: 3.0,
                   valueColor: AlwaysStoppedAnimation(Colors.white),
@@ -84,7 +86,7 @@ class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
               );
             } else if (index < _processIndex) {
               color = completeColor;
-              child = Icon(
+              child = const Icon(
                 Icons.check,
                 color: Colors.white,
                 size: 15.0,
@@ -97,7 +99,7 @@ class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
               return Stack(
                 children: [
                   CustomPaint(
-                    size: Size(30.0, 30.0),
+                    size: const Size(30.0, 30.0),
                     painter: _BezierPainter(
                       color: color,
                       drawStart: index > 0,
@@ -115,7 +117,7 @@ class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
               return Stack(
                 children: [
                   CustomPaint(
-                    size: Size(15.0, 15.0),
+                    size: const Size(15.0, 15.0),
                     painter: _BezierPainter(
                       color: color,
                       drawEnd: index < _processes.length - 1,
@@ -163,13 +165,13 @@ class _ProcessTimelinePageState extends State<ProcessTimelinePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(FontAwesomeIcons.chevronRight),
         onPressed: () {
           setState(() {
             _processIndex = (_processIndex + 1) % _processes.length;
           });
         },
         backgroundColor: inProgressColor,
+        child: const Icon(FontAwesomeIcons.chevronRight),
       ),
     );
   }
@@ -203,11 +205,11 @@ class _BezierPainter extends CustomPainter {
 
     final radius = size.width / 2;
 
-    var angle;
-    var offset1;
-    var offset2;
+    double angle;
+    Offset offset1;
+    Offset offset2;
 
-    var path;
+    Path path;
 
     if (drawStart) {
       angle = 3 * pi / 4;

@@ -113,6 +113,9 @@ enum ConnectorStyle {
 typedef ConnectedConnectorBuilder = Widget? Function(
     BuildContext context, int index, ConnectorType type);
 
+typedef ConnectorWithWidgetBuilder = Widget?
+    Function(BuildContext context, int index, {Widget? indicatorWidget});
+
 /// Signature for a function that creates a typed value for a given index, e.g.,
 /// in a timeline tile builder.
 ///
@@ -186,11 +189,12 @@ class TimelineTileBuilder {
   ///  from style.
   factory TimelineTileBuilder.connected({
     required int itemCount,
+    required Widget indicatorWidget,
     ContentsAlign contentsAlign = ContentsAlign.basic,
     ConnectionDirection connectionDirection = ConnectionDirection.after,
     NullableIndexedWidgetBuilder? contentsBuilder,
     NullableIndexedWidgetBuilder? oppositeContentsBuilder,
-    NullableIndexedWidgetBuilder? indicatorBuilder,
+    ConnectorWithWidgetBuilder? indicatorBuilder,
     ConnectedConnectorBuilder? connectorBuilder,
     WidgetBuilder? firstConnectorBuilder,
     WidgetBuilder? lastConnectorBuilder,
@@ -223,6 +227,7 @@ class TimelineTileBuilder {
       itemExtentBuilder: itemExtentBuilder,
       nodePositionBuilder: nodePositionBuilder,
       indicatorPositionBuilder: indicatorPositionBuilder,
+      indicatorWidget: indicatorWidget,
     );
   }
 
@@ -236,6 +241,7 @@ class TimelineTileBuilder {
   ///  * [TimelineTileBuilder.fromStyle], which builds tiles from style.
   factory TimelineTileBuilder.connectedFromStyle({
     @required required int itemCount,
+    Widget? indicatorWidget,
     ConnectionDirection connectionDirection = ConnectionDirection.after,
     NullableIndexedWidgetBuilder? contentsBuilder,
     NullableIndexedWidgetBuilder? oppositeContentsBuilder,
@@ -254,8 +260,10 @@ class TimelineTileBuilder {
       contentsAlign: contentsAlign,
       contentsBuilder: contentsBuilder,
       oppositeContentsBuilder: oppositeContentsBuilder,
-      indicatorBuilder: (context, index) => _createStyledIndicatorBuilder(
-          indicatorStyleBuilder?.call(context, index))(context),
+      indicatorBuilder: (context, index, {Widget? indicatorWidget}) =>
+          _createStyledIndicatorBuilder(
+              indicatorStyleBuilder?.call(context, index),
+              indicatorWidget: indicatorWidget)(context),
       startConnectorBuilder: _createConnectedStartConnectorBuilder(
         connectionDirection: connectionDirection,
         firstConnectorBuilder: (context) =>
@@ -275,6 +283,7 @@ class TimelineTileBuilder {
       itemExtentBuilder: itemExtentBuilder,
       nodePositionBuilder: nodePositionBuilder,
       indicatorPositionBuilder: indicatorPositionBuilder,
+      indicatorWidget: indicatorWidget,
     );
   }
 
@@ -290,6 +299,7 @@ class TimelineTileBuilder {
   ///  * [ContentsAlign]
   factory TimelineTileBuilder.fromStyle({
     required int itemCount,
+    Widget? indicatorWidget,
     NullableIndexedWidgetBuilder? contentsBuilder,
     NullableIndexedWidgetBuilder? oppositeContentsBuilder,
     ContentsAlign contentsAlign = ContentsAlign.basic,
@@ -309,8 +319,9 @@ class TimelineTileBuilder {
       contentsAlign: contentsAlign,
       contentsBuilder: contentsBuilder,
       oppositeContentsBuilder: oppositeContentsBuilder,
-      indicatorBuilder: (context, index) =>
-          _createStyledIndicatorBuilder(indicatorStyle)(context),
+      indicatorBuilder: (context, index, {Widget? indicatorWidget}) =>
+          _createStyledIndicatorBuilder(indicatorStyle,
+              indicatorWidget: indicatorWidget)(context),
       startConnectorBuilder: (context, _) =>
           _createStyledConnectorBuilder(connectorStyle)(context),
       endConnectorBuilder: (context, _) =>
@@ -319,6 +330,7 @@ class TimelineTileBuilder {
       itemExtentBuilder: itemExtentBuilder,
       nodePositionBuilder: nodePositionBuilder,
       indicatorPositionBuilder: indicatorPositionBuilder,
+      indicatorWidget: indicatorWidget,
     );
   }
 
@@ -332,10 +344,11 @@ class TimelineTileBuilder {
   /// TODO: need refactoring, is it has many builders...?
   factory TimelineTileBuilder({
     required int itemCount,
+    Widget? indicatorWidget,
     ContentsAlign contentsAlign = ContentsAlign.basic,
     NullableIndexedWidgetBuilder? contentsBuilder,
     NullableIndexedWidgetBuilder? oppositeContentsBuilder,
-    NullableIndexedWidgetBuilder? indicatorBuilder,
+    ConnectorWithWidgetBuilder? indicatorBuilder,
     NullableIndexedWidgetBuilder? startConnectorBuilder,
     NullableIndexedWidgetBuilder? endConnectorBuilder,
     double? itemExtent,
@@ -366,7 +379,8 @@ class TimelineTileBuilder {
         final tile = TimelineTile(
           mainAxisExtent: itemExtent ?? itemExtentBuilder?.call(context, index),
           node: TimelineNode(
-            indicator: indicatorBuilder?.call(context, index) ??
+            indicator: indicatorBuilder?.call(context, index,
+                    indicatorWidget: indicatorWidget) ??
                 Indicator.transparent(),
             startConnector: startConnectorBuilder?.call(context, index),
             endConnector: endConnectorBuilder?.call(context, index),
@@ -389,12 +403,14 @@ class TimelineTileBuilder {
         }
       },
       itemCount: itemCount,
+      indicatorWidget: indicatorWidget,
     );
   }
 
   const TimelineTileBuilder._(
     this._builder, {
     required this.itemCount,
+    required Widget? indicatorWidget,
   }) : assert(itemCount >= 0);
 
   final IndexedWidgetBuilder _builder;
@@ -470,7 +486,13 @@ class TimelineTileBuilder {
     };
   }
 
-  static WidgetBuilder _createStyledIndicatorBuilder(IndicatorStyle? style) {
+  static WidgetBuilder _createStyledIndicatorBuilder(
+    IndicatorStyle? style, {
+    Widget? indicatorWidget,
+  }) {
+    assert((style != IndicatorStyle.container && indicatorWidget == null) ||
+        (style == IndicatorStyle.container && indicatorWidget != null));
+
     return (_) {
       switch (style) {
         case IndicatorStyle.dot:
@@ -478,7 +500,7 @@ class TimelineTileBuilder {
         case IndicatorStyle.outlined:
           return Indicator.outlined();
         case IndicatorStyle.container:
-          return Indicator.widget();
+          return Indicator.widget(child: indicatorWidget);
         case IndicatorStyle.transparent:
         default:
           return Indicator.transparent();

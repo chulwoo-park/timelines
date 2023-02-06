@@ -6,6 +6,8 @@ import '../widget.dart';
 const kTileHeight = 50.0;
 
 class PackageDeliveryTrackingPage extends StatelessWidget {
+  const PackageDeliveryTrackingPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,10 +16,10 @@ class PackageDeliveryTrackingPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final data = _data(index + 1);
           return Center(
-            child: Container(
+            child: SizedBox(
               width: 360.0,
               child: Card(
-                margin: EdgeInsets.all(20.0),
+                margin: const EdgeInsets.all(20.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -27,9 +29,9 @@ class PackageDeliveryTrackingPage extends StatelessWidget {
                         orderInfo: data,
                       ),
                     ),
-                    Divider(height: 1.0),
+                    const Divider(height: 1.0),
                     _DeliveryProcesses(processes: data.deliveryProcesses),
-                    Divider(height: 1.0),
+                    const Divider(height: 1.0),
                     Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: _OnTimeBar(driver: data.driverInfo),
@@ -59,14 +61,14 @@ class _OrderTitle extends StatelessWidget {
       children: [
         Text(
           'Delivery #${orderInfo.id}',
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
         ),
-        Spacer(),
+        const Spacer(),
         Text(
           '${orderInfo.date.day}/${orderInfo.date.month}/${orderInfo.date.year}',
-          style: TextStyle(
+          style: const TextStyle(
             color: Color(0xffb6b2b2),
           ),
         ),
@@ -102,7 +104,7 @@ class _InnerTimeline extends StatelessWidget {
               ),
         ),
         builder: TimelineTileBuilder(
-          indicatorBuilder: (_, index) =>
+          indicatorBuilder: (_, index, {indicatorWidget}) =>
               !isEdgeIndex(index) ? Indicator.outlined(borderWidth: 1.0) : null,
           startConnectorBuilder: (_, index) => Connector.solidLine(),
           endConnectorBuilder: (_, index) => Connector.solidLine(),
@@ -112,7 +114,7 @@ class _InnerTimeline extends StatelessWidget {
             }
 
             return Padding(
-              padding: EdgeInsets.only(left: 8.0),
+              padding: const EdgeInsets.only(left: 8.0),
               child: Text(messages[index - 1].toString()),
             );
           },
@@ -134,7 +136,7 @@ class _DeliveryProcesses extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
-      style: TextStyle(
+      style: const TextStyle(
         color: Color(0xff9b9b9b),
         fontSize: 12.5,
       ),
@@ -143,12 +145,12 @@ class _DeliveryProcesses extends StatelessWidget {
         child: FixedTimeline.tileBuilder(
           theme: TimelineThemeData(
             nodePosition: 0,
-            color: Color(0xff989898),
-            indicatorTheme: IndicatorThemeData(
+            color: const Color(0xff989898),
+            indicatorTheme: const IndicatorThemeData(
               position: 0,
               size: 20.0,
             ),
-            connectorTheme: ConnectorThemeData(
+            connectorTheme: const ConnectorThemeData(
               thickness: 2.5,
             ),
           ),
@@ -159,7 +161,7 @@ class _DeliveryProcesses extends StatelessWidget {
               if (processes[index].isCompleted) return null;
 
               return Padding(
-                padding: EdgeInsets.only(left: 8.0),
+                padding: const EdgeInsets.only(left: 8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -175,9 +177,9 @@ class _DeliveryProcesses extends StatelessWidget {
                 ),
               );
             },
-            indicatorBuilder: (_, index) {
+            indicatorBuilder: (_, index, {indicatorWidget}) {
               if (processes[index].isCompleted) {
-                return DotIndicator(
+                return const DotIndicator(
                   color: Color(0xff66c97f),
                   child: Icon(
                     Icons.check,
@@ -186,13 +188,19 @@ class _DeliveryProcesses extends StatelessWidget {
                   ),
                 );
               } else {
-                return OutlinedDotIndicator(
+                return const OutlinedDotIndicator(
                   borderWidth: 2.5,
                 );
               }
             },
             connectorBuilder: (_, index, ___) => SolidLineConnector(
-              color: processes[index].isCompleted ? Color(0xff66c97f) : null,
+              color:
+                  processes[index].isCompleted ? const Color(0xff66c97f) : null,
+            ),
+            indicatorWidget: Container(
+              color: Colors.blue,
+              width: 30,
+              height: 30,
             ),
           ),
         ),
@@ -213,23 +221,23 @@ class _OnTimeBar extends StatelessWidget {
         MaterialButton(
           onPressed: () {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+              const SnackBar(
                 content: Text('On-time!'),
               ),
             );
           },
           elevation: 0,
-          shape: StadiumBorder(),
-          color: Color(0xff66c97f),
+          shape: const StadiumBorder(),
+          color: const Color(0xff66c97f),
           textColor: Colors.white,
-          child: Text('On-time'),
+          child: const Text('On-time'),
         ),
-        Spacer(),
+        const Spacer(),
         Text(
           'Driver\n${driver.name}',
           textAlign: TextAlign.center,
         ),
-        SizedBox(width: 12.0),
+        const SizedBox(width: 12.0),
         Container(
           width: 40.0,
           height: 40.0,
@@ -251,27 +259,27 @@ class _OnTimeBar extends StatelessWidget {
 _OrderInfo _data(int id) => _OrderInfo(
       id: id,
       date: DateTime.now(),
-      driverInfo: _DriverInfo(
+      driverInfo: const _DriverInfo(
         name: 'Philipe',
         thumbnailUrl:
             'https://i.pinimg.com/originals/08/45/81/084581e3155d339376bf1d0e17979dc6.jpg',
       ),
       deliveryProcesses: [
-        _DeliveryProcess(
+        const _DeliveryProcess(
           'Package Process',
           messages: [
             _DeliveryMessage('8:30am', 'Package received by driver'),
             _DeliveryMessage('11:30am', 'Reached halfway mark'),
           ],
         ),
-        _DeliveryProcess(
+        const _DeliveryProcess(
           'In Transit',
           messages: [
             _DeliveryMessage('13:00pm', 'Driver arrived at destination'),
             _DeliveryMessage('11:35am', 'Package delivered by m.vassiliades'),
           ],
         ),
-        _DeliveryProcess.complete(),
+        const _DeliveryProcess.complete(),
       ],
     );
 
@@ -306,8 +314,8 @@ class _DeliveryProcess {
   });
 
   const _DeliveryProcess.complete()
-      : this.name = 'Done',
-        this.messages = const [];
+      : name = 'Done',
+        messages = const [];
 
   final String name;
   final List<_DeliveryMessage> messages;

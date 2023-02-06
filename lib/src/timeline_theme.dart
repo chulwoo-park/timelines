@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'connector_theme.dart';
 import 'indicator_theme.dart';
@@ -343,7 +342,7 @@ class TimelineThemeData with Diagnosticable {
       indicatorTheme,
       connectorTheme,
     ];
-    return hashList(values);
+    return Object.hashAll(values);
   }
 
   @override

@@ -354,7 +354,10 @@ class FixedTimeline extends StatelessWidget {
       children: [
         for (int i = 0; i < builder.itemCount; i++)
           Builder(
-            builder: (context) => builder.build(context, i),
+            builder: (context) => builder.build(
+              context,
+              i,
+            ),
           ),
       ],
       theme: theme,

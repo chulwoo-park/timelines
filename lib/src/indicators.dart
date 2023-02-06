@@ -182,6 +182,7 @@ class DotIndicator extends Indicator {
     Key? key,
     double? size,
     Color? color,
+    Color? backgroundColor,
     double? position,
     this.border,
     this.child,
