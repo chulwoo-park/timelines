@@ -45,7 +45,7 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
     double? nodePosition,
     double? indicatorPosition,
     double? indicatorSize,
-    Widget? child,
+    Widget? indicatorChild,
     double? indent,
     double? endIndent,
     bool drawStartConnector = true,
@@ -73,7 +73,7 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
                 )
               : null,
           indicator: DotIndicator(
-            child: child,
+            child: indicatorChild,
             position: indicatorPosition,
             size: indicatorSize,
             color: color,

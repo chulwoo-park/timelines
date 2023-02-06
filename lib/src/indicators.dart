@@ -68,6 +68,7 @@ abstract class Indicator extends StatelessWidget
     Key? key,
     double? size,
     Color? color,
+    Color? backgroundColor,
     double? position,
     double borderWidth = 2.0,
     Widget? child,
@@ -76,6 +77,7 @@ abstract class Indicator extends StatelessWidget
         size: size,
         color: color,
         position: position,
+        backgroundColor: backgroundColor,
         borderWidth: borderWidth,
         child: child,
       );
@@ -180,6 +182,7 @@ class DotIndicator extends Indicator {
     Key? key,
     double? size,
     Color? color,
+    Color? backgroundColor,
     double? position,
     this.border,
     this.child,

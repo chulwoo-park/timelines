@@ -52,7 +52,6 @@ class IndicatorThemeData with Diagnosticable {
   /// values.
   IndicatorThemeData copyWith({
     Color? color,
-    Color? backgroundColor,
     double? size,
     double? position,
   }) {
