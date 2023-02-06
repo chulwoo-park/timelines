@@ -104,7 +104,7 @@ class _InnerTimeline extends StatelessWidget {
               ),
         ),
         builder: TimelineTileBuilder(
-          indicatorBuilder: (_, index, {Widget? child}) =>
+          indicatorBuilder: (_, index, {indicatorWidget}) =>
               !isEdgeIndex(index) ? Indicator.outlined(borderWidth: 1.0) : null,
           startConnectorBuilder: (_, index) => Connector.solidLine(),
           endConnectorBuilder: (_, index) => Connector.solidLine(),
@@ -177,7 +177,7 @@ class _DeliveryProcesses extends StatelessWidget {
                 ),
               );
             },
-            indicatorBuilder: (_, index, {child = const Text('asd')}) {
+            indicatorBuilder: (_, index, {indicatorWidget}) {
               if (processes[index].isCompleted) {
                 return const DotIndicator(
                   color: Color(0xff66c97f),
@@ -197,7 +197,7 @@ class _DeliveryProcesses extends StatelessWidget {
               color:
                   processes[index].isCompleted ? const Color(0xff66c97f) : null,
             ),
-            child: Container(
+            indicatorWidget: Container(
               color: Colors.blue,
               width: 30,
               height: 30,

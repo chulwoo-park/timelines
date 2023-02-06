@@ -49,7 +49,7 @@ class _Timeline1 extends StatelessWidget {
         ),
         padding: const EdgeInsets.symmetric(vertical: 20.0),
         builder: TimelineTileBuilder.connected(
-          child: const Text('dfsdfe'),
+          indicatorWidget: const Text('dfsdfe'),
           contentsBuilder: (_, __) => _EmptyContents(),
           connectorBuilder: (_, index, __) {
             if (index == 0) {
@@ -58,7 +58,7 @@ class _Timeline1 extends StatelessWidget {
               return const SolidLineConnector();
             }
           },
-          indicatorBuilder: (_, index, {child: const Text('aafsw')}) {
+          indicatorBuilder: (_, index, {indicatorWidget}) {
             switch (data[index]) {
               case _TimelineStatus.done:
                 return const DotIndicator(
@@ -121,8 +121,8 @@ class _Timeline2 extends StatelessWidget {
         ),
         padding: const EdgeInsets.only(top: 20.0),
         builder: TimelineTileBuilder.connected(
-          child: const Text('rerfgd'),
-          indicatorBuilder: (context, index, {child: const Text('assdfsdgd')}) {
+          indicatorWidget: const Text('rerfgd'),
+          indicatorBuilder: (context, index, {indicatorWidget}) {
             return DotIndicator(
               color: data[index].isInProgress ? const Color(0xff193fcc) : null,
             );
@@ -173,9 +173,8 @@ class _Timeline3 extends StatelessWidget {
         ),
         padding: const EdgeInsets.only(top: 20.0),
         builder: TimelineTileBuilder.connected(
-          child: const Text('asdfgdfg'),
-          indicatorBuilder: (context, index,
-              {child: const Text('asdhgjghker')}) {
+          indicatorWidget: const Text('asdfgdfg'),
+          indicatorBuilder: (context, index, {indicatorWidget}) {
             final status = data[index];
             return OutlinedDotIndicator(
               color: status.isInProgress

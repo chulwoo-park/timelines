@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import 'connectors.dart';
 import 'indicators.dart';
@@ -46,7 +45,7 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
     double? nodePosition,
     double? indicatorPosition,
     double? indicatorSize,
-    Widget? indicatorChild,
+    Widget? child,
     double? indent,
     double? endIndent,
     bool drawStartConnector = true,
@@ -74,7 +73,7 @@ class TimelineNode extends StatelessWidget with TimelineTileNode {
                 )
               : null,
           indicator: DotIndicator(
-            child: indicatorChild,
+            child: child,
             position: indicatorPosition,
             size: indicatorSize,
             color: color,

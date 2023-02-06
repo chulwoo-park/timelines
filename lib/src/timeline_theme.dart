@@ -179,7 +179,6 @@ class TimelineThemeData with Diagnosticable {
   factory TimelineThemeData({
     Axis? direction,
     Color? color,
-    Color? backgroundColor,
     double? nodePosition,
     bool? nodeItemOverlap,
     double? indicatorPosition,
@@ -189,8 +188,6 @@ class TimelineThemeData with Diagnosticable {
     direction ??= Axis.vertical;
     color ??= Colors
         .blue; // TODO: Need to change the default color to the theme color?
-    backgroundColor ??= Colors
-        .blue; // TODO: Need to change the default color to the theme color?
     nodePosition ??= 0.5;
     nodeItemOverlap ??= false;
     indicatorPosition ??= 0.5;
@@ -199,7 +196,6 @@ class TimelineThemeData with Diagnosticable {
     return TimelineThemeData.raw(
       direction: direction,
       color: color,
-      backgroundColor: backgroundColor,
       nodePosition: nodePosition,
       nodeItemOverlap: nodeItemOverlap,
       indicatorPosition: indicatorPosition,
@@ -222,7 +218,6 @@ class TimelineThemeData with Diagnosticable {
   const TimelineThemeData.raw({
     required this.direction,
     required this.color,
-    required this.backgroundColor,
     required this.nodePosition,
     required this.nodeItemOverlap,
     required this.indicatorPosition,
@@ -245,8 +240,6 @@ class TimelineThemeData with Diagnosticable {
 
   /// The color for major parts of the timeline (indicator, connector, etc)
   final Color color;
-
-  final Color backgroundColor;
 
   /// The position for [TimelineNode] in [TimelineTile].
   ///
@@ -278,7 +271,6 @@ class TimelineThemeData with Diagnosticable {
   TimelineThemeData copyWith({
     Axis? direction,
     Color? color,
-    Color? backgroundColor,
     double? nodePosition,
     bool? nodeItemOverlap,
     double? indicatorPosition,
@@ -288,7 +280,6 @@ class TimelineThemeData with Diagnosticable {
     return TimelineThemeData.raw(
       direction: direction ?? this.direction,
       color: color ?? this.color,
-      backgroundColor: backgroundColor ?? this.backgroundColor,
       nodePosition: nodePosition ?? this.nodePosition,
       nodeItemOverlap: nodeItemOverlap ?? this.nodeItemOverlap,
       indicatorPosition: indicatorPosition ?? this.indicatorPosition,
@@ -310,7 +301,6 @@ class TimelineThemeData with Diagnosticable {
     return TimelineThemeData.raw(
       direction: t < 0.5 ? a.direction : b.direction,
       color: Color.lerp(a.color, b.color, t)!,
-      backgroundColor: Color.lerp(a.color, b.color, t)!,
       nodePosition: lerpDouble(a.nodePosition, b.nodePosition, t)!,
       nodeItemOverlap: t < 0.5 ? a.nodeItemOverlap : b.nodeItemOverlap,
       indicatorPosition:
