@@ -105,51 +105,15 @@ class ComponentPage extends StatelessWidget {
         item: Padding(
           padding: const EdgeInsets.only(bottom: 8.0),
           child: FixedTimeline.tileBuilder(
-            theme: TimelineThemeData(
-              nodePosition: 0,
-              color: Colors.blue,
-              direction: Axis.vertical,
-              connectorTheme: const ConnectorThemeData(
-                color: Colors.black,
-                space: 65,
-                indent: 0,
-                thickness: 2,
-              ),
-              indicatorTheme: IndicatorThemeData(
-                color: Theme.of(context).colorScheme.secondary,
-                size: 20,
-              ),
-            ),
             builder: TimelineTileBuilder.connectedFromStyle(
-              indicatorWidget: const SizedBox(
-                width: 10,
-                height: 10,
-                child: CircularProgressIndicator(),
-              ),
               connectionDirection: ConnectionDirection.before,
-              firstConnectorStyle: ConnectorStyle.transparent,
-              lastConnectorStyle: ConnectorStyle.transparent,
               connectorStyleBuilder: (context, index) {
-                return ConnectorStyle.dashedLine;
+                return (index == 1)
+                    ? ConnectorStyle.dashedLine
+                    : ConnectorStyle.solidLine;
               },
-              indicatorStyleBuilder: (context, index) {
-                return IndicatorStyle.container;
-              },
-              itemExtent: null,
-              nodePositionBuilder: (BuildContext context, int index) {
-                return 0;
-              },
-              indicatorPositionBuilder: (BuildContext context, int index) {
-                return 0.5;
-              },
-              contentsBuilder: (context, index) {
-                return SizedBox(
-                    height: 100,
-                    width: 30,
-                    child: Container(
-                        alignment: Alignment.centerLeft,
-                        child: const Text('asd')));
-              },
+              indicatorStyleBuilder: (context, index) => IndicatorStyle.dot,
+              itemExtent: 40.0,
               itemCount: 3,
             ),
           ),
@@ -361,6 +325,61 @@ class ComponentPage extends StatelessWidget {
               indicatorStyle: IndicatorStyle.outlined,
               connectorStyle: ConnectorStyle.dashedLine,
               itemCount: 10,
+            ),
+          ),
+        ),
+      ),
+      _ComponentRow(
+        name: 'Custom indicator widget',
+        item: Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: FixedTimeline.tileBuilder(
+            theme: TimelineThemeData(
+              nodePosition: 0,
+              color: Colors.blue,
+              direction: Axis.vertical,
+              connectorTheme: const ConnectorThemeData(
+                color: Colors.black,
+                space: 65,
+                indent: 0,
+                thickness: 2,
+              ),
+              indicatorTheme: IndicatorThemeData(
+                color: Theme.of(context).colorScheme.secondary,
+                size: 20,
+              ),
+            ),
+            builder: TimelineTileBuilder.connectedFromStyle(
+              indicatorWidget: const SizedBox(
+                width: 10,
+                height: 10,
+                child: CircularProgressIndicator(),
+              ),
+              connectionDirection: ConnectionDirection.before,
+              firstConnectorStyle: ConnectorStyle.transparent,
+              lastConnectorStyle: ConnectorStyle.transparent,
+              connectorStyleBuilder: (context, index) {
+                return ConnectorStyle.dashedLine;
+              },
+              indicatorStyleBuilder: (context, index) {
+                return IndicatorStyle.container;
+              },
+              itemExtent: null,
+              nodePositionBuilder: (BuildContext context, int index) {
+                return 0;
+              },
+              indicatorPositionBuilder: (BuildContext context, int index) {
+                return 0.5;
+              },
+              contentsBuilder: (context, index) {
+                return SizedBox(
+                    height: 100,
+                    width: 30,
+                    child: Container(
+                        alignment: Alignment.centerLeft,
+                        child: const Text('asd')));
+              },
+              itemCount: 3,
             ),
           ),
         ),
