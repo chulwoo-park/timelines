@@ -31,7 +31,6 @@ class IndicatorThemeData with Diagnosticable {
   /// [TimelineThemeData.indicatorTheme].
   const IndicatorThemeData({
     this.color,
-    this.backgroundColor,
     this.size,
     this.position,
   });
@@ -39,7 +38,6 @@ class IndicatorThemeData with Diagnosticable {
   /// The color of [DotIndicator]s and indicators inside [TimelineNode]s, and so
   /// forth.
   final Color? color;
-  final Color? backgroundColor;
 
   /// The size of [DotIndicator]s and indicators inside [TimelineNode]s, and so
   /// forth in logical pixels.
@@ -60,7 +58,6 @@ class IndicatorThemeData with Diagnosticable {
   }) {
     return IndicatorThemeData(
       color: color ?? this.color,
-      backgroundColor: color ?? this.backgroundColor,
       size: size ?? this.size,
       position: position ?? this.position,
     );
@@ -75,14 +72,13 @@ class IndicatorThemeData with Diagnosticable {
       IndicatorThemeData? a, IndicatorThemeData? b, double t) {
     return IndicatorThemeData(
       color: Color.lerp(a?.color, b?.color, t),
-      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
       size: lerpDouble(a?.size, b?.size, t),
       position: lerpDouble(a?.position, b?.position, t),
     );
   }
 
   @override
-  int get hashCode => Object.hash(color, backgroundColor, size, position);
+  int get hashCode => Object.hash(color, size, position);
 
   @override
   bool operator ==(Object other) {
@@ -90,7 +86,6 @@ class IndicatorThemeData with Diagnosticable {
     if (other.runtimeType != runtimeType) return false;
     return other is IndicatorThemeData &&
         other.color == color &&
-        other.backgroundColor == backgroundColor &&
         other.size == size &&
         other.position == position;
   }
@@ -100,8 +95,6 @@ class IndicatorThemeData with Diagnosticable {
     super.debugFillProperties(properties);
     properties
       ..add(ColorProperty('color', color, defaultValue: null))
-      ..add(
-          ColorProperty('backgroundColor', backgroundColor, defaultValue: null))
       ..add(DoubleProperty('size', size, defaultValue: null))
       ..add(DoubleProperty('position', size, defaultValue: null));
   }
@@ -172,13 +165,6 @@ mixin ThemedIndicatorComponent on PositionedIndicator {
     return color ??
         IndicatorTheme.of(context).color ??
         TimelineTheme.of(context).color;
-  }
-
-  Color? get backgroundColor;
-  Color getEffectiveBackgroundColor(BuildContext context) {
-    return backgroundColor ??
-        IndicatorTheme.of(context).backgroundColor ??
-        TimelineTheme.of(context).backgroundColor;
   }
 
   /// {@template timelines.indicator.size}

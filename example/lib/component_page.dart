@@ -117,7 +117,6 @@ class ComponentPage extends StatelessWidget {
               ),
               indicatorTheme: IndicatorThemeData(
                 color: Theme.of(context).colorScheme.secondary,
-                backgroundColor: Colors.pink,
                 size: 20,
               ),
             ),
