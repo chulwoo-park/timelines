@@ -31,6 +31,7 @@ abstract class Indicator extends StatelessWidget
     Key? key,
     this.size,
     this.color,
+    this.backgroundColor,
     this.border,
     this.position,
     this.child,
@@ -47,6 +48,7 @@ abstract class Indicator extends StatelessWidget
     Key? key,
     double? size,
     Color? color,
+    Color? backgroundColor,
     double? position,
     Border? border,
     Widget? child,
@@ -54,6 +56,7 @@ abstract class Indicator extends StatelessWidget
       DotIndicator(
         size: size,
         color: color,
+        backgroundColor: backgroundColor,
         position: position,
         border: border,
         child: child,
@@ -126,6 +129,9 @@ abstract class Indicator extends StatelessWidget
   @override
   final Color? color;
 
+  @override
+  final Color? backgroundColor;
+
   /// The position of a indicator between the two connectors.
   ///
   /// {@macro timelines.indicator.position}
@@ -182,6 +188,7 @@ class DotIndicator extends Indicator {
     Key? key,
     double? size,
     Color? color,
+    Color? backgroundColor,
     double? position,
     this.border,
     this.child,
@@ -189,6 +196,7 @@ class DotIndicator extends Indicator {
           key: key,
           size: size,
           color: color,
+          backgroundColor: backgroundColor,
           position: position,
         );
 

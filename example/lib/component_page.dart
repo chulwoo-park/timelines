@@ -4,16 +4,18 @@ import 'package:timelines/timelines.dart';
 import 'widget.dart';
 
 class ComponentPage extends StatelessWidget {
+  const ComponentPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final children = [
       _ComponentRow(
         name: 'Dot\nIndicator',
-        item: DotIndicator(),
+        item: const DotIndicator(),
       ),
       _ComponentRow(
         name: 'Outlined dot\nIndicator',
-        item: OutlinedDotIndicator(),
+        item: const OutlinedDotIndicator(),
       ),
       _ComponentRow(
         name: 'Container\nIndicator',
@@ -27,14 +29,14 @@ class ComponentPage extends StatelessWidget {
       ),
       _ComponentRow(
         name: 'Solid line\nConnector',
-        item: SizedBox(
+        item: const SizedBox(
           height: 20.0,
           child: SolidLineConnector(),
         ),
       ),
       _ComponentRow(
         name: 'Dashed line\nConnector',
-        item: SizedBox(
+        item: const SizedBox(
           height: 20.0,
           child: DashedLineConnector(),
         ),
@@ -63,7 +65,7 @@ class ComponentPage extends StatelessWidget {
       ),
       _ComponentRow(
         name: 'Complex TimelineNode',
-        item: SizedBox(
+        item: const SizedBox(
           height: 80.0,
           child: TimelineNode(
             indicator: Card(
@@ -81,17 +83,17 @@ class ComponentPage extends StatelessWidget {
       _ComponentRow(
         name: 'TimelineTile',
         item: TimelineTile(
-          oppositeContents: Padding(
-            padding: const EdgeInsets.all(8.0),
+          oppositeContents: const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Text('opposite\ncontents'),
           ),
           contents: Card(
             child: Container(
-              padding: EdgeInsets.all(8.0),
-              child: Text('contents'),
+              padding: const EdgeInsets.all(8.0),
+              child: const Text('contents'),
             ),
           ),
-          node: TimelineNode(
+          node: const TimelineNode(
             indicator: DotIndicator(),
             startConnector: SolidLineConnector(),
             endConnector: SolidLineConnector(),
@@ -143,13 +145,13 @@ class ComponentPage extends StatelessWidget {
           child: FixedTimeline.tileBuilder(
             builder: TimelineTileBuilder.connectedFromStyle(
               contentsAlign: ContentsAlign.basic,
-              oppositeContentsBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.all(8.0),
+              oppositeContentsBuilder: (context, index) => const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Text('opposite\ncontents'),
               ),
-              contentsBuilder: (context, index) => Card(
+              contentsBuilder: (context, index) => const Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
                   child: Text('Contents'),
                 ),
               ),
@@ -168,13 +170,13 @@ class ComponentPage extends StatelessWidget {
           child: FixedTimeline.tileBuilder(
             builder: TimelineTileBuilder.connectedFromStyle(
               contentsAlign: ContentsAlign.reverse,
-              oppositeContentsBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.all(8.0),
+              oppositeContentsBuilder: (context, index) => const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Text('opposite\ncontents'),
               ),
-              contentsBuilder: (context, index) => Card(
+              contentsBuilder: (context, index) => const Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
                   child: Text('Contents'),
                 ),
               ),
@@ -191,13 +193,13 @@ class ComponentPage extends StatelessWidget {
         item: FixedTimeline.tileBuilder(
           builder: TimelineTileBuilder.connectedFromStyle(
             contentsAlign: ContentsAlign.alternating,
-            oppositeContentsBuilder: (context, index) => Padding(
-              padding: const EdgeInsets.all(8.0),
+            oppositeContentsBuilder: (context, index) => const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Text('opposite\ncontents'),
             ),
-            contentsBuilder: (context, index) => Card(
+            contentsBuilder: (context, index) => const Card(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.0),
                 child: Text('Contents'),
               ),
             ),
@@ -215,14 +217,14 @@ class ComponentPage extends StatelessWidget {
             // shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             builder: TimelineTileBuilder.fromStyle(
-              contentsBuilder: (context, index) => Card(
+              contentsBuilder: (context, index) => const Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
                   child: Text('Contents'),
                 ),
               ),
-              oppositeContentsBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.all(8.0),
+              oppositeContentsBuilder: (context, index) => const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Text('opposite\ncontents'),
               ),
               itemCount: 20,
@@ -238,14 +240,14 @@ class ComponentPage extends StatelessWidget {
             // shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             builder: TimelineTileBuilder.fromStyle(
-              contentsBuilder: (context, index) => Card(
+              contentsBuilder: (context, index) => const Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
                   child: Text('Contents'),
                 ),
               ),
-              oppositeContentsBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.all(8.0),
+              oppositeContentsBuilder: (context, index) => const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Text('opposite\ncontents'),
               ),
               indicatorStyle: IndicatorStyle.outlined,
@@ -263,14 +265,14 @@ class ComponentPage extends StatelessWidget {
             // shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             builder: TimelineTileBuilder.fromStyle(
-              contentsBuilder: (context, index) => Card(
+              contentsBuilder: (context, index) => const Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
                   child: Text('Contents'),
                 ),
               ),
-              oppositeContentsBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.all(8.0),
+              oppositeContentsBuilder: (context, index) => const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Text('opposite\ncontents'),
               ),
               contentsAlign: ContentsAlign.reverse,
@@ -287,14 +289,14 @@ class ComponentPage extends StatelessWidget {
             // shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             builder: TimelineTileBuilder.fromStyle(
-              contentsBuilder: (context, index) => Card(
+              contentsBuilder: (context, index) => const Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
                   child: Text('Contents'),
                 ),
               ),
-              oppositeContentsBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.all(8.0),
+              oppositeContentsBuilder: (context, index) => const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Text('opposite\ncontents'),
               ),
               contentsAlign: ContentsAlign.alternating,
@@ -309,14 +311,14 @@ class ComponentPage extends StatelessWidget {
           height: 500,
           child: Timeline.tileBuilder(
             builder: TimelineTileBuilder.fromStyle(
-              contentsBuilder: (context, index) => Card(
+              contentsBuilder: (context, index) => const Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
                   child: Text('Contents'),
                 ),
               ),
-              oppositeContentsBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.all(8.0),
+              oppositeContentsBuilder: (context, index) => const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Text('opposite\ncontents'),
               ),
               contentsAlign: ContentsAlign.alternating,
@@ -336,9 +338,9 @@ class ComponentPage extends StatelessWidget {
         child: Table(
           children: children,
           columnWidths: {
-            0: FlexColumnWidth(1),
-            1: FlexColumnWidth(2),
-            2: FlexColumnWidth(0.3),
+            0: const FlexColumnWidth(1),
+            1: const FlexColumnWidth(2),
+            2: const FlexColumnWidth(0.3),
           },
         ),
       ),
@@ -369,7 +371,7 @@ class _ComponentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(
+      constraints: const BoxConstraints(
         minHeight: 65.0,
       ),
       child: Center(
